@@ -2,7 +2,7 @@
 
 源内 Web (https://github.com/digital-go-jp/genai-web) を改変したリポジトリです。
 
-![](docs\images\screenshot.png)
+![](docs/images/screenshot.png)
 
 ## 概要
 
