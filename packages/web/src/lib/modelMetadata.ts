@@ -374,6 +374,23 @@ export const modelMetadata: Record<string, ModelMetadata> = {
     flags: MODEL_FEATURE.TEXT_DOC,
     displayName: 'DeepSeek-R1',
   },
+  // xAI
+  'xai.grok-4-3-v1:0': {
+    flags: MODEL_FEATURE.TEXT_DOC_IMAGE_REASONING,
+    displayName: 'Grok 4.3',
+  },
+  'xai.grok-4-fast-v1:0': {
+    flags: MODEL_FEATURE.TEXT_DOC_IMAGE,
+    displayName: 'Grok 4 Fast',
+  },
+  'us.xai.grok-4-3-v1:0': {
+    flags: MODEL_FEATURE.TEXT_DOC_IMAGE_REASONING,
+    displayName: 'Grok 4.3',
+  },
+  'us.xai.grok-4-fast-v1:0': {
+    flags: MODEL_FEATURE.TEXT_DOC_IMAGE,
+    displayName: 'Grok 4 Fast',
+  },
   // Writer
   'us.writer.palmyra-x4-v1:0': {
     flags: MODEL_FEATURE.TEXT_DOC,

@@ -134,6 +134,16 @@ const chatStore = {
 };
 
 // ===== AI providers =====
+async function* streamXAI(modelName: string, messages: SimpleMessage[], apiKey: string) {
+  const { default: OpenAI } = await import('openai');
+  const openai = new OpenAI({ apiKey, baseURL: 'https://api.x.ai/v1' });
+  const response = await openai.chat.completions.create({ model: modelName, messages, stream: true });
+  for await (const chunk of response) {
+    const text = chunk.choices[0]?.delta?.content ?? '';
+    if (text) yield text;
+  }
+}
+
 async function* streamOpenAI(modelName: string, messages: SimpleMessage[], apiKey: string) {
   const { default: OpenAI } = await import('openai');
   const openai = new OpenAI({ apiKey });
@@ -201,6 +211,7 @@ async function* providerStream(
   if (provider === 'openai') yield* streamOpenAI(modelName, messages, env.OPENAI_API_KEY ?? '');
   else if (provider === 'anthropic') yield* streamAnthropic(modelName, messages, env.ANTHROPIC_API_KEY ?? '');
   else if (provider === 'ollama') yield* streamOllama(modelName, messages, env.OLLAMA_BASE_URL ?? 'http://localhost:11434');
+  else if (provider === 'xai') yield* streamXAI(modelName, messages, env.XAI_API_KEY ?? '');
   else throw new Error(`Unknown provider: ${provider}`);
 }
 
