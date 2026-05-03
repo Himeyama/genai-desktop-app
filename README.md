@@ -1,9 +1,8 @@
-日本語 | [English](README.en.md)
-
 # GenKAI (玄海)
 
 源内 Web (https://github.com/digital-go-jp/genai-web) を改変したリポジトリです。
 
+![](docs\images\screenshot.png)
 
 ## 概要
 
@@ -30,10 +29,7 @@ AGENTS.md を参照してください。
 
 - [ガバメント AI、プロジェクト「源内」の構想紹介 - デジタル庁 note 記事](https://digital-gov.note.jp/n/ndc07326b7491)
 
-## License
+## ライセンス
 
 - Software: Licensed under the [MIT License](LICENSE).
-  - AWS Prototyping Program により作成された一部の Lambda・CDK ファイルは [Amazon Software License（ASL）](https://aws.amazon.com/jp/asl/)
-    の対象となります。
-  - 対象ファイル一覧は [ASL対象ファイル.md](./docs/ASL対象ファイル.md) を参照してください。
 - Documentation: Licensed under the [Creative Commons Attribution 4.0 International License](LICENSE-CC-BY) (CC BY 4.0).
