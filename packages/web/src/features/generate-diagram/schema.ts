@@ -1,7 +1,7 @@
 import { DIAGRAM_DATA } from './constants';
 import { z } from 'zod';
 
-const ids = Object.values(DIAGRAM_DATA).map((diagram) => diagram.id);
+const ids = Object.values(DIAGRAM_DATA).map((diagram) => diagram.id) as [string, ...string[]];
 
 export const diagramFormSchema = z.object({
   type: z.enum(ids, { message: '有効な図の種類を選択してください' }),

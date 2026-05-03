@@ -403,6 +403,16 @@ export const modelMetadata: Record<string, ModelMetadata> = {
 
   // === Image ===
 
+  // OpenAI Image Gen
+  'openai:gpt-image-2': {
+    flags: MODEL_FEATURE.IMAGE_GEN,
+    displayName: 'openai:gpt-image-2',
+  },
+  'openai:gpt-4o-image': {
+    flags: MODEL_FEATURE.IMAGE_GEN,
+    displayName: 'openai:gpt-4o-image',
+  },
+
   // Stability AI Image Gen
   'stability.stable-diffusion-xl-v1': {
     flags: {

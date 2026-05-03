@@ -97,7 +97,7 @@ const createInitialState = (): GenerateImageState => ({
   },
   maskPrompt: '',
   colors: COLORS_OPTIONS[0].value,
-  imageSample: 3,
+  imageSample: 1,
   image: new Array(MAX_SAMPLE).fill({
     base64: '',
     error: false,

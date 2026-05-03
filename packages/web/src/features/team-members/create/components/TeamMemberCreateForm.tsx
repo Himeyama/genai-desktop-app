@@ -12,7 +12,7 @@ import { LoadingButton } from '@/components/ui/LoadingButton';
 import { isApiError } from '@/lib/fetcher';
 import { focus } from '@/utils/focus';
 import { useCreateTeamMember } from '../hooks/useCreateTeamMember';
-import { TeamMemberCreateSchema, teamMemberCreateSchema } from '../schema';
+import { TeamMemberCreateSchema, createTeamMemberSchema } from '../schema';
 
 export const TeamMemberCreateForm = () => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export const TeamMemberCreateForm = () => {
     formState: { errors },
   } = useForm<TeamMemberCreateSchema>({
     mode: 'onSubmit',
-    resolver: zodResolver(teamMemberCreateSchema),
+    resolver: zodResolver(createTeamMemberSchema),
   });
 
   const onSubmit = handleSubmit(async (data) => {

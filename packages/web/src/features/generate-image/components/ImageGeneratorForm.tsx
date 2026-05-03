@@ -20,7 +20,7 @@ import {
 import { findModelDisplayNameByModelId, MODELS } from '@/models';
 import {
   AMAZON_ADVANCED_GENERATION_MODE,
-  AMAZON_MODELS,
+  OPENAI_MODELS,
   COLORS_OPTIONS,
   CONTROL_MODE_OPTIONS,
   GENERATION_MODES,
@@ -99,10 +99,9 @@ export const ImageGeneratorForm = (props: Props) => {
     generationMode === GENERATION_MODES.INPAINTING ||
     generationMode === GENERATION_MODES.OUTPAINTING;
 
-  const maskPromptSupported =
-    imageGenModelId === AMAZON_MODELS.TITAN_V1 ||
-    imageGenModelId === AMAZON_MODELS.TITAN_V2 ||
-    imageGenModelId === AMAZON_MODELS.NOVA_CANVAS;
+  const isOpenAIModel =
+    imageGenModelId === OPENAI_MODELS.GPT2_IMAGE ||
+    imageGenModelId === OPENAI_MODELS.GPT_4O_IMAGE;
 
   const modeOptions = getModeOptions(imageGenModelId);
 
@@ -123,6 +122,8 @@ export const ImageGeneratorForm = (props: Props) => {
       });
     }
   };
+
+  const maskPromptSupported = false;
 
   return (
     <>
@@ -200,7 +201,7 @@ export const ImageGeneratorForm = (props: Props) => {
         )}
       </div>
 
-      {generationMode !== 'BACKGROUND_REMOVAL' && (
+      {generationMode !== 'BACKGROUND_REMOVAL' && !isOpenAIModel && (
         <div className='mb-6 grid w-full grid-cols-1 gap-4'>
           <div className='relative col-span-2 flex flex-col items-start lg:col-span-1'>
             <RangeSlider
@@ -236,10 +237,11 @@ export const ImageGeneratorForm = (props: Props) => {
         </div>
       )}
 
-      <div className='flex flex-col gap-3'>
-        <h2 className='mb-2 text-base font-bold leading-relaxed lg:text-lg font-bold leading-relaxed'>
-          詳細パラメーター設定
-        </h2>
+      {!isOpenAIModel && (
+        <div className='flex flex-col gap-3'>
+          <h2 className='mb-2 text-base font-bold leading-relaxed lg:text-lg font-bold leading-relaxed'>
+            詳細パラメーター設定
+          </h2>
         <div>
           <CustomSelect
             label='GenerationMode'
@@ -514,6 +516,7 @@ export const ImageGeneratorForm = (props: Props) => {
           </div>
         )}
       </div>
+      )}
 
       <div className='flex flex-row-reverse items-center justify-center gap-x-5'>
         <LoadingButton

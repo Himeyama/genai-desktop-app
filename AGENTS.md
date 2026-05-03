@@ -78,6 +78,10 @@ Ollama はローカル実行のためキー不要。OpenAI / Anthropic は `.env
 | GET | `/exapps` | AI アプリ一覧（空配列を返す） |
 | POST | `/predict/stream` | ストリーミング推論 |
 | POST | `/predict/title` | タイトル自動生成 |
+| POST | `/image/generate` | 画像生成（OpenAI REST APIを直接呼び出し） |
+
+### 画像生成について
+ローカル開発時の画像生成機能（`/image/generate`）では、Node.js用 `openai` SDK は使用せず、直接 `fetch` で OpenAI API (`api.openai.com`) を呼び出します。フロントエンドのモデル名 `gpt-image-2` はそのまま利用し、`gpt-4o-image` は `gpt-image-1.5` へマッピングして送信されます。
 
 ### 未実装ルートの追加方法
 ルートが未実装だと Vite の SPA フォールバックが HTML を返す。フロントエンドの `parseResponseBody` は JSON パース失敗時に文字列をそのまま返すため、配列・オブジェクトを期待するコードが `xxx is not a function` エラーを出す。

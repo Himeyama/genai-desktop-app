@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useLocation } from 'react-router';
 import { PageTitle } from '@/components/PageTitle';
 import { CustomSelect } from '@/components/ui/CustomSelect';
-import { Divider } from '@/components/ui/dads/Divider';
 import { APP_TITLE } from '@/constants';
 import { useGenerateImageHandler } from '@/features/generate-image/hooks/useGenerateImageHandler';
 import { useReset } from '@/features/generate-image/hooks/useReset';
@@ -128,8 +127,6 @@ export const GenerateImagePage = () => {
                     setSelectedImageIndex={setSelectedImageIndex}
                   />
 
-                  <Divider className='my-3 lg:my-6' />
-
                   <ImageGeneratorForm
                     loadingChat={loadingChat}
                     generating={generating}
@@ -141,8 +138,6 @@ export const GenerateImagePage = () => {
                     clearAll={clearAll}
                     onClickRandomSeed={() => onClickRandomSeed(selectedImageIndex)}
                   />
-
-                  <Divider className='my-3 lg:my-6' />
                 </div>
               </div>
             </div>

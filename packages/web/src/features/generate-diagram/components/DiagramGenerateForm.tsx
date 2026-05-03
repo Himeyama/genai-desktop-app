@@ -60,7 +60,7 @@ export const DiagramGenerateForm = () => {
     setDiagramGenerationError(null);
 
     try {
-      await postDiagram(data.content, data.type);
+      await postDiagram(data.content, data.type as any);
     } catch (error: unknown) {
       if (error instanceof Error) setDiagramGenerationError(error);
       else setDiagramGenerationError(new Error(`${error}`));

@@ -134,9 +134,46 @@ const chatStore = {
 };
 
 // ===== AI providers =====
+async function generateImage(prompt: string, modelName: string, apiKey: string) {
+  let apiModelName = modelName;
+  if (modelName === 'gpt-4o-image') apiModelName = 'gpt-image-1.5';
+
+  const res = await fetch('https://api.openai.com/v1/images/generations', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: apiModelName,
+      prompt: prompt,
+      n: 1,
+      size: '1024x1024',
+    }),
+  });
+  
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`OpenAI API error: ${res.status} ${errorText}`);
+  }
+  
+  const data = await res.json() as any;
+  
+  if (data.data?.[0]?.b64_json) {
+    return data.data[0].b64_json;
+  } else if (data.data?.[0]?.url) {
+    const imgRes = await fetch(data.data[0].url);
+    if (!imgRes.ok) throw new Error('Failed to fetch generated image URL');
+    const arrayBuffer = await imgRes.arrayBuffer();
+    return Buffer.from(arrayBuffer).toString('base64');
+  }
+  
+  throw new Error('No image generated in the response.');
+}
+
 async function* streamXAI(modelName: string, messages: SimpleMessage[], apiKey: string) {
   const { default: OpenAI } = await import('openai');
-  const openai = new OpenAI({ apiKey, baseURL: 'https://api.x.ai/v1' });
+  const openai = new OpenAI({ apiKey: apiKey || undefined, baseURL: 'https://api.x.ai/v1' });
   const response = await openai.chat.completions.create({ model: modelName, messages, stream: true });
   for await (const chunk of response) {
     const text = chunk.choices[0]?.delta?.content ?? '';
@@ -146,7 +183,7 @@ async function* streamXAI(modelName: string, messages: SimpleMessage[], apiKey: 
 
 async function* streamOpenAI(modelName: string, messages: SimpleMessage[], apiKey: string) {
   const { default: OpenAI } = await import('openai');
-  const openai = new OpenAI({ apiKey });
+  const openai = new OpenAI({ apiKey: apiKey || undefined });
   const response = await openai.chat.completions.create({ model: modelName, messages, stream: true });
   for await (const chunk of response) {
     const text = chunk.choices[0]?.delta?.content ?? '';
@@ -249,10 +286,33 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
         const predictMatch = pathname.match(/^\/predict\/(stream|title)$/);
         const scMatch = pathname.match(/^\/systemcontexts(?:\/([^/]+))?(?:\/([^/]+))?$/);
         const exAppsMatch = pathname === '/exapps' && method === 'GET';
+        const imageGenMatch = pathname === '/image/generate' && method === 'POST';
 
-        if (!chatMatch && !predictMatch && !scMatch && !exAppsMatch) return next();
+        if (!chatMatch && !predictMatch && !scMatch && !exAppsMatch && !imageGenMatch) return next();
 
         try {
+          // ---- Image Generation ----
+          if (imageGenMatch) {
+            type ImageGenBody = { model?: { modelId?: string }; params: { textPrompt: Array<{ text: string }> } };
+            const body = (await readBody(req)) as ImageGenBody;
+            const modelId = body.model?.modelId ?? 'openai:gpt-image-2';
+            const prompt = body.params.textPrompt?.[0]?.text ?? '';
+            
+            const sep = modelId.indexOf(':');
+            const provider = sep !== -1 ? modelId.slice(0, sep) : 'openai';
+            const modelName = sep !== -1 ? modelId.slice(sep + 1) : modelId;
+            
+            const apiKey = env[`${provider.toUpperCase()}_API_KEY`] ?? '';
+            
+            try {
+              const b64Json = await generateImage(prompt, modelName, apiKey);
+              return send(res, 200, b64Json);
+            } catch (err) {
+              console.error('[ImageGen Local API Error]', err);
+              return send(res, 500, { error: err instanceof Error ? err.message : String(err) });
+            }
+          }
+
           // ---- Chat routes ----
           if (chatMatch) {
             const [, seg1, seg2] = chatMatch;
@@ -347,7 +407,8 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
             }
           }
         } catch (err) {
-          return send(res, 500, { error: String(err) });
+          console.error('[Local API Error]', err);
+          return send(res, 500, { error: err instanceof Error ? err.message : String(err) });
         }
 
         next();

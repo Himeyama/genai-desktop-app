@@ -12,7 +12,7 @@ import { LoadingButton } from '@/components/ui/LoadingButton';
 import { isApiError } from '@/lib/fetcher';
 import { focus } from '@/utils/focus';
 import { useUpdateTeamMember } from '../hooks/useUpdateTeamMember';
-import { TeamMemberUpdateSchema, teamMemberUpdateSchema } from '../schema';
+import { TeamMemberUpdateSchema, updateTeamMemberSchema } from '../schema';
 
 type Props = {
   member: TeamUser;
@@ -28,7 +28,7 @@ export const TeamMemberEditForm = (props: Props) => {
 
   const { register, handleSubmit } = useForm<TeamMemberUpdateSchema>({
     mode: 'onSubmit',
-    resolver: zodResolver(teamMemberUpdateSchema),
+    resolver: zodResolver(updateTeamMemberSchema),
     values: {
       email: member.username,
       isAdmin: member.isAdmin,

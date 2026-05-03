@@ -2,6 +2,11 @@ import { AmazonBaseImageGenerationMode, AmazonUIImageGenerationMode, ControlMode
 
 export const MAX_SAMPLE = 7;
 
+export const OPENAI_MODELS = {
+  GPT2_IMAGE: 'openai:gpt-image-2',
+  GPT_4O_IMAGE: 'openai:gpt-4o-image',
+};
+
 export const AMAZON_MODELS = {
   TITAN_V1: 'amazon.titan-image-generator-v1',
   TITAN_V2: 'amazon.titan-image-generator-v2:0',
@@ -204,6 +209,14 @@ export const STABILITY_AI_2024_MODEL_PRESETS = [
 ];
 
 export const MODEL_INFO: Record<string, ModelInfo<'base' | 'advanced'>> = {
+  [OPENAI_MODELS.GPT2_IMAGE]: {
+    supportedModes: ['TEXT_IMAGE'],
+    resolutionPresets: DEFAULT_MODEL_PRESETS,
+  },
+  [OPENAI_MODELS.GPT_4O_IMAGE]: {
+    supportedModes: ['TEXT_IMAGE'],
+    resolutionPresets: DEFAULT_MODEL_PRESETS,
+  },
   [STABILITY_AI_MODELS.STABLE_DIFFUSION_XL]: {
     supportedModes: [
       GENERATION_MODES.TEXT_IMAGE,
