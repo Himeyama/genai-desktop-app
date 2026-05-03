@@ -11,7 +11,7 @@
 - 画像生成
 - ダイアグラム生成
 
-これらのアプリの表示・非表示制御は、`packages/cdk/env-parameters/` 配下のパラメーターファイルの `hiddenUseCases` で行っています。  
+これらのアプリの表示・非表示制御は、`VITE_APP_HIDDEN_USE_CASES` 環境変数（ローカル開発では `packages/web/.env.local`）で行っています。  
 ご自身の環境に合わせて調整してください。
 
 ## 行政実務用の AI アプリ

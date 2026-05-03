@@ -17,11 +17,11 @@ export const useFileUploadable = () => {
       return [];
     }
 
-    const feature = MODELS.modelMetadata[modelId].flags;
+    const feature = MODELS.modelMetadata[modelId]?.flags;
     return [
-      ...(feature.doc ? FILE_LIMIT.accept.doc : []),
-      ...(feature.image ? FILE_LIMIT.accept.image : []),
-      ...(feature.video ? FILE_LIMIT.accept.video : []),
+      ...(feature?.doc ? FILE_LIMIT.accept.doc : []),
+      ...(feature?.image ? FILE_LIMIT.accept.image : []),
+      ...(feature?.video ? FILE_LIMIT.accept.video : []),
     ];
   }, [modelId]);
 

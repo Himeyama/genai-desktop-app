@@ -1,5 +1,7 @@
 # ASL 対象ファイル
 
+> **注意**: `packages/cdk/` は本リポジトリから分離されました。以下のファイルはインフラリポジトリに移管されています。
+
 以下のファイルは AWS Prototyping Program により作成されたため、[Amazon Software License](https://aws.amazon.com/jp/asl/) の対象となります。  
 ASL が適用されるファイルは AWS 以外ではご利用いただけませんので、ご注意ください。  
 ASL の詳細については、[Amazon Software License](https://aws.amazon.com/jp/asl/) を参照してください。

@@ -364,7 +364,8 @@ const useChatStore = create<{
     } = options;
 
     const { modelIds } = MODELS;
-    const modelId = localStorage.getItem('modelId_v20260218') ?? modelIds[0];
+    const storedModelId = localStorage.getItem('modelId_v20260218') ?? '';
+    const modelId = modelIds.includes(storedModelId) ? storedModelId : modelIds[0];
     const model = findModelByModelId(modelId);
 
     if (!model) {

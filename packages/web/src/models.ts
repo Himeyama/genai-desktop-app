@@ -1,4 +1,4 @@
-import { CRI_PREFIX_PATTERN, modelMetadata } from '@genai-web/common';
+import { CRI_PREFIX_PATTERN, modelMetadata } from '@/lib/modelMetadata';
 import type { Model } from 'genai-web';
 
 const bedrockModelIds: string[] = (JSON.parse(import.meta.env.VITE_APP_MODEL_IDS) as string[])

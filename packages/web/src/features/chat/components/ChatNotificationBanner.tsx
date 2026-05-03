@@ -10,25 +10,6 @@ export const ChatNotificationBanner = () => {
     <>
       <NotificationBanner
         bannerStyle='standard'
-        type='info1'
-        title='チャット入力のEnterキー仕様変更のお知らせ'
-        headingLevel='h2'
-        className='mb-4 max-w-[calc(1024/16*1rem)]'
-      >
-        <NotificationBannerBody>
-          <div className='flex flex-col gap-4'>
-            <p>
-              これまで <kbd>Enter</kbd>{' '}
-              キーで内容が送信されていましたが、誤送信防止のため仕様を変更しました。
-              <br />
-              現在は <kbd>Enter</kbd> キーを押下すると改行され、Windowsでは <kbd>Ctrl</kbd> +{' '}
-              <kbd>Enter</kbd>、Macでは <kbd>Command</kbd> + <kbd>Enter</kbd> で内容が送信されます。
-            </p>
-          </div>
-        </NotificationBannerBody>
-      </NotificationBanner>
-      <NotificationBanner
-        bannerStyle='standard'
         type='warning'
         title='生成AI利用時の注意事項'
         headingLevel='h2'

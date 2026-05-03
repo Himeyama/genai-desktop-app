@@ -1,5 +1,3 @@
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { useNavigate } from 'react-router';
 import { useSWRConfig } from 'swr';
 import { AccountMenu } from '@/components/ui/AccountMenu';
 import {
@@ -23,16 +21,11 @@ export const Header = (props: Props) => {
     (data?.tokens?.accessToken.payload['cognito:groups'] as unknown as string[] | undefined) ?? [];
 
   const { cache } = useSWRConfig();
-  const { signOut } = useAuthenticator();
-  const navigate = useNavigate();
 
   const onClickSignout = () => {
-    // SWRのキャッシュを全て削除する
     for (const key of cache.keys()) {
       cache.delete(key);
     }
-    navigate('/signed-out', { replace: true });
-    signOut();
   };
 
   return (

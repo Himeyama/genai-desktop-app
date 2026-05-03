@@ -1,8 +1,15 @@
-import { fetchAuthSession } from 'aws-amplify/auth';
-import useSWR from 'swr';
+const mockSession = {
+  tokens: {
+    idToken: {
+      payload: { sub: 'local-user' } as Record<string, unknown>,
+      toString: () => 'local-dev-token',
+    },
+    accessToken: {
+      payload: { 'cognito:groups': ['SystemAdminGroup'] } as Record<string, unknown>,
+    },
+  },
+};
 
 export const useAuth = () => {
-  return useSWR('user', () => {
-    return fetchAuthSession();
-  });
+  return { data: mockSession };
 };

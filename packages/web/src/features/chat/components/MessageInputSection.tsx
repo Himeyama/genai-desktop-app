@@ -39,7 +39,7 @@ export const MessageInputSection = (props: Props) => {
         onSend={() => {
           onSend();
         }}
-        placeholder={`メッセージを入力（Enterで改行、${submitModifierLabel}+Enterで送信します）`}
+        placeholder={`メッセージを入力（Enterで送信、${submitModifierLabel}+Enterで改行）`}
         onReset={onReset}
         fileUpload={fileUpload}
         fileLimit={FILE_LIMIT}

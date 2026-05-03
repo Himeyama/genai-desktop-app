@@ -1,5 +1,3 @@
-import { fetchAuthSession } from 'aws-amplify/auth';
-
 export class ApiError extends Error {
   readonly status: number;
   readonly data: unknown;
@@ -51,13 +49,9 @@ const parseResponseBody = async <T>(res: Response): Promise<T> => {
 };
 
 const getAuthHeaders = async (hasBody: boolean): Promise<Record<string, string>> => {
-  const token = (await fetchAuthSession()).tokens?.idToken?.toString();
   const headers: Record<string, string> = {};
   if (hasBody) {
     headers['Content-Type'] = 'application/json';
-  }
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
   }
   return headers;
 };

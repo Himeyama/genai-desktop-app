@@ -288,7 +288,7 @@ export const GenerateImageAssistant = (props: Props) => {
             メッセージ入力
           </h3>
           <GenerateImageInput
-            placeholder={`生成したい画像の概要を入力（Enterで改行、${submitModifierLabel}+Enterで送信します）`}
+            placeholder={`生成したい画像の概要を入力（Enterで送信、${submitModifierLabel}+Enterで改行）`}
             textareaId='generate-image-assistant-input'
             aria-labelledby='generate-image-assistant-input-heading'
             content={props.content}

@@ -1,6 +1,3 @@
-import { InvokeWithResponseStreamCommand, LambdaClient } from '@aws-sdk/client-lambda';
-import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers';
-import { fetchAuthSession } from 'aws-amplify/auth';
 import {
   CreateChatResponse,
   CreateMessagesRequest,
@@ -44,42 +41,24 @@ export const predict = async (req: PredictRequest): Promise<string> => {
 };
 
 export async function* predictStream(req: PredictRequest) {
-  const token = (await fetchAuthSession()).tokens?.idToken?.toString();
-  if (!token) {
-    throw new Error('認証されていません。');
-  }
-
-  const region = import.meta.env.VITE_APP_REGION;
-  const userPoolId = import.meta.env.VITE_APP_USER_POOL_ID;
-  const idPoolId = import.meta.env.VITE_APP_IDENTITY_POOL_ID;
-  const providerName = `cognito-idp.${region}.amazonaws.com/${userPoolId}`;
-  const lambda = new LambdaClient({
-    region,
-    credentials: fromCognitoIdentityPool({
-      clientConfig: { region },
-      identityPoolId: idPoolId,
-      logins: {
-        [providerName]: token,
-      },
-    }),
+  const endpoint = import.meta.env.VITE_APP_API_ENDPOINT;
+  const res = await fetch(`${endpoint}/predict/stream`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(req),
   });
 
-  const res = await lambda.send(
-    new InvokeWithResponseStreamCommand({
-      FunctionName: import.meta.env.VITE_APP_PREDICT_STREAM_FUNCTION_ARN,
-      Payload: JSON.stringify(req),
-    }),
-  );
-  const events = res.EventStream!;
+  if (!res.ok || !res.body) {
+    throw new Error('ストリーミング呼び出しに失敗しました。');
+  }
 
-  for await (const event of events) {
-    if (event.PayloadChunk) {
-      yield new TextDecoder('utf-8').decode(event.PayloadChunk.Payload);
-    }
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder('utf-8');
 
-    if (event.InvokeComplete) {
-      break;
-    }
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    yield decoder.decode(value, { stream: true });
   }
 }
 
