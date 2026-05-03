@@ -20,7 +20,7 @@ export const Layout = () => {
         <div id='main-menu-container' className='hidden [grid-area:side-menu] lg:block'>
           <Drawer items={GEN_U_MENU_ITEMS} />
         </div>
-        <main id='mainContents' className='[grid-area:main]'>
+        <main id='mainContents' className='h-full [grid-area:main]'>
           <Outlet />
         </main>
       </div>

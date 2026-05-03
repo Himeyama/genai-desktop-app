@@ -24,12 +24,11 @@ export const TranslatedResult = (props: Props) => {
 
   const copyTextRef = useRef<HTMLDivElement>(null);
 
-  const isInitial = !loading && translatedSentence === '';
   const showResult = !loading && translatedSentence !== '';
   const stopReason = getStopReason();
 
   return (
-    <div className='flex w-full flex-col gap-1 lg:w-1/2'>
+    <div className='flex min-h-0 w-full flex-1 flex-col gap-1 lg:w-1/2'>
       <h3 className='sr-only'>翻訳結果</h3>
 
       <div className='flex flex-none items-end lg:h-16'>
@@ -45,27 +44,29 @@ export const TranslatedResult = (props: Props) => {
         />
       </div>
 
-      <div className='mb-3 flex flex-1 flex-col rounded-lg border border-gray-400 p-4'>
-        {isInitial && <div className='leading-175 text-gray-600'>翻訳結果がここに表示されます</div>}
+      <div className='flex min-h-0 flex-1 flex-col rounded-lg border border-gray-400 overflow-hidden'>
+        <div className='flex-1 overflow-y-auto p-4 flex flex-col'>
+          <div className='flex-none' ref={copyTextRef}>
+            <Markdown>{typingTextOutput}</Markdown>
+          </div>
 
-        <div ref={copyTextRef}>
-          <Markdown>{typingTextOutput}</Markdown>
+          {loading && <ProgressIndicator className='my-0.5 flex-none' />}
+
+          <div className='flex-1 min-h-0' />
+
+          {stopReason === 'max_tokens' && (
+            <div className='mt-4 flex-none'>
+              <Button variant='outline' size='md' onClick={() => continueGeneration()}>
+                続きを出力
+              </Button>
+            </div>
+          )}
+          {showResult && (
+            <div className='mt-4 flex w-full flex-none justify-end gap-1'>
+              <ButtonCopy text={translatedSentence} targetRef={copyTextRef} />
+            </div>
+          )}
         </div>
-
-        {loading && <ProgressIndicator className='my-0.5' />}
-
-        {stopReason === 'max_tokens' && (
-          <div className='mt-4'>
-            <Button variant='outline' size='md' onClick={() => continueGeneration()}>
-              続きを出力
-            </Button>
-          </div>
-        )}
-        {showResult && (
-          <div className='mt-auto -mb-2 flex w-full justify-end gap-1'>
-            <ButtonCopy text={translatedSentence} targetRef={copyTextRef} />
-          </div>
-        )}
       </div>
     </div>
   );

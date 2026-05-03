@@ -1,8 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { PageTitle } from '@/components/PageTitle';
-import { Divider } from '@/components/ui/dads/Divider';
-import { Switch } from '@/components/ui/Switch';
 import { APP_TITLE } from '@/constants';
 import { TranslateForm } from '@/features/translate/components/TranslateForm';
 import { TranslateHeader } from '@/features/translate/components/TranslateHeader';
@@ -79,17 +77,17 @@ export const TranslatePage = () => {
   });
 
   return (
-    <LayoutBody>
+    <LayoutBody className='flex h-full flex-col'>
       <PageTitle title={`翻訳${APP_TITLE ? ` | ${APP_TITLE}` : ''}`} />
-      <div className='mx-6 max-w-[calc(1120/16*1rem)] py-6 lg:mx-10 lg:pb-8'>
-        <TranslateHeader />
-        <Divider className='my-6' />
-        <Switch label='即時翻訳' checked={auto} onSwitch={setAuto} />
-        <TranslateForm
-          typingTextOutput={typingTextOutput}
-          translatedSentence={translatedSentence}
-          getTranslation={getTranslation}
-        />
+      <div className='mx-6 flex min-h-0 max-w-[calc(1120/16*1rem)] flex-1 flex-col py-6 lg:mx-10 lg:pb-8'>
+        <TranslateHeader auto={auto} setAuto={setAuto} />
+        <div className='mt-4 flex min-h-0 flex-1 flex-col'>
+          <TranslateForm
+            typingTextOutput={typingTextOutput}
+            translatedSentence={translatedSentence}
+            getTranslation={getTranslation}
+          />
+        </div>
       </div>
       <div aria-live='assertive' aria-atomic='true' className='sr-only'>
         {liveStatusMessage}

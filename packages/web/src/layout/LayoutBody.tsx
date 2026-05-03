@@ -5,12 +5,13 @@ import { useScreen } from '@/hooks/useScreen';
 
 type Props = {
   children: React.ReactNode;
+  className?: string;
 };
 
 // メインコンテンツ全体がスクロール可能なレイアウト用コンポーネント
 // チャットページ、画像生成ページ以外で使用
 export const LayoutBody = (props: Props) => {
-  const { children } = props;
+  const { children, className } = props;
   const { pathname } = useLocation();
   const { screen, scrollTopAnchorRef, scrollBottomAnchorRef } = useScreen();
 
@@ -27,7 +28,7 @@ export const LayoutBody = (props: Props) => {
   return (
     <div className='h-full overflow-x-clip overflow-y-auto [scrollbar-gutter:stable]' ref={screen}>
       <div ref={scrollTopAnchorRef} />
-      <div>{children}</div>
+      <div className={className}>{children}</div>
       <div ref={scrollBottomAnchorRef} />
     </div>
   );
