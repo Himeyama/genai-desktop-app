@@ -51,32 +51,32 @@ Title
 タイトルはチャートの簡潔な説明で、常にチャートの上部に表示されます。
 例: 
 xychart-beta
-    title "これは簡単な例です"
-    ...
+ title "これは簡単な例です"
+ ...
 
 x-axis
 x軸は主にカテゴリー値として使用されますが、必要に応じて数値範囲としても機能します。
 例: 
-x-axis タイトル min --> max    // 指定された範囲で数値として機能
-x-axis "スペース付きタイトル" [cat1, "cat2 with space", cat3]    // カテゴリー型の場合、カテゴリーはテキスト型
+x-axis タイトル min --> max // 指定された範囲で数値として機能
+x-axis "スペース付きタイトル" [cat1, "cat2 with space", cat3] // カテゴリー型の場合、カテゴリーはテキスト型
 
 y-axis
 y軸は数値範囲を表すために使用され、カテゴリー値は使用できません。
-y-axis タイトル min --> max    // 最小値から最大値の範囲を指定
-y-axis タイトル    // タイトルのみを追加し、範囲はデータから自動生成されます
+y-axis タイトル min --> max // 最小値から最大値の範囲を指定
+y-axis タイトル // タイトルのみを追加し、範囲はデータから自動生成されます
 
 Line chart
 折れ線グラフは線を使って数値を視覚的に表現する機能を提供します。
-line [2.3, 45, .98, -3.4]    // あらゆる有効な数値を使用できます
+line [2.3, 45, .98, -3.4] // あらゆる有効な数値を使用できます
 
 Bar chart
 棒グラフは棒を使って数値を視覚的に表現する機能を提供します。
-bar [2.3, 45, .98, -3.4]    // あらゆる有効な数値を使用できます
+bar [2.3, 45, .98, -3.4] // あらゆる有効な数値を使用できます
 
 Simplest example
 必要なのはチャート名（xychart-beta）と1つのデータセットの2つだけです。以下のような簡単な設定でグラフを描画することができます: 
 xychart-beta
-    line [+1.3, .6, 2.4, -.34]
+ line [+1.3, .6, 2.4, -.34]
 
 Chart Configurations
 Parameter	Description	Default value
@@ -125,27 +125,27 @@ plotColorPalette	String of colors separated by comma e.g. "#f3456, #43445"
 Example on config and theme
 ---
 config:
-    xyChart:
-        width: 900
-        height: 600
-    themeVariables:
-        xyChart:
-            titleColor: "#ff0000"
+ xyChart:
+ width: 900
+ height: 600
+ themeVariables:
+ xyChart:
+ titleColor: "#ff0000"
 ---
 xychart-beta
-    title "Sales Revenue"
-    x-axis [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
-    y-axis "Revenue (in $)" 4000 --> 11000
-    bar [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
-    line [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
+ title "Sales Revenue"
+ x-axis [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
+ y-axis "Revenue (in $)" 4000 --> 11000
+ bar [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
+ line [5000, 6000, 7500, 8200, 9500, 10500, 11000, 10200, 9200, 8500, 7000, 6000]
 
 実装例
 xychart-beta
-    title "売上推移"
-    x-axis [1月, 2月, 3月, 4月, 5月, 6月, 7月, 8月, 9月, 10月, 11月, 12月]
-    y-axis "売上(万円)" 400 --> 1100
-    bar [500, 600, 750, 820, 950, 1050, 1100, 1020, 920, 850, 700, 600]
-    line [500, 600, 750, 820, 950, 1050, 1100, 1020, 920, 850, 700, 600]
+ title "売上推移"
+ x-axis [1月, 2月, 3月, 4月, 5月, 6月, 7月, 8月, 9月, 10月, 11月, 12月]
+ y-axis "売上(万円)" 400 --> 1100
+ bar [500, 600, 750, 820, 950, 1050, 1100, 1020, 920, 850, 700, 600]
+ line [500, 600, 750, 820, 950, 1050, 1100, 1020, 920, 850, 700, 600]
 </Information>
 
 出力フォーマット:

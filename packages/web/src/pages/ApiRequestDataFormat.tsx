@@ -10,7 +10,7 @@ export const ApiRequestDataFormatPage = () => {
     <LayoutBody>
       <PageTitle title={`${PAGE_TITLE}${APP_TITLE ? ` | ${APP_TITLE}` : ''}`} />
       <div className='mx-6 max-w-[calc(1024/16*1rem)] py-6 lg:mx-10 lg:pb-12'>
-        <h1 className='mb-8 flex justify-start text-std-24B-150 lg:text-std-28B-150'>
+        <h1 className='mb-8 flex justify-start text-2xl font-bold leading-snug lg:text-3xl font-bold leading-snug'>
           {PAGE_TITLE}
         </h1>
         <div className='prose'>
@@ -18,9 +18,9 @@ export const ApiRequestDataFormatPage = () => {
           <p>構造は以下のように記述します。</p>
           <pre>
             <code>{`{
-  "Request-Key": <Request-Definition>,
-  "Request-Key": <Request-Definition>,
-  ...
+ "Request-Key": <Request-Definition>,
+ "Request-Key": <Request-Definition>,
+ ...
 }`}</code>
           </pre>
           <ul>
@@ -64,23 +64,25 @@ export const ApiRequestDataFormatPage = () => {
           <h3 id='text-field'>テキストフィールド</h3>
           <p>テキストフィールドは、文字列を入力するためのコンポーネントです。</p>
           <dl>
-            <dt className='text-std-18B-160 mt-6'>記述例</dt>
+            <dt className='text-lg font-bold leading-relaxed mt-6'>記述例</dt>
             <dd>
               <pre>
                 <code>{`"Request-Key": {
-  "type": "text",
-  "title": "ラベルに表示されるタイトル",
-  "desc": "フィールドの説明文",
-  "required": true,
-  "min_length": 10,
-  "max_length": 1000,
-  "default_value": "デフォルト値"
+ "type": "text",
+ "title": "ラベルに表示されるタイトル",
+ "desc": "フィールドの説明文",
+ "required": true,
+ "min_length": 10,
+ "max_length": 1000,
+ "default_value": "デフォルト値"
 }`}</code>
               </pre>
             </dd>
           </dl>
           <figure className='my-8'>
-            <figcaption className='text-std-18B-160 mt-4'>パラメータ一覧</figcaption>
+            <figcaption className='text-lg font-bold leading-relaxed mt-4'>
+              パラメータ一覧
+            </figcaption>
             <table>
               <thead>
                 <tr>
@@ -146,23 +148,25 @@ export const ApiRequestDataFormatPage = () => {
           <h3 id='number-field'>数値フィールド</h3>
           <p>数値フィールドは、数値を入力するためのコンポーネントです。</p>
           <dl>
-            <dt className='text-std-18B-160 mt-6'>記述例</dt>
+            <dt className='text-lg font-bold leading-relaxed mt-6'>記述例</dt>
             <dd>
               <pre>
                 <code>{`"Request-Key": {
-  "type": "number",
-  "title": "ラベルに表示されるタイトル",
-  "desc": "フィールドの説明文",
-  "required": true,
-  "min": 10,
-  "max": 1000,
-  "default_value": 100
+ "type": "number",
+ "title": "ラベルに表示されるタイトル",
+ "desc": "フィールドの説明文",
+ "required": true,
+ "min": 10,
+ "max": 1000,
+ "default_value": 100
 }`}</code>
               </pre>
             </dd>
           </dl>
           <figure className='my-8'>
-            <figcaption className='text-std-18B-160 mt-4'>パラメータ一覧</figcaption>
+            <figcaption className='text-lg font-bold leading-relaxed mt-4'>
+              パラメータ一覧
+            </figcaption>
             <table>
               <thead>
                 <tr>
@@ -228,24 +232,26 @@ export const ApiRequestDataFormatPage = () => {
           <h3 id='file'>ファイル</h3>
           <p>ファイルは、ファイルをアップロードするためのコンポーネントです。</p>
           <dl>
-            <dt className='text-std-18B-160 mt-6'>記述例</dt>
+            <dt className='text-lg font-bold leading-relaxed mt-6'>記述例</dt>
             <dd>
               <pre>
                 <code>{`"Request-Key": {
-  "type": "file",
-  "title": "ラベルに表示されるタイトル",
-  "desc": "フィールドの説明文",
-  "required": false,
-  "accept": "image/png,image/jpeg",
-  "multiple": true,
-  "max_size": "4.5MB",
-  "max_file_count": 5
+ "type": "file",
+ "title": "ラベルに表示されるタイトル",
+ "desc": "フィールドの説明文",
+ "required": false,
+ "accept": "image/png,image/jpeg",
+ "multiple": true,
+ "max_size": "4.5MB",
+ "max_file_count": 5
 }`}</code>
               </pre>
             </dd>
           </dl>
           <figure className='my-8'>
-            <figcaption className='text-std-18B-160 mt-4'>パラメータ一覧</figcaption>
+            <figcaption className='text-lg font-bold leading-relaxed mt-4'>
+              パラメータ一覧
+            </figcaption>
             <table>
               <thead>
                 <tr>
@@ -350,23 +356,25 @@ export const ApiRequestDataFormatPage = () => {
           <h3 id='textarea'>テキストエリア</h3>
           <p>テキストエリアは、複数行の文字列を入力するためのコンポーネントです。</p>
           <dl>
-            <dt className='text-std-18B-160 mt-6'>記述例</dt>
+            <dt className='text-lg font-bold leading-relaxed mt-6'>記述例</dt>
             <dd>
               <pre>
                 <code>{`"Request-Key": {
-  "type": "textarea",
-  "title": "ラベルに表示されるタイトル",
-  "desc": "フィールドの説明文",
-  "required": true,
-  "min_length": 10,
-  "max_length": 1000,
-  "default_value": "デフォルト値"
+ "type": "textarea",
+ "title": "ラベルに表示されるタイトル",
+ "desc": "フィールドの説明文",
+ "required": true,
+ "min_length": 10,
+ "max_length": 1000,
+ "default_value": "デフォルト値"
 }`}</code>
               </pre>
             </dd>
           </dl>
           <figure className='my-8'>
-            <figcaption className='text-std-18B-160 mt-4'>パラメータ一覧</figcaption>
+            <figcaption className='text-lg font-bold leading-relaxed mt-4'>
+              パラメータ一覧
+            </figcaption>
             <table>
               <thead>
                 <tr>
@@ -432,25 +440,27 @@ export const ApiRequestDataFormatPage = () => {
           <h3 id='select-box'>セレクトボックス</h3>
           <p>セレクトボックスは、複数の選択肢から1つを選択するためのコンポーネントです。</p>
           <dl>
-            <dt className='text-std-18B-160 mt-6'>記述例</dt>
+            <dt className='text-lg font-bold leading-relaxed mt-6'>記述例</dt>
             <dd>
               <pre>
                 <code>{`"Request-Key": {
-  "type": "select",
-  "title": "ラベルに表示されるタイトル",
-  "desc": "フィールドの説明文",
-  "required": false,
-  "items": [
-    { "title": "タイトル1", "value": "value1" },
-    { "title": "タイトル2", "value": "value2" },
-  ],
-  "default_value": "value2"
+ "type": "select",
+ "title": "ラベルに表示されるタイトル",
+ "desc": "フィールドの説明文",
+ "required": false,
+ "items": [
+ { "title": "タイトル1", "value": "value1" },
+ { "title": "タイトル2", "value": "value2" },
+ ],
+ "default_value": "value2"
 }`}</code>
               </pre>
             </dd>
           </dl>
           <figure className='my-8'>
-            <figcaption className='text-std-18B-160 mt-4'>パラメータ一覧</figcaption>
+            <figcaption className='text-lg font-bold leading-relaxed mt-4'>
+              パラメータ一覧
+            </figcaption>
             <table>
               <thead>
                 <tr>
@@ -510,25 +520,27 @@ export const ApiRequestDataFormatPage = () => {
           <h3 id='checkbox'>チェックボックス</h3>
           <p>チェックボックスは、複数の選択肢から複数を選択するためのコンポーネントです。</p>
           <dl>
-            <dt className='text-std-18B-160 mt-6'>記述例</dt>
+            <dt className='text-lg font-bold leading-relaxed mt-6'>記述例</dt>
             <dd>
               <pre>
                 <code>{`"Request-key": {
-  "type": "checkbox",
-  "title": "ラベルに表示されるタイトル",
-  "desc": "フィールドの説明文",
-  "required": false,
-  "items": [
-    { "title": "タイトル1", "value": "value1" },
-    { "title": "タイトル2", "value": "value2" },
-  ],
-  "default_value": "value2"
+ "type": "checkbox",
+ "title": "ラベルに表示されるタイトル",
+ "desc": "フィールドの説明文",
+ "required": false,
+ "items": [
+ { "title": "タイトル1", "value": "value1" },
+ { "title": "タイトル2", "value": "value2" },
+ ],
+ "default_value": "value2"
 }`}</code>
               </pre>
             </dd>
           </dl>
           <figure className='my-8'>
-            <figcaption className='text-std-18B-160 mt-4'>パラメータ一覧</figcaption>
+            <figcaption className='text-lg font-bold leading-relaxed mt-4'>
+              パラメータ一覧
+            </figcaption>
             <table>
               <thead>
                 <tr>
@@ -597,25 +609,27 @@ export const ApiRequestDataFormatPage = () => {
           <h3 id='radio-button'>ラジオボタン</h3>
           <p>ラジオボタンは、複数の選択肢から1つを選択するためのコンポーネントです。</p>
           <dl>
-            <dt className='text-std-18B-160 mt-6'>記述例</dt>
+            <dt className='text-lg font-bold leading-relaxed mt-6'>記述例</dt>
             <dd>
               <pre>
                 <code>{`"Request-Key": {
-  "type": "radio",
-  "title": "ラベルに表示されるタイトル",
-  "desc": "フィールドの説明文",
-  "required": false,
-  "items": [
-    { "title": "タイトル1", "value": "value1" },
-    { "title": "タイトル2", "value": "value2" },
-  ],
-  "default_value": "value2"
+ "type": "radio",
+ "title": "ラベルに表示されるタイトル",
+ "desc": "フィールドの説明文",
+ "required": false,
+ "items": [
+ { "title": "タイトル1", "value": "value1" },
+ { "title": "タイトル2", "value": "value2" },
+ ],
+ "default_value": "value2"
 }`}</code>
               </pre>
             </dd>
           </dl>
           <figure className='my-8'>
-            <figcaption className='text-std-18B-160 mt-4'>パラメータ一覧</figcaption>
+            <figcaption className='text-lg font-bold leading-relaxed mt-4'>
+              パラメータ一覧
+            </figcaption>
             <table>
               <thead>
                 <tr>
@@ -679,18 +693,20 @@ export const ApiRequestDataFormatPage = () => {
             内部的に送っておく必要のあるパラメータがある際に利用してください。
           </p>
           <dl>
-            <dt className='text-std-18B-160 mt-6'>記述例</dt>
+            <dt className='text-lg font-bold leading-relaxed mt-6'>記述例</dt>
             <dd>
               <pre>
                 <code>{`"Request-Key": {
-  "type": "hidden",
-  "default_value": "value"
+ "type": "hidden",
+ "default_value": "value"
 }`}</code>
               </pre>
             </dd>
           </dl>
           <figure className='my-8'>
-            <figcaption className='text-std-18B-160 mt-4'>パラメータ一覧</figcaption>
+            <figcaption className='text-lg font-bold leading-relaxed mt-4'>
+              パラメータ一覧
+            </figcaption>
             <table>
               <thead>
                 <tr>
@@ -716,57 +732,57 @@ export const ApiRequestDataFormatPage = () => {
           <h2>サンプル</h2>
           <pre>
             <code>{`{
-  "question": {
-    "type": "text",
-    "title": "入力",
-    "desc": "質問したい内容を入力してください。",
-    "required": true,
-    "default_value": "デフォルト値"
-  },
-  "content": {
-    "type": "textarea",
-    "title": "コンテンツ",
-    "desc": "※ マークダウンでコンテンツを入力してください。"
-  },
-  "count": {
-    "type": "number",
-    "title": "数値入力",
-    "required": true,
-    "min": 10,
-    "max": 1000,
-    "default_value": 20
-  },
-  "image": {
-    "type": "file",
-    "title": "添付ファイル",
-    "accept": "image/*"
-  },
-  "prefecture": {
-    "type": "select",
-    "title": "都道府県",
-    "items": [
-      {"title": "東京都", "value": "13"},
-      {"title": "神奈川県", "value": "14"},
-      {"title": "京都府", "value": "26"}
-    ]
-  },
-  "fruits": {
-    "type": "checkbox",
-    "title": "フルーツ",
-    "items": [
-      {"title": "りんご", "value": "apple"},
-      {"title": "ばなな", "value": "banana"},
-      {"title": "ぶどう", "value": "grape"}
-    ]
-  },
-  "gender": {
-    "type": "radio",
-    "title": "性別",
-    "items": [
-      {"title": "男性", "value": "1"},
-      {"title": "女性", "value": "2"}
-    ]
-  }
+ "question": {
+ "type": "text",
+ "title": "入力",
+ "desc": "質問したい内容を入力してください。",
+ "required": true,
+ "default_value": "デフォルト値"
+ },
+ "content": {
+ "type": "textarea",
+ "title": "コンテンツ",
+ "desc": "※ マークダウンでコンテンツを入力してください。"
+ },
+ "count": {
+ "type": "number",
+ "title": "数値入力",
+ "required": true,
+ "min": 10,
+ "max": 1000,
+ "default_value": 20
+ },
+ "image": {
+ "type": "file",
+ "title": "添付ファイル",
+ "accept": "image/*"
+ },
+ "prefecture": {
+ "type": "select",
+ "title": "都道府県",
+ "items": [
+ {"title": "東京都", "value": "13"},
+ {"title": "神奈川県", "value": "14"},
+ {"title": "京都府", "value": "26"}
+ ]
+ },
+ "fruits": {
+ "type": "checkbox",
+ "title": "フルーツ",
+ "items": [
+ {"title": "りんご", "value": "apple"},
+ {"title": "ばなな", "value": "banana"},
+ {"title": "ぶどう", "value": "grape"}
+ ]
+ },
+ "gender": {
+ "type": "radio",
+ "title": "性別",
+ "items": [
+ {"title": "男性", "value": "1"},
+ {"title": "女性", "value": "2"}
+ ]
+ }
 }`}</code>
           </pre>
 
@@ -776,29 +792,29 @@ export const ApiRequestDataFormatPage = () => {
           </p>
           <pre>
             <code>{`{
-  "inputs": {
-    "question": "生成AIとは？",
-    "content": "コンテンツコンテンツ\\nコンテンツ",
-    "count": 35,
-    "files": [
-      {
-        "key": "image",
-        "files": [
-          {
-            "filename": "ファイル名",
-            "content": "base64データ",
-          },
-          {
-            "filename": "ファイル名",
-            "content": "base64データ",
-          }
-        ]
-      }
-    ],
-    "prefecture": 13,
-    "fruits": "apple,banana",
-    "gender": 1
-  }
+ "inputs": {
+ "question": "生成AIとは？",
+ "content": "コンテンツコンテンツ\\nコンテンツ",
+ "count": 35,
+ "files": [
+ {
+ "key": "image",
+ "files": [
+ {
+ "filename": "ファイル名",
+ "content": "base64データ",
+ },
+ {
+ "filename": "ファイル名",
+ "content": "base64データ",
+ }
+ ]
+ }
+ ],
+ "prefecture": 13,
+ "fruits": "apple,banana",
+ "gender": 1
+ }
 }`}</code>
           </pre>
         </div>

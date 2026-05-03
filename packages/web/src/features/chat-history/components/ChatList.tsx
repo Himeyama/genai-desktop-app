@@ -43,7 +43,7 @@ export const ChatList = (props: Props) => {
   return (
     <>
       {!loading && searchedChats.length === 0 && (
-        <p className='text-std-16N-170'>
+        <p className='text-base leading-relaxed'>
           {props.searchWords.length !== 0 ? (
             <>
               該当する履歴が見つかりません。
@@ -59,7 +59,7 @@ export const ChatList = (props: Props) => {
         {searchedChats.map((chat) => {
           const _chatId = decomposeId(chat.chatId);
           return (
-            <li key={_chatId} className='border-b border-b-solid-gray-420'>
+            <li key={_chatId} className='border-b border-b-gray-400'>
               <ChatListItem
                 chat={chat}
                 onUpdateTitle={updateChatTitle}
@@ -72,7 +72,7 @@ export const ChatList = (props: Props) => {
           <li className='my-1 flex w-full justify-center'>
             <button
               type='button'
-              className='rounded-4 p-4 text-dns-16B-130 underline underline-offset-[calc(3/16*1rem)] hover:decoration-[calc(3/16*1rem)] focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-black focus-visible:outline-solid focus-visible:ring-inset'
+              className='rounded p-4 text-base font-bold leading-tight focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'
               onClick={() => {
                 loadMore();
               }}

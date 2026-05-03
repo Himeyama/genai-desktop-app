@@ -72,9 +72,7 @@ export const CustomSelect = (props: Props) => {
         className={`flex ${isVertical ? 'flex-col gap-y-1.5' : 'flex-row items-center gap-x-0.5'}`}
       >
         {label && (
-          <Label
-            className={`flex w-fit items-center gap-2 text-solid-gray-800 ${labelClassName ?? ''}`}
-          >
+          <Label className={`flex w-fit items-center gap-2 text-gray-800 ${labelClassName ?? ''}`}>
             {label}
           </Label>
         )}
@@ -84,7 +82,7 @@ export const CustomSelect = (props: Props) => {
         <Listbox value={value} onChange={onChange}>
           <div className='relative'>
             <ListboxButton
-              className={`group/button relative rounded-4 border border-solid-gray-600 bg-white pr-10 pl-3 text-left text-solid-gray-800 hover:border-black focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid data-[select-size=lg]:h-14 data-[select-size=md]:h-12 data-[select-size=sm]:h-10 ${isFullWidth ? 'w-full' : 'w-fit'}`}
+              className={`group/button relative rounded border border-gray-600 bg-white pr-10 pl-3 text-left text-gray-800 hover:border-black focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 data-[select-size=lg]:h-14 data-[select-size=md]:h-12 data-[select-size=sm]:h-10 ${isFullWidth ? 'w-full' : 'w-fit'}`}
               data-select-size={selectSize}
             >
               <span className='block truncate'>{selectedLabel}</span>
@@ -97,7 +95,7 @@ export const CustomSelect = (props: Props) => {
               </span>
             </ListboxButton>
             <ListboxOptions
-              className={`absolute z-10 mt-0.5 max-h-60 overflow-auto rounded-8 border border-solid-gray-420 bg-white py-1 text-dns-16N-130 shadow-1 focus:outline-hidden has-[>:nth-child(7)]:rounded-r-none ${isFullWidth ? 'w-full' : 'w-fit'}`}
+              className={`absolute z-10 mt-0.5 max-h-60 overflow-auto rounded-lg border border-gray-400 bg-white py-1 text-base leading-tight shadow-md focus:outline-hidden has-[>:nth-child(7)]:rounded-r-none ${isFullWidth ? 'w-full' : 'w-fit'}`}
             >
               {options.map((option, idx) => (
                 // NOTE: The `focus` state of ListboxOptions in Headless UI v2 is same as `active` state.
@@ -105,17 +103,17 @@ export const CustomSelect = (props: Props) => {
                 <ListboxOption
                   key={`${option.value}-${idx}`}
                   className={({ focus }) =>
-                    `relative h-9 py-2 pr-4 pl-10 text-solid-gray-800 select-none hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] data-selected:bg-blue-50! data-selected:text-blue-1000! ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''} `
+                    `relative h-9 py-2 pr-4 pl-10 text-gray-800 select-none hover:bg-gray-50 data-selected:bg-blue-50! data-selected:text-blue-700! ${focus ? 'bg-gray-100' : ''} `
                   }
                   value={option.value}
                 >
                   {({ selected }) => (
                     <>
-                      <span className={`block truncate ${selected ? 'font-700' : 'font-400'}`}>
+                      <span className={`block truncate ${selected ? 'font-bold' : 'font-normal'}`}>
                         {option.label}
                       </span>
                       {selected ? (
-                        <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-blue-1000'>
+                        <span className='absolute inset-y-0 left-0 flex items-center pl-3 text-blue-700'>
                           <PiCheck aria-hidden={true} className='size-5' />
                         </span>
                       ) : null}

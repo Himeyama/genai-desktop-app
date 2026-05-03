@@ -102,9 +102,9 @@ export const MermaidRenderer = (props: Props) => {
 
   if (hasError) {
     return (
-      <div className='overflow-hidden rounded-8 border border-error-2 bg-white p-4'>
+      <div className='overflow-hidden rounded-lg border border-error-2 bg-white p-4'>
         <p
-          className='whitespace-pre-wrap wrap-break-word text-error-2'
+          className='whitespace-pre-wrap wrap-break-word text-red-700'
           style={{ overflowWrap: 'anywhere', wordBreak: 'break-word' }}
         >
           {svgContent}
@@ -114,7 +114,7 @@ export const MermaidRenderer = (props: Props) => {
   }
 
   return (
-    <div className='flex items-center justify-center rounded-8 border border-solid-gray-420 bg-white p-8'>
+    <div className='flex items-center justify-center rounded-lg border border-gray-400 bg-white p-8'>
       <div
         className='flex h-full w-full items-center justify-center'
         // biome-ignore lint/security/noDangerouslySetInnerHtml: AI generated SVG content

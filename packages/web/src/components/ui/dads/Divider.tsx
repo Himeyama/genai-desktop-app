@@ -4,8 +4,8 @@ import type { ComponentProps } from 'react';
 export type DividerColor = 'gray-420' | 'gray-536' | 'black';
 
 export const DividerColorStyle: { [key in DividerColor]: string } = {
-  'gray-420': 'border-solid-gray-420',
-  'gray-536': 'border-solid-gray-536',
+  'gray-420': 'border-gray-400',
+  'gray-536': 'border-gray-600',
   black: 'border-black',
 };
 

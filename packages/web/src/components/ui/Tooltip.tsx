@@ -26,14 +26,14 @@ import * as React from 'react';
  *
  * ```tsx
  * <Tooltip>
- *   <TooltipTrigger asChild>
- *     <button
- *       type="button"
- *       onClick={...}>
- *       <CloseIcon aria-label="閉じる" role="img" />
- *     </button>
- *   </TooltipTrigger>
- *   <TooltipContent aria-hidden={true}>閉じる</TooltipContent>
+ * <TooltipTrigger asChild>
+ * <button
+ * type="button"
+ * onClick={...}>
+ * <CloseIcon aria-label="閉じる" role="img" />
+ * </button>
+ * </TooltipTrigger>
+ * <TooltipContent aria-hidden={true}>閉じる</TooltipContent>
  * </Tooltip>
  * ```
  */
@@ -177,7 +177,7 @@ export const TooltipContent = ({
         ...context.floatingStyles,
         ...style,
       }}
-      className='z-10 w-max items-center justify-center rounded-4 border border-transparent bg-solid-gray-800 px-2 py-1.5 text-oln-14N-100 text-white'
+      className='z-10 w-max items-center justify-center rounded border border-transparent bg-gray-800 px-2 py-1.5 text-sm leading-none text-white'
       {...context.getFloatingProps(props)}
     >
       {props.children}

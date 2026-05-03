@@ -89,7 +89,7 @@ const CodeRenderer = ({ className, children, node }: ComponentProps<'code'> & Ex
   }
 
   return (
-    <span className='inline rounded-md border border-solid-gray-800/30 bg-solid-gray-800/10 px-1 py-0.5'>
+    <span className='inline rounded-md border border-gray-800/30 bg-gray-800/10 px-1 py-0.5'>
       {codeText}
     </span>
   );

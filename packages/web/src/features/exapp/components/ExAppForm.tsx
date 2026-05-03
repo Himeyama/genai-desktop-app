@@ -91,7 +91,7 @@ ${parsedHistory.outputs}
 
 ---
 
-                `;
+ `;
 
       setConversationHistory(historyInputs);
     } catch (e) {
@@ -176,7 +176,7 @@ ${parsedHistory.outputs}
           <div className='flex flex-col gap-4'>
             <Disclosure>
               <DisclosureSummary>会話履歴</DisclosureSummary>
-              <pre className='mt-2 border border-transparent bg-solid-gray-50 px-3 text-dns-14N-130 leading-140 wrap-break-word whitespace-pre-wrap'>
+              <pre className='mt-2 border border-transparent bg-gray-50 px-3 text-sm leading-tight leading-140 wrap-break-word whitespace-pre-wrap'>
                 {conversationHistory}
               </pre>
             </Disclosure>

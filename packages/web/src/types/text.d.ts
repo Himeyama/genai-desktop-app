@@ -114,26 +114,26 @@ export type CommandRParams = {
   seed?: number;
   return_prompt?: boolean;
   // tools?: {
-  //   name: string;
-  //   description: string;
-  //   parameter_definitions: {
-  //     [key: string]: {
-  //       description: string;
-  //       type: string;
-  //       required: boolean;
-  //     };
-  //   };
+  // name: string;
+  // description: string;
+  // parameter_definitions: {
+  // [key: string]: {
+  // description: string;
+  // type: string;
+  // required: boolean;
+  // };
+  // };
   // }[];
   // tool_results?: {
-  //   call: {
-  //     name: string;
-  //     parameters: {
-  //       [key: string]: string;
-  //     };
-  //   };
-  //   outputs: {
-  //     text: string;
-  //   }[];
+  // call: {
+  // name: string;
+  // parameters: {
+  // [key: string]: string;
+  // };
+  // };
+  // outputs: {
+  // text: string;
+  // }[];
   // }[];
   stop_sequences?: string[];
   raw_prompting?: boolean;

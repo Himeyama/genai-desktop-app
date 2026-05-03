@@ -25,14 +25,11 @@ export const GenerateTextResult = (props: Props) => {
   const showResult = !loading && text !== '';
 
   return (
-    <div
-      ref={scrollableContainer}
-      className='relative mt-5 rounded-8 border border-solid-gray-420 p-4'
-    >
+    <div ref={scrollableContainer} className='relative mt-5 rounded-lg border border-gray-400 p-4'>
       <h2 className='sr-only'>生成された文章</h2>
 
       {isInitial && (
-        <div className='leading-175 text-solid-gray-536'>生成された文章がここに表示されます</div>
+        <div className='leading-175 text-gray-600'>生成された文章がここに表示されます</div>
       )}
 
       <div ref={copyTextRef}>

@@ -134,7 +134,7 @@ export const InputChatContent = (props: Props) => {
 
             <div className='absolute right-[calc(116/16*1rem)] bottom-[calc(21/16*1rem)]'>
               {errors.content && (
-                <ErrorText id={`${props.textareaId}-error`} className='text-oln-16N-100!'>
+                <ErrorText id={`${props.textareaId}-error`} className='text-base leading-none!'>
                   ＊{errors.content.message}
                 </ErrorText>
               )}
@@ -272,7 +272,7 @@ export const InputChatContent = (props: Props) => {
           {errorMessages.length > 0 && (
             <div className='m-2 flex flex-wrap gap-2'>
               {errorMessages.map((errorMessage, idx) => (
-                <p key={idx} className='text-dns-16N-130 text-error-1'>
+                <p key={idx} className='text-base leading-tight text-red-600'>
                   ＊{errorMessage}
                 </p>
               ))}

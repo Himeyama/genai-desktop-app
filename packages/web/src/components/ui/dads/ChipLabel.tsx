@@ -7,7 +7,7 @@ export const ChipLabel = (props: ChipLabelProps) => {
 
   return (
     <span
-      className={`inline-flex min-h-8 items-center justify-center rounded-8 border border-transparent px-2 py-1 text-oln-16N-100 ${className ?? ''}`}
+      className={`inline-flex min-h-8 items-center justify-center rounded-lg border border-transparent px-2 py-1 text-base leading-none ${className ?? ''}`}
       {...rest}
     >
       {children}

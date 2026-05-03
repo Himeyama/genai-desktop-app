@@ -15,10 +15,10 @@ export const FileUpload = (props: FileUploadProps) => {
   return (
     <div
       className={`
-        group/file-upload
-        text-solid-gray-800 text-std-16N-170 wrap-anywhere
-        ${className ?? ''}
-      `}
+ group/file-upload
+ text-gray-800 text-base leading-relaxed wrap-anywhere
+ ${className ?? ''}
+ `}
       data-multiple={isMultiple ? 'true' : 'false'}
       data-has-error={hasError ? 'true' : undefined}
       data-droppable={droppable ? 'true' : undefined}
@@ -39,9 +39,9 @@ export const FileUploadInput = forwardRef<HTMLInputElement, FileUploadInputProps
       ref={ref}
       type='file'
       className={`
-        hidden
-        ${className ?? ''}
-      `}
+ hidden
+ ${className ?? ''}
+ `}
       {...rest}
     />
   );
@@ -57,12 +57,12 @@ export const FileUploadDropArea = (props: FileUploadDropAreaProps) => {
   return (
     <div
       className={`
-        group/drop-area
-        rounded-8 p-8 border border-solid-gray-536 bg-solid-gray-50
-        group-data-[has-error=true]/file-upload:border-error-1
-        data-[dragover=true]:outline-4 data-[dragover=true]:outline-success-1 data-[dragover=true]:-outline-offset-4 data-[dragover=true]:bg-green-50
-        ${className ?? ''}
-      `}
+ group/drop-area
+ rounded-lg p-8 border border-gray-600 bg-gray-50
+ group-data-[has-error=true]/file-upload:border-red-600
+ data-[dragover=true]:outline-4 data-[dragover=true]:outline-success-1 data-[dragover=true]:-outline-offset-4 data-[dragover=true]:bg-green-50
+ ${className ?? ''}
+ `}
       data-dragover={isDragOver ? 'true' : undefined}
       {...rest}
     >
@@ -79,9 +79,9 @@ export const FileUploadFileList = (props: FileUploadFileListProps) => {
   return (
     <ul
       className={`
-        mt-4 p-0 list-none [counter-reset:file-item]
-        ${className ?? ''}
-      `}
+ mt-4 p-0 list-none [counter-reset:file-item]
+ ${className ?? ''}
+ `}
       {...rest}
     >
       {children}
@@ -99,11 +99,11 @@ export const FileUploadFileItem = (props: FileUploadFileItemProps) => {
   return (
     <li
       className={`
-        group/file-item
-        flex items-baseline [counter-increment:file-item]
-        [&+&]:mt-1
-        ${className ?? ''}
-      `}
+ group/file-item
+ flex items-baseline [counter-increment:file-item]
+ [&+&]:mt-1
+ ${className ?? ''}
+ `}
       data-error={hasError ? 'true' : undefined}
       {...rest}
     >
@@ -120,14 +120,14 @@ export const FileUploadFileMarker = (props: FileUploadFileMarkerProps) => {
   return (
     <div
       className={`
-        shrink-0
-        group-data-[multiple=true]/file-upload:w-8
-        group-data-[multiple=true]/file-upload:before:content-[counter(file-item)'.']
-        group-data-[multiple=false]/file-upload:flex group-data-[multiple=false]/file-upload:self-start group-data-[multiple=false]/file-upload:justify-center group-data-[multiple=false]/file-upload:items-center group-data-[multiple=false]/file-upload:w-6 group-data-[multiple=false]/file-upload:h-[calc(30/16*1rem)]
-        group-data-[multiple=false]/file-upload:before:w-1.5 group-data-[multiple=false]/file-upload:before:h-1.5 group-data-[multiple=false]/file-upload:before:rounded-full group-data-[multiple=false]/file-upload:before:bg-current group-data-[multiple=false]/file-upload:before:content-['']
-        group-data-[multiple=false]/file-upload:forced-colors:before:bg-[CanvasText]
-        ${className ?? ''}
-      `}
+ shrink-0
+ group-data-[multiple=true]/file-upload:w-8
+ group-data-[multiple=true]/file-upload:before:content-[counter(file-item)'.']
+ group-data-[multiple=false]/file-upload:flex group-data-[multiple=false]/file-upload:self-start group-data-[multiple=false]/file-upload:justify-center group-data-[multiple=false]/file-upload:items-center group-data-[multiple=false]/file-upload:w-6 group-data-[multiple=false]/file-upload:h-[calc(30/16*1rem)]
+ group-data-[multiple=false]/file-upload:before:w-1.5 group-data-[multiple=false]/file-upload:before:h-1.5 group-data-[multiple=false]/file-upload:before:rounded-full group-data-[multiple=false]/file-upload:before:bg-current group-data-[multiple=false]/file-upload:before:content-['']
+ group-data-[multiple=false]/file-upload:forced-colors:before:bg-[CanvasText]
+ ${className ?? ''}
+ `}
       {...rest}
     />
   );
@@ -141,10 +141,10 @@ export const FileUploadFileInfo = (props: FileUploadFileInfoProps) => {
   return (
     <div
       className={`
-        flex-1 min-w-0
-        group-data-[error=true]/file-item:border-l-4 group-data-[error=true]/file-item:border-error-1 group-data-[error=true]/file-item:pl-2 group-data-[error=true]/file-item:text-error-1
-        ${className ?? ''}
-      `}
+ flex-1 min-w-0
+ group-data-[error=true]/file-item:border-l-4 group-data-[error=true]/file-item:border-red-600 group-data-[error=true]/file-item:pl-2 group-data-[error=true]/file-item:text-red-600
+ ${className ?? ''}
+ `}
       {...rest}
     >
       {children}
@@ -172,10 +172,10 @@ export const FileUploadFileMeta = (props: FileUploadFileMetaProps) => {
   return (
     <span
       className={`
-        text-solid-gray-600
-        group-data-[error=true]/file-item:text-inherit
-        ${className ?? ''}
-      `}
+ text-gray-600
+ group-data-[error=true]/file-item:text-inherit
+ ${className ?? ''}
+ `}
       {...rest}
     >
       {children}
@@ -195,9 +195,9 @@ export const FileUploadViewportOverlay = (props: FileUploadViewportOverlayProps)
   return createPortal(
     <div
       className={`
-        fixed inset-0 z-9999 border-4 border-success-1 bg-green-50
-        ${className ?? ''}
-      `}
+ fixed inset-0 z-9999 border-4 border-success-1 bg-green-50
+ ${className ?? ''}
+ `}
       {...rest}
     >
       {children}
@@ -214,10 +214,10 @@ export const FileUploadViewportOverlayMessage = (props: FileUploadViewportOverla
   return (
     <div
       className={`
-        flex justify-center content-center flex-wrap box-border w-full h-full p-[calc(2rem-4px)]
-        text-[clamp(calc(18/16*1rem),0.75rem+1.875vw,calc(48/16*1rem))] font-bold pointer-events-none
-        ${className ?? ''}
-      `}
+ flex justify-center content-center flex-wrap box-border w-full h-full p-[calc(2rem-4px)]
+ text-[clamp(calc(18/16*1rem),0.75rem+1.875vw,calc(48/16*1rem))] font-bold pointer-events-none
+ ${className ?? ''}
+ `}
       {...rest}
     >
       {children}

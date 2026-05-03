@@ -89,7 +89,7 @@ export const Title = (props: Props) => {
     <>
       {!isEditing && (
         <div className='mb-2 flex min-h-[calc(38/16*1rem)] items-start gap-x-2 gap-y-2'>
-          <h1 className='flex items-center justify-start text-std-20B-150 text-pretty lg:h-min lg:text-std-24B-150 print:visible print:my-5 print:h-min'>
+          <h1 className='flex items-center justify-start text-xl font-bold leading-snug text-pretty lg:h-min lg:text-2xl font-bold leading-snug print:visible print:my-5 print:h-min'>
             {title}
           </h1>
           {!isEmpty && !loadingMessages && chatId && (
@@ -99,7 +99,7 @@ export const Title = (props: Props) => {
                   <TooltipTrigger asChild>
                     <MenuButton
                       id={`${chatId}-menu-button`}
-                      className={`flex size-9 items-center justify-center rounded-4 after:absolute after:-inset-full after:m-auto after:h-11 after:w-11 hover:bg-solid-gray-50 hover:-outline-offset-[calc(2/16*1rem)] hover:outline-black hover:outline-solid focus-visible:bg-yellow-300 focus-visible:ring-[calc(6/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:-outline-offset-4 focus-visible:outline-black focus-visible:outline-solid focus-visible:ring-inset`}
+                      className={`flex size-9 items-center justify-center rounded after:absolute after:-inset-full after:m-auto after:h-11 after:w-11 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:-outline-offset-2`}
                     >
                       <MoreVertIcon aria-label='チャットの操作' role='img' className='mt-0.5' />
                     </MenuButton>
@@ -109,7 +109,7 @@ export const Title = (props: Props) => {
 
                 <MenuItems
                   modal={false}
-                  className={`absolute top-full right-0 z-10 w-auto min-w-fit rounded-8 border border-solid-gray-420 bg-white py-2 shadow-1 focus:outline-hidden`}
+                  className={`absolute top-full right-0 z-10 w-auto min-w-fit rounded-lg border border-gray-400 bg-white py-2 shadow-md focus:outline-hidden`}
                 >
                   <MenuItem>
                     {({ focus }) => (
@@ -119,7 +119,7 @@ export const Title = (props: Props) => {
                           setTempTitle(title);
                           setIsEditing(true);
                         }}
-                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-oln-16N-100 text-nowrap hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:text-solid-gray-800 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''}`}
+                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-base leading-none text-nowrap hover:bg-gray-50 ${focus ? 'bg-gray-100' : ''}`}
                       >
                         <PiPencilLine aria-hidden={true} className='text-lg' />
                         チャット名を変更
@@ -134,7 +134,7 @@ export const Title = (props: Props) => {
                           setOpenDeleteDialog(true);
                         }}
                         aria-haspopup='dialog'
-                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-oln-16N-100 text-nowrap text-error-1 hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:text-solid-gray-800 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''}`}
+                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-base leading-none text-nowrap text-red-600 hover:bg-gray-50 ${focus ? 'bg-gray-100' : ''}`}
                       >
                         <PiTrash aria-hidden={true} className='text-lg' />
                         チャットを削除
@@ -153,7 +153,7 @@ export const Title = (props: Props) => {
           <div className='relative min-w-0 pr-4'>
             <span
               aria-hidden={true}
-              className='invisible flex max-w-full items-center justify-start overflow-hidden text-std-20B-150 text-nowrap lg:text-std-24B-150'
+              className='invisible flex max-w-full items-center justify-start overflow-hidden text-xl font-bold leading-snug text-nowrap lg:text-2xl font-bold leading-snug'
             >
               {tempTitle}
             </span>
@@ -161,7 +161,7 @@ export const Title = (props: Props) => {
               ref={editInputRef}
               type='text'
               blockSize='sm'
-              className='absolute -inset-x-1 inset-y-0 -mt-1 text-std-18N-160 leading-100! md:-inset-x-4'
+              className='absolute -inset-x-1 inset-y-0 -mt-1 text-lg leading-relaxed leading-none! md:-inset-x-4'
               value={tempTitle}
               aria-label='チャット名を変更'
               onChange={(e) => {

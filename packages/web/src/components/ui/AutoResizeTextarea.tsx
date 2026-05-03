@@ -50,7 +50,7 @@ export const AutoResizeTextarea = (props: Props) => {
   return (
     <DadsTextarea
       ref={internalRef}
-      className={`w-full leading-150! ${isMax ? 'overflow-y-auto rounded-r-none' : 'overflow-hidden'} ${className ?? ''}`}
+      className={`w-full leading-snug! ${isMax ? 'overflow-y-auto rounded-r-none' : 'overflow-hidden'} ${className ?? ''}`}
       rows={rows ?? 1}
       onChange={(e) => {
         handleResize();

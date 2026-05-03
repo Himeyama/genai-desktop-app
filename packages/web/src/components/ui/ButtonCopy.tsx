@@ -49,7 +49,7 @@ export const ButtonCopy = (props: Props) => {
 
   return (
     <ButtonIcon
-      className={`min-w-[calc(78/16*1rem)] justify-start! gap-x-0.5 text-oln-14N-100! ${className ?? ''}`}
+      className={`min-w-[calc(78/16*1rem)] justify-start! gap-x-0.5 text-sm leading-none! ${className ?? ''}`}
       disabled={disabled}
       onClick={() => {
         copyMessage(text);

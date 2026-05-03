@@ -1,19 +1,19 @@
 import { Slot } from './Slot';
 import type { ComponentProps } from 'react';
 
-export const linkDefaultStyle = 'text-blue-1000 underline underline-offset-[calc(3/16*1rem)]';
+export const linkDefaultStyle = 'text-blue-700';
 export const linkVisitedStyle = 'visited:text-magenta-900';
-export const linkHoverStyle = 'hover:text-blue-900 hover:decoration-[calc(3/16*1rem)]';
+export const linkHoverStyle = 'hover:text-blue-600';
 export const linkFocusStyle =
-  'focus-visible:rounded-4 focus-visible:outline-solid focus-visible:outline-4 focus-visible:outline-black focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:bg-yellow-300 focus-visible:text-blue-1000 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300';
+  'focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2';
 export const linkActiveStyle = 'active:text-orange-800 active:decoration-1';
 
 export const linkStyle = `
-  ${linkDefaultStyle}
-  ${linkVisitedStyle}
-  ${linkHoverStyle}
-  ${linkFocusStyle}
-  ${linkActiveStyle}
+ ${linkDefaultStyle}
+ ${linkVisitedStyle}
+ ${linkHoverStyle}
+ ${linkFocusStyle}
+ ${linkActiveStyle}
 `;
 
 export type LinkProps = {

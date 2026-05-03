@@ -24,7 +24,7 @@ export const TeamAppsContent = ({ onOpenDeleteModal }: Props) => {
     <>
       <PageTitle title={`${pageTitle}${APP_TITLE ? ` | ${APP_TITLE}` : ''}`} />
       <div className='mx-6 max-w-[calc(1024/16*1rem)] pt-6 pb-12 lg:mx-10 lg:pb-16'>
-        <h1 className='flex justify-start text-std-20B-160 lg:text-std-24B-150'>
+        <h1 className='flex justify-start text-xl font-bold leading-relaxed lg:text-2xl font-bold leading-snug'>
           {selectedTeamName}
           <span className='sr-only'>（AIアプリ）</span>
         </h1>

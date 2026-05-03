@@ -57,22 +57,22 @@ export const FileCard = (props: Props) => {
       <div className='group relative'>
         <div
           className={`
-            rounded-4 border bg-white object-cover object-center p-1 text-dns-14N-130 break-all
-            ${error ? 'border-error-1 outline-1 outline-error-1 text-error-1 font-bold' : 'border-solid-gray-420'}
-            ${size === 'sm' ? 'size-24' : 'size-32'}`}
+ rounded border bg-white object-cover object-center p-1 text-sm leading-tight break-all
+ ${error ? 'border-red-600 outline-1 outline-red-600 text-red-600 font-bold' : 'border-gray-400'}
+ ${size === 'sm' ? 'size-24' : 'size-32'}`}
         >
           {getFileTypeIcon(filetype)}
           <p
             className={`
-              [display:-webkit-box] overflow-hidden [-webkit-box-orient:vertical]
-              ${size === 'sm' ? '[-webkit-line-clamp:3]' : '[-webkit-line-clamp:5]'}
-            `}
+ [display:-webkit-box] overflow-hidden [-webkit-box-orient:vertical]
+ ${size === 'sm' ? '[-webkit-line-clamp:3]' : '[-webkit-line-clamp:5]'}
+ `}
           >
             {url ? <a href={url}>{filename}</a> : filename}
           </p>
         </div>
         {(loading || deleting) && (
-          <div className='absolute top-0 flex h-full w-full items-center justify-center rounded-4 bg-solid-gray-800/20'>
+          <div className='absolute top-0 flex h-full w-full items-center justify-center rounded bg-gray-800/20'>
             <PiSpinnerGap
               aria-label={deleting ? '解除中' : '読み込み中'}
               className='animate-spin text-4xl text-white'
@@ -84,7 +84,7 @@ export const FileCard = (props: Props) => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <ButtonIcon
-                  className='rounded-full border border-solid-gray-800 bg-white text-sm focus-visible:border-transparent'
+                  className='rounded-full border border-gray-800 bg-white text-sm focus-visible:border-transparent'
                   onClick={onDelete}
                 >
                   <PiX

@@ -15,15 +15,17 @@ export const OfflineScreen = () => {
           <h1
             tabIndex={-1}
             id='offline-title'
-            className='mb-8 text-std-28B-150 focus-visible:rounded-4 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid lg:mt-12 lg:text-std-45B-140'
+            className='mb-8 text-3xl font-bold leading-snug focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 lg:mt-12 lg:text-6xl font-bold leading-snug'
           >
             インターネットに接続されていません
           </h1>
 
-          <p className='text-std-18N-160'>
+          <p className='text-lg leading-relaxed'>
             Wi-Fiまたはモバイルデータ通信が有効になっているかご確認ください。
           </p>
-          <p className='text-std-18N-160'>接続が回復すると、自動的にページが表示されます。</p>
+          <p className='text-lg leading-relaxed'>
+            接続が回復すると、自動的にページが表示されます。
+          </p>
         </main>
       </div>
     </>

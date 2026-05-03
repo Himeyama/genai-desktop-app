@@ -67,7 +67,7 @@ export const DialogDeleteTeamMember = (props: Props) => {
                 システムエラー
               </h3>
               <div
-                className={`mx-auto flex w-full flex-col gap-2 rounded-6 bg-red-50 p-4 text-center text-error-1`}
+                className={`mx-auto flex w-full flex-col gap-2 rounded-md bg-red-50 p-4 text-center text-red-600`}
               >
                 <p>{error}</p>
               </div>
@@ -82,7 +82,7 @@ export const DialogDeleteTeamMember = (props: Props) => {
               variant='solid-fill'
               size='md'
               onClick={() => handleDelete()}
-              className='flex min-w-32 items-center justify-center bg-error-1!'
+              className='flex min-w-32 items-center justify-center bg-red-600!'
               loading={isLoading}
             >
               {isLoading ? '削除中' : '削除'}

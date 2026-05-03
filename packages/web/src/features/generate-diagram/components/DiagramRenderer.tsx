@@ -8,11 +8,11 @@ import { Markdown } from './Markdown';
 import { Mermaid } from './Mermaid';
 
 const tabStyles = `
-  flex items-center px-2 py-2.5 text-solid-gray-800
-  first:rounded-l-4 last:rounded-r-4
-  hover:underline hover:underline-offset-[calc(3/16*1rem)] 
-  data-selected:bg-solid-gray-800 data-selected:font-700 data-selected:text-white data-selected:hover:no-underline
-  focus-visible:outline-solid focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300
+ flex items-center px-2 py-2.5 text-gray-800
+ first:rounded-l-4 last:rounded-r-4
+ 
+ data-selected:bg-gray-800 data-selected:font-bold data-selected:text-white data-selected:hover:no-underline
+ focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2
 `;
 
 interface DiagramRendererProps {
@@ -34,7 +34,7 @@ export const DiagramRenderer = (props: DiagramRendererProps) => {
               <DownloadButton type='SVG' code={code} />
               <DownloadButton type='PNG' code={code} />
             </div>
-            <TabList className='flex cursor-pointer rounded-4 border bg-white text-oln-16N-100'>
+            <TabList className='flex cursor-pointer rounded border bg-white text-base leading-none'>
               <Tab className={tabStyles}>
                 <LuNetwork aria-hidden={true} className='mr-1.5 text-base' />
                 図を表示
@@ -60,10 +60,10 @@ export const DiagramRenderer = (props: DiagramRendererProps) => {
 
       {/* ズーム時 */}
       <dialog
-        className='m-auto h-[90%] w-[90%] overflow-visible rounded-8 border border-transparent bg-white px-6 py-4 shadow-2 backdrop:bg-opacity-gray-300 forced-colors:backdrop:bg-[#000b]'
+        className='m-auto h-[90%] w-[90%] overflow-visible rounded-lg border border-transparent bg-white px-6 py-4 shadow-lg backdrop:bg-black/30 forced-colors:backdrop:bg-[#000b]'
         ref={zoomDialog}
       >
-        <div className='flex h-full w-full flex-col rounded-8 bg-white'>
+        <div className='flex h-full w-full flex-col rounded-lg bg-white'>
           <div className='flex justify-end px-4 py-3'>
             <HamburgerMenuButton
               className='p-1'

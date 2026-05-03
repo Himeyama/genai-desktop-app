@@ -10,7 +10,7 @@ export const ModelSelector = () => {
     <div className='flex w-full'>
       <CustomSelect
         label='LLM：'
-        labelClassName='text-dns-14B-120'
+        labelClassName='text-sm font-bold leading-tight'
         value={selectedModelId}
         onChange={setSelectedModelId}
         options={availableModels.map((m) => {

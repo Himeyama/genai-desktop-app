@@ -80,10 +80,10 @@ const systemContexts: { [key: string]: string } = {
 
 <output>
 {
-  "prompt": string,
-  "negativePrompt": string,
-  "comment": string,
-  "recommendedStylePreset": string[]
+ "prompt": string,
+ "negativePrompt": string,
+ "comment": string,
+ "recommendedStylePreset": string[]
 }
 </output>
 
@@ -569,16 +569,16 @@ AI はユーザーの指示をよく理解できるプログラマーです。
             prompt: `<code>
 Sub Macro1()
 
-    Dim value1 As Double
-    Dim value2 As Double
+ Dim value1 As Double
+ Dim value2 As Double
 
-    value1 = Range("A1").Value
-    value2 = value1 ^ 2 * 3.14159265358979
+ value1 = Range("A1").Value
+ value2 = value1 ^ 2 * 3.14159265358979
 
-    Range("A2").Value = value2
+ Range("A2").Value = value2
 
-    Sheets("Sheet1").Copy After:=Sheets(Sheets.Count)
-    ActiveSheet.Name = "Sheet5"
+ Sheets("Sheet1").Copy After:=Sheets(Sheets.Count)
+ ActiveSheet.Name = "Sheet5"
 
 End Sub
 </code>
@@ -601,15 +601,15 @@ AI はユーザーの指示をよく理解できるプログラマー兼レビ�
 #include <stdio.h>
 
 int main() {
-  int x = 5;
+ int x = 5;
 
-  if (x = 5) {
-    printf("x is 5\n");
-  } else {
-    printf("x is not 5\n");
-  }
+ if (x = 5) {
+ printf("x is 5\n");
+ } else {
+ printf("x is not 5\n");
+ }
 
-  return 0;
+ return 0;
 }
 </code>`,
           },

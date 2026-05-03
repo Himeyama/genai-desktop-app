@@ -9,7 +9,7 @@ export const NotificationBannerClose = (props: Props) => {
 
   return (
     <button
-      className={`-mr-3 inline-flex items-center gap-1 self-start rounded-6 px-3 pt-1 pb-1.5 text-solid-gray-900 hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black ${className ?? ''}`}
+      className={`-mr-3 inline-flex items-center gap-1 self-start rounded-md px-3 pt-1 pb-1.5 text-gray-900 hover:bg-gray-50 focus-visible:bg-gray-100 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 ${className ?? ''}`}
       type='button'
       {...rest}
     >
@@ -28,7 +28,7 @@ export const NotificationBannerClose = (props: Props) => {
           />
         </g>
       </svg>
-      <span className='text-oln-16N-100'>{label ?? '閉じる'}</span>
+      <span className='text-base leading-none'>{label ?? '閉じる'}</span>
     </button>
   );
 };

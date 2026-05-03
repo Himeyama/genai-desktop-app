@@ -32,25 +32,25 @@ export const TeamMemberList = (props: Props) => {
       <h2
         tabIndex={-1}
         id='user-list-heading'
-        className={`my-4 inline-flex text-std-18B-160 focus-visible:rounded-4 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid lg:text-std-20B-150`}
+        className={`my-4 inline-flex text-lg font-bold leading-relaxed focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 lg:text-xl font-bold leading-snug`}
       >
         メンバー
       </h2>
       <ul ref={listRef} className='flex w-full flex-col'>
         {members.map((member) => (
           <li
-            className='relative grid w-full grid-cols-[1fr_auto] items-center border-b border-solid-gray-420'
+            className='relative grid w-full grid-cols-[1fr_auto] items-center border-b border-gray-400'
             key={member.userId}
           >
-            <p className='flex flex-col items-start gap-2.5 px-4 py-3.5 text-dns-16N-130 leading-tight! sm:flex-row lg:items-center'>
+            <p className='flex flex-col items-start gap-2.5 px-4 py-3.5 text-base leading-tight sm:flex-row lg:items-center'>
               <span
                 tabIndex={-1}
-                className='break-all focus-visible:rounded-4 focus-visible:outline-solid focus-visible:outline-4 focus-visible:outline-black focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300'
+                className='break-all focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'
               >
                 {member.username}
               </span>
               {member.isAdmin && (
-                <span className='rounded-4 bg-solid-gray-50 px-2 py-1 text-oln-16N-100'>
+                <span className='rounded bg-gray-50 px-2 py-1 text-base leading-none'>
                   チーム管理者
                 </span>
               )}
@@ -60,7 +60,7 @@ export const TeamMemberList = (props: Props) => {
                 <Tooltip placement='left'>
                   <TooltipTrigger asChild>
                     <MenuButton
-                      className={`flex size-9 items-center justify-center rounded-4 after:absolute after:-inset-full after:m-auto after:h-11 after:w-11 hover:bg-solid-gray-50 hover:-outline-offset-[calc(2/16*1rem)] hover:outline-black hover:outline-solid focus-visible:bg-yellow-300 focus-visible:ring-[calc(6/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:-outline-offset-4 focus-visible:outline-black focus-visible:outline-solid focus-visible:ring-inset`}
+                      className={`flex size-9 items-center justify-center rounded after:absolute after:-inset-full after:m-auto after:h-11 after:w-11 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:-outline-offset-2`}
                     >
                       <MoreVertIcon aria-label='メンバーの操作' role='img' className='mt-0.5' />
                     </MenuButton>
@@ -70,13 +70,13 @@ export const TeamMemberList = (props: Props) => {
 
                 <MenuItems
                   modal={false}
-                  className={`absolute top-full right-0 z-10 w-auto min-w-fit rounded-8 border border-solid-gray-420 bg-white py-2 shadow-1 focus:outline-hidden`}
+                  className={`absolute top-full right-0 z-10 w-auto min-w-fit rounded-lg border border-gray-400 bg-white py-2 shadow-md focus:outline-hidden`}
                 >
                   <MenuItem>
                     {({ focus }) => (
                       <Link
                         to={`/teams/${teamId}/members/${member.userId}/edit`}
-                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-oln-16N-100 text-nowrap text-solid-gray-800 hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''}`}
+                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-base leading-none text-nowrap text-gray-800 hover:bg-gray-50 ${focus ? 'bg-gray-100' : ''}`}
                       >
                         <PiPencilLine aria-hidden={true} className='text-lg' />
                         編集
@@ -89,7 +89,7 @@ export const TeamMemberList = (props: Props) => {
                         type='button'
                         onClick={() => handleOpenDeleteModal(member.userId)}
                         aria-haspopup='dialog'
-                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-oln-16N-100 text-nowrap text-error-1 hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:text-solid-gray-800 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''}`}
+                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-base leading-none text-nowrap text-red-600 hover:bg-gray-50 ${focus ? 'bg-gray-100' : ''}`}
                       >
                         <PiTrash aria-hidden={true} className='text-lg' />
                         削除

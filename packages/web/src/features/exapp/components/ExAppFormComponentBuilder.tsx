@@ -86,7 +86,7 @@ export const ExAppFormComponentBuilder = (props: Props) => {
         } else if (isFileType(uiConfig)) {
           if (!setValue || !trigger || !clearErrors) {
             return (
-              <p key={key} className='my-8 text-error-1'>
+              <p key={key} className='my-8 text-red-600'>
                 ファイルコンポーネントには setValue, trigger, clearErrors が必要です。
               </p>
             );
@@ -138,7 +138,7 @@ export const ExAppFormComponentBuilder = (props: Props) => {
           return <ExAppHidden key={key} id={key} register={register} />;
         } else {
           return (
-            <p key={key} className='my-8 text-error-1'>
+            <p key={key} className='my-8 text-red-600'>
               サポート外のコンポーネントです。
             </p>
           );

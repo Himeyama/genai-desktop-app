@@ -5,18 +5,18 @@ type Props = {
 };
 
 const logoTypographyStyles =
-  'text-std-18B-160 leading-120! text-solid-gray-900 lg:text-std-22B-150';
+  'text-lg font-bold leading-tight text-gray-900 lg:text-xl font-bold leading-snug';
 
 export const Logo = (props: Props) => {
   const { isLandingPage } = props;
   return (
-    <div className='relative flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-4'>
+    <div className='flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-4'>
       {isLandingPage ? (
         <h1 className={`${logoTypographyStyles}`}>ここにロゴが入る</h1>
       ) : (
         <Link
           to='/'
-          className={`${logoTypographyStyles} focus-visible:rounded-4 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid`}
+          className={`${logoTypographyStyles} focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2`}
         >
           ここにロゴが入る
         </Link>

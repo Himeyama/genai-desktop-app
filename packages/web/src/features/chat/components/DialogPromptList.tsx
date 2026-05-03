@@ -35,11 +35,11 @@ export const DialogPromptList = (props: Props) => {
         <CustomDialogBody>
           <div className='flex flex-col gap-6'>
             <div>
-              <h3 className='mb-2 flex items-center text-std-17B-170'>
+              <h3 className='mb-2 flex items-center text-base font-bold leading-relaxed'>
                 保存したプロンプトから選択
               </h3>
               {props.systemContextList.length === 0 && (
-                <p className='text-solid-gray-536'>保存したプロンプトはありません</p>
+                <p className='text-gray-600'>保存したプロンプトはありません</p>
               )}
               {props.systemContextList.length > 0 && (
                 <ul className='space-y-1'>
@@ -64,7 +64,9 @@ export const DialogPromptList = (props: Props) => {
             </div>
 
             <div>
-              <h3 className='mb-2 flex items-center text-std-17B-170'>プロンプト例から選択</h3>
+              <h3 className='mb-2 flex items-center text-base font-bold leading-relaxed'>
+                プロンプト例から選択
+              </h3>
               <ExamplePromptList
                 modelId={modelId}
                 onClick={(params) => {

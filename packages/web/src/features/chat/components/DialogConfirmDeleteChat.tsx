@@ -27,7 +27,7 @@ export const DialogConfirmDeleteChat = (props: Props) => {
         <CustomDialogBody>
           <p>
             会話
-            <strong className='font-700'>「{chatTitle}」</strong>
+            <strong className='font-bold'>「{chatTitle}」</strong>
             を削除しますか？
           </p>
 
@@ -41,7 +41,7 @@ export const DialogConfirmDeleteChat = (props: Props) => {
               onClick={() => {
                 onDelete(decomposeId(chatId ?? '') ?? '');
               }}
-              className='flex min-w-32 items-center justify-center bg-error-1!'
+              className='flex min-w-32 items-center justify-center bg-red-600!'
               loading={isDeleting}
             >
               {isDeleting ? '削除中' : '削除'}

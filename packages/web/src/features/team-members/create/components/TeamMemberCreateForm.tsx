@@ -88,7 +88,7 @@ export const TeamMemberCreateForm = () => {
             システムエラー
           </h2>
           <div
-            className={`mx-auto flex w-full flex-col gap-2 rounded-6 bg-red-50 p-4 text-center text-error-1`}
+            className={`mx-auto flex w-full flex-col gap-2 rounded-md bg-red-50 p-4 text-center text-red-600`}
           >
             <p>{error}</p>
           </div>

@@ -17,9 +17,9 @@ export const CustomDialogHeader = (props: CustomDialogHeaderProps) => {
 
   return (
     <div
-      className={`flex items-center justify-between gap-2 border-b border-b-solid-gray-420 pb-2 ${className ?? ''}`}
+      className={`flex items-center justify-between gap-2 border-b border-b-gray-400 pb-2 ${className ?? ''}`}
     >
-      <DialogTitle as='h2' className='flex gap-4 text-std-24B-150'>
+      <DialogTitle as='h2' className='flex gap-4 text-2xl font-bold leading-snug'>
         {children}
       </DialogTitle>
       {hasClose && (
@@ -53,7 +53,7 @@ export const CustomDialogPanel = (props: CustomDialogPanelProps) => {
 
   return (
     <DialogPanel
-      className={`w-full max-w-2xl rounded-8 border border-transparent bg-white p-6 text-left align-middle shadow-xl ${className ?? ''}`}
+      className={`w-full max-w-2xl rounded-lg border border-transparent bg-white p-6 text-left align-middle shadow-xl ${className ?? ''}`}
     >
       {children}
     </DialogPanel>

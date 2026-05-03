@@ -24,8 +24,8 @@ export const DiagramResult = (props: Props) => {
   return (
     <>
       {correctedDiagramCode.length > 0 && (
-        <div className='rounded-6 bg-solid-gray-50'>
-          <h3 className='p-4 text-std-18B-160'>
+        <div className='rounded-md bg-gray-50'>
+          <h3 className='p-4 text-lg font-bold leading-relaxed'>
             {DIAGRAM_DATA[diagramType as keyof typeof DIAGRAM_DATA]?.title || 'チャート'}
           </h3>
 
@@ -44,11 +44,11 @@ export const DiagramResult = (props: Props) => {
       )}
 
       {!loading && isEmpty && (
-        <div className='leading-175 text-solid-gray-536'>ダイアグラムがここに表示されます</div>
+        <div className='leading-175 text-gray-600'>ダイアグラムがここに表示されます</div>
       )}
 
       {diagramGenerationError && (
-        <div className='bg-red-50 p-4 text-error-2'>{diagramGenerationError.message}</div>
+        <div className='bg-red-50 p-4 text-red-700'>{diagramGenerationError.message}</div>
       )}
     </>
   );

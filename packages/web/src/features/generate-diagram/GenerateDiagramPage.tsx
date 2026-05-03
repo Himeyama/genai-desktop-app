@@ -47,7 +47,7 @@ export const GenerateDiagramPage = () => {
         <Divider className='my-3 lg:my-6' />
         <div className='w-full'>
           <h2 className='sr-only'>生成結果</h2>
-          <div className='relative mt-5 min-h-20 rounded-8 border border-solid-gray-420 p-4'>
+          <div className='relative mt-5 min-h-20 rounded-lg border border-gray-400 p-4'>
             <div className=''>
               {loading && (
                 <div className='mb-4 space-y-2'>

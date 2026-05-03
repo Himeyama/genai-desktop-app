@@ -95,7 +95,7 @@ export const ChatListItem = (props: Props) => {
           <>
             <div className='py-3'>
               <Link
-                className={`ml-4 flex items-center justify-start rounded-4 py-1 text-dns-16N-130 leading-tight! text-blue-1000 underline underline-offset-[calc(3/16*1rem)] hover:decoration-[calc(3/16*1rem)] focus-visible:relative focus-visible:z-10 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid`}
+                className={`ml-4 flex items-center justify-start rounded py-1 text-base leading-tight text-blue-700 focus-visible:relative focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2`}
                 to={`/chat/${chatId}`}
               >
                 <div className='flex w-full items-center justify-start'>
@@ -111,7 +111,7 @@ export const ChatListItem = (props: Props) => {
                   <TooltipTrigger asChild>
                     <MenuButton
                       id={`${chatId}-menu-button`}
-                      className={`flex size-9 items-center justify-center rounded-4 after:absolute after:-inset-full after:m-auto after:h-11 after:w-11 hover:bg-solid-gray-50 hover:-outline-offset-[calc(2/16*1rem)] hover:outline-black hover:outline-solid focus-visible:bg-yellow-300 focus-visible:ring-[calc(6/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:-outline-offset-4 focus-visible:outline-black focus-visible:outline-solid focus-visible:ring-inset`}
+                      className={`flex size-9 items-center justify-center rounded after:absolute after:-inset-full after:m-auto after:h-11 after:w-11 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:-outline-offset-2`}
                     >
                       <MoreVertIcon aria-label='履歴の操作' role='img' className='mt-0.5' />
                     </MenuButton>
@@ -121,7 +121,7 @@ export const ChatListItem = (props: Props) => {
 
                 <MenuItems
                   modal={false}
-                  className={`absolute top-full right-0 z-10 w-auto min-w-fit rounded-8 border border-solid-gray-420 bg-white py-2 shadow-1 focus:outline-hidden`}
+                  className={`absolute top-full right-0 z-10 w-auto min-w-fit rounded-lg border border-gray-400 bg-white py-2 shadow-md focus:outline-hidden`}
                 >
                   <MenuItem>
                     {({ focus }) => (
@@ -131,7 +131,7 @@ export const ChatListItem = (props: Props) => {
                           setTempTitle(chat.title);
                           setIsEditing(true);
                         }}
-                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-oln-16N-100 text-nowrap hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:text-solid-gray-800 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''}`}
+                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-base leading-none text-nowrap hover:bg-gray-50 ${focus ? 'bg-gray-100' : ''}`}
                       >
                         <PiPencilLine aria-hidden={true} className='text-lg' />
                         タイトルを変更
@@ -146,7 +146,7 @@ export const ChatListItem = (props: Props) => {
                           setIsOpenDeleteDialog(true);
                         }}
                         aria-haspopup='dialog'
-                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-oln-16N-100 text-nowrap text-error-1 hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:text-solid-gray-800 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''}`}
+                        className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-base leading-none text-nowrap text-red-600 hover:bg-gray-50 ${focus ? 'bg-gray-100' : ''}`}
                       >
                         <PiTrash aria-hidden={true} className='text-lg' />
                         削除
@@ -159,7 +159,7 @@ export const ChatListItem = (props: Props) => {
           </>
         ) : (
           <>
-            <div className='flex w-full items-center justify-start py-1.5 pr-0 pl-1 text-dns-16N-130'>
+            <div className='flex w-full items-center justify-start py-1.5 pr-0 pl-1 text-base leading-tight'>
               <div className='flex w-full items-center justify-start'>
                 <div className='relative flex-1'>
                   <Input

@@ -28,7 +28,7 @@ export const ExAppInvokeHistoryItemStatusLabel = (props: Props) => {
       );
     case 'ERROR':
       return (
-        <ChipLabel className='border-error-2 bg-error-2 text-white'>
+        <ChipLabel className='border-error-2 bg-red-700 text-white'>
           <span className='sr-only'>ステータス：</span>エラー
         </ChipLabel>
       );

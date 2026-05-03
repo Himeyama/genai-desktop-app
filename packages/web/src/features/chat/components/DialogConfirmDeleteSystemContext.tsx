@@ -25,7 +25,7 @@ export const DialogConfirmDeleteSystemContext = (props: Props) => {
         <CustomDialogBody>
           <p>
             プロンプト
-            <strong className='font-700'>「{systemContextTitle}」</strong>
+            <strong className='font-bold'>「{systemContextTitle}」</strong>
             を削除しますか？
           </p>
 
@@ -40,7 +40,7 @@ export const DialogConfirmDeleteSystemContext = (props: Props) => {
               onClick={() => {
                 onDelete(systemContextId);
               }}
-              className='flex items-center justify-center bg-error-1! hover:bg-error-2!'
+              className='flex items-center justify-center bg-red-600! hover:bg-red-700!'
             >
               {isDeleting ? (
                 <>

@@ -39,7 +39,7 @@ export const Drawer = (props: Props) => {
           </li>
         </ul>
         <div>
-          <h3 className='mb-3 px-4 text-dns-16B-130'>おすすめ</h3>
+          <h3 className='mb-3 px-4 text-base font-bold leading-tight'>おすすめ</h3>
           <ul className='py-1 pr-2 pl-4'>
             {showRecommendedGovAI &&
               recommendedGovAI.map((govAI) => (

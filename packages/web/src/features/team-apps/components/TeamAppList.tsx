@@ -45,7 +45,7 @@ export const TeamAppList = (props: Props) => {
       <h2
         tabIndex={-1}
         id='exapp-list-heading'
-        className={`my-4 inline-flex text-std-18B-160 focus-visible:rounded-4 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid lg:text-std-20B-150`}
+        className={`my-4 inline-flex text-lg font-bold leading-relaxed focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 lg:text-xl font-bold leading-snug`}
       >
         AIアプリ
       </h2>
@@ -54,10 +54,10 @@ export const TeamAppList = (props: Props) => {
           const lastUpdated = app.updatedDate || app.createdDate;
           return (
             <li
-              className='relative grid w-full grid-cols-[1fr_auto] items-center border-b border-solid border-solid-gray-420'
+              className='relative grid w-full grid-cols-[1fr_auto] items-center border-b border-solid border-gray-400'
               key={app.exAppId}
             >
-              <div className='flex flex-col items-start gap-4 px-4 py-4 text-dns-16N-130 leading-tight!'>
+              <div className='flex flex-col items-start gap-4 px-4 py-4 text-base leading-tight'>
                 <Link
                   to={`/apps/${app.teamId}/${app.exAppId}`}
                   className={`${linkDefaultStyle} ${linkHoverStyle} ${linkFocusStyle} ${linkActiveStyle}`}
@@ -72,7 +72,7 @@ export const TeamAppList = (props: Props) => {
                   )}
                   <li>
                     <time
-                      className='text-dns-14N-130'
+                      className='text-sm leading-tight'
                       dateTime={new Date(Number(lastUpdated)).toISOString()}
                     >
                       最終更新日時：
@@ -87,7 +87,7 @@ export const TeamAppList = (props: Props) => {
                   <Tooltip placement='left'>
                     <TooltipTrigger asChild>
                       <MenuButton
-                        className={`flex size-9 items-center justify-center rounded-4 after:absolute after:-inset-full after:m-auto after:h-11 after:w-11 hover:bg-solid-gray-50 hover:-outline-offset-[calc(2/16*1rem)] hover:outline-black hover:outline-solid focus-visible:bg-yellow-300 focus-visible:ring-[calc(6/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:-outline-offset-4 focus-visible:outline-black focus-visible:outline-solid focus-visible:ring-inset`}
+                        className={`flex size-9 items-center justify-center rounded after:absolute after:-inset-full after:m-auto after:h-11 after:w-11 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:-outline-offset-2`}
                       >
                         <MoreVertIcon aria-label='AIアプリの操作' role='img' className='mt-0.5' />
                       </MenuButton>
@@ -97,13 +97,13 @@ export const TeamAppList = (props: Props) => {
 
                   <MenuItems
                     modal={false}
-                    className={`absolute top-full right-0 z-10 w-auto min-w-fit rounded-8 border border-solid-gray-420 bg-white py-2 shadow-1 focus:outline-hidden`}
+                    className={`absolute top-full right-0 z-10 w-auto min-w-fit rounded-lg border border-gray-400 bg-white py-2 shadow-md focus:outline-hidden`}
                   >
                     <MenuItem>
                       {({ focus }) => (
                         <Link
                           to={`/teams/${app.teamId}/apps/${app.exAppId}/edit`}
-                          className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-oln-16N-100 text-nowrap text-solid-gray-800 hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''}`}
+                          className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-base leading-none text-nowrap text-gray-800 hover:bg-gray-50 ${focus ? 'bg-gray-100' : ''}`}
                         >
                           <PiPencilLine aria-hidden={true} className='text-lg' />
                           編集
@@ -115,7 +115,7 @@ export const TeamAppList = (props: Props) => {
                         {({ focus }) => (
                           <Link
                             to={`/teams/${app.teamId}/apps/${app.exAppId}/copy`}
-                            className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-oln-16N-100 text-nowrap text-solid-gray-800 hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''}`}
+                            className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-base leading-none text-nowrap text-gray-800 hover:bg-gray-50 ${focus ? 'bg-gray-100' : ''}`}
                           >
                             <PiClipboard aria-hidden={true} className='text-lg' />
                             AIアプリをコピー
@@ -136,7 +136,7 @@ export const TeamAppList = (props: Props) => {
                             download(url, `${app.exAppId}.json`);
                           }}
                           aria-haspopup='dialog'
-                          className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-oln-16N-100 text-nowrap hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:text-solid-gray-800 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''}`}
+                          className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-base leading-none text-nowrap hover:bg-gray-50 ${focus ? 'bg-gray-100' : ''}`}
                         >
                           <PiDownloadSimple aria-hidden={true} className='text-lg' />
                           JSONダウンロード
@@ -148,7 +148,7 @@ export const TeamAppList = (props: Props) => {
                         <button
                           type='button'
                           onClick={() => handleOpenDeleteModal(app)}
-                          className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-oln-16N-100 text-nowrap text-error-1 hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] ${focus ? '[:root[data-headlessui-focus-visible]_&]:bg-yellow-300 [:root[data-headlessui-focus-visible]_&]:text-solid-gray-800 [:root[data-headlessui-focus-visible]_&]:ring-[calc(6/16*1rem)] [:root[data-headlessui-focus-visible]_&]:ring-yellow-300 [:root[data-headlessui-focus-visible]_&]:outline-4 [:root[data-headlessui-focus-visible]_&]:-outline-offset-4 [:root[data-headlessui-focus-visible]_&]:outline-black [:root[data-headlessui-focus-visible]_&]:outline-solid [:root[data-headlessui-focus-visible]_&]:ring-inset' : ''}`}
+                          className={`relative flex w-full items-center gap-x-2 bg-white py-3 pr-6 pl-3 text-base leading-none text-nowrap text-red-600 hover:bg-gray-50 ${focus ? 'bg-gray-100' : ''}`}
                         >
                           <PiTrash aria-hidden={true} className='text-lg' />
                           削除

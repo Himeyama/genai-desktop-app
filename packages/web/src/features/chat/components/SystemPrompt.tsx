@@ -29,7 +29,7 @@ export const SystemPrompt = (props: Props) => {
   return (
     <div className='mt-3'>
       <Disclosure className='relative'>
-        <DisclosureSummary id='system-prompt-input-label' className='font-700'>
+        <DisclosureSummary id='system-prompt-input-label' className='font-bold'>
           システムプロンプト
         </DisclosureSummary>
         <div>
@@ -76,7 +76,7 @@ export const SystemPrompt = (props: Props) => {
           {isCurrentChat && (
             <div className='pt-2 pb-3'>
               <div className='flex flex-col gap-2'>
-                <SupportText id='system-prompt-input-support' className='text-dns-14N-130!'>
+                <SupportText id='system-prompt-input-support' className='text-sm leading-tight'>
                   会話を開始したチャットのシステムプロンプトは編集できません
                 </SupportText>
                 <AutoResizeTextarea

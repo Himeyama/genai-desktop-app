@@ -50,7 +50,7 @@ export const ExAppInvokedHistoryDeleteDialog = (props: Props) => {
                 setIsDeleting(false);
                 onDeleted();
               }}
-              className='flex items-center justify-center bg-error-1! hover:bg-error-2!'
+              className='flex items-center justify-center bg-red-600! hover:bg-red-700!'
             >
               {isDeleting ? (
                 <>

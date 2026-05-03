@@ -31,24 +31,24 @@ export const ZoomUpVideo = (props: Props) => {
               type='button'
               aria-haspopup='dialog'
               aria-controls={`${videoId}-zoom-video`}
-              className='group relative cursor-pointer focus-visible:rounded-4 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid'
+              className='group relative cursor-pointer focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 '
               onClick={() => {
                 zoomVideoRef.current?.showModal();
               }}
             >
               <video
                 className={`
-                  rounded-4 border object-cover object-center
-                  ${error ? 'border-error-1 outline-1 outline-error-1 text-error-1 font-bold' : 'border-solid-gray-420'}
-                  ${size === 'sm' ? 'size-24' : 'size-32'}
-                `}
+ rounded border object-cover object-center
+ ${error ? 'border-red-600 outline-1 outline-red-600 text-red-600 font-bold' : 'border-gray-400'}
+ ${size === 'sm' ? 'size-24' : 'size-32'}
+ `}
                 src={src}
                 onClick={() => {
                   zoomVideoRef.current?.showModal();
                 }}
               />
               <span
-                className={`absolute top-1/2 left-1/2 inline-flex size-11 -translate-1/2 items-center justify-center rounded-full border border-solid-gray-800 bg-white text-base outline outline-white group-hover:border-2 group-hover:bg-solid-gray-50`}
+                className={`absolute top-1/2 left-1/2 inline-flex size-11 -translate-1/2 items-center justify-center rounded-full border border-gray-800 bg-white text-base outline outline-white group-hover:border-2 group-hover:bg-gray-50`}
               >
                 <PiPlayFill aria-label='動画をプレビュー' role='img' />
               </span>
@@ -58,7 +58,7 @@ export const ZoomUpVideo = (props: Props) => {
         </Tooltip>
 
         {(loading || deleting) && (
-          <div className='absolute top-0 flex h-full w-full items-center justify-center rounded-4 bg-solid-gray-800/20'>
+          <div className='absolute top-0 flex h-full w-full items-center justify-center rounded bg-gray-800/20'>
             <PiSpinnerGap
               aria-label={deleting ? '解除中' : '読み込み中'}
               className='animate-spin text-4xl text-white'
@@ -70,7 +70,7 @@ export const ZoomUpVideo = (props: Props) => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <ButtonIcon
-                  className={`rounded-full border border-solid-gray-800 bg-white text-sm focus-visible:border-transparent`}
+                  className={`rounded-full border border-gray-800 bg-white text-sm focus-visible:border-transparent`}
                   onClick={onDelete}
                 >
                   <PiX
@@ -89,7 +89,7 @@ export const ZoomUpVideo = (props: Props) => {
         aria-labelledby={`${videoId}-zoom-video-heading`}
         id={`${videoId}-zoom-video`}
         ref={zoomVideoRef}
-        className='m-auto max-h-[unset] max-w-[unset] overflow-visible rounded-8 border border-transparent bg-white px-6 py-4 shadow-2 backdrop:bg-opacity-gray-300 forced-colors:backdrop:bg-[#000b]'
+        className='m-auto max-h-[unset] max-w-[unset] overflow-visible rounded-lg border border-transparent bg-white px-6 py-4 shadow-lg backdrop:bg-black/30 forced-colors:backdrop:bg-[#000b]'
         onClose={() => {
           if (videoRef.current) {
             videoRef.current.pause();

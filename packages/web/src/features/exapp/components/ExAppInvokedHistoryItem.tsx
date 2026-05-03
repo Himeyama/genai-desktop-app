@@ -64,13 +64,13 @@ export const ExAppInvokedHistoryItem = (props: Props) => {
   return (
     <>
       <details
-        className={`group/accordion border-b border-solid-gray-420 bg-white [--icon-size:calc(20/16*1rem)] desktop:[--icon-size:calc(32/16*1rem)] ${className ?? ''}`}
+        className={`group/accordion border-b border-gray-400 bg-white [--icon-size:calc(20/16*1rem)] desktop:[--icon-size:calc(32/16*1rem)] ${className ?? ''}`}
       >
         <summary
-          className={`group/summary relative block rounded-8 py-3 pr-3 pl-[calc(var(--icon-size)+(26/16*1rem))] marker:[content:''] hover:bg-solid-gray-50 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid desktop:py-4 desktop:pr-4 desktop:pl-[calc(var(--icon-size)+(28/16*1rem))] [&::-webkit-details-marker]:hidden`}
+          className={`group/summary relative block rounded-lg py-3 pr-3 pl-[calc(var(--icon-size)+(26/16*1rem))] marker:[content:''] hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 desktop:py-4 desktop:pr-4 desktop:pl-[calc(var(--icon-size)+(28/16*1rem))] [&::-webkit-details-marker]:hidden`}
         >
           <span
-            className={`absolute top-3.5 left-4 mt-[calc((1lh-var(--icon-size))/2)] inline-flex size-(--icon-size) items-center justify-center rounded-full border border-current bg-white text-blue-1000 group-open/accordion:rotate-180 group-hover/summary:outline-2 group-hover/summary:outline-current group-hover/summary:outline-solid desktop:top-[calc(18/16*1rem)] desktop:left-4`}
+            className={`absolute top-3.5 left-4 mt-[calc((1lh-var(--icon-size))/2)] inline-flex size-(--icon-size) items-center justify-center rounded-full border border-current bg-white text-blue-700 group-open/accordion:rotate-180 group-hover/summary:outline-2 group-hover/summary:outline-current group-hover/summary:outline-solid desktop:top-[calc(18/16*1rem)] desktop:left-4`}
           >
             <svg
               aria-hidden={true}
@@ -90,11 +90,11 @@ export const ExAppInvokedHistoryItem = (props: Props) => {
           </span>
           <h3
             id={`history-${historyId}-heading`}
-            className='flex items-baseline gap-4 text-std-17N-170 text-solid-gray-800'
+            className='flex items-baseline gap-4 text-base leading-relaxed text-gray-800'
           >
             <time dateTime={new Date(Number(history.createdDate)).toISOString()}>
               <span className='sr-only'>実行日時：</span>
-              <span className='inline-block min-w-[calc(188/16*1rem)] font-700'>
+              <span className='inline-block min-w-[calc(188/16*1rem)] font-bold'>
                 {formatDateTime(history.createdDate)}
               </span>
             </time>
@@ -103,8 +103,8 @@ export const ExAppInvokedHistoryItem = (props: Props) => {
         </summary>
 
         <div className='pt-2 pr-3 pb-4 pl-[calc(var(--icon-size)+(26/16*1rem))] desktop:pb-6'>
-          <Disclosure className='w-full rounded-8 border border-solid-gray-420'>
-            <DisclosureSummary className='w-full px-4 py-3 text-dns-17B-130'>
+          <Disclosure className='w-full rounded-lg border border-gray-400'>
+            <DisclosureSummary className='w-full px-4 py-3 text-base font-bold leading-tight'>
               <h4>入力内容</h4>
             </DisclosureSummary>
             <div className='px-4 pt-1 pb-3'>
@@ -112,7 +112,7 @@ export const ExAppInvokedHistoryItem = (props: Props) => {
                 {Object.keys(history.inputs ?? {}).map((key) => {
                   if (key === 'files') {
                     return (
-                      <li key={key} className='text-solid-gray-800'>
+                      <li key={key} className='text-gray-800'>
                         {key}: {getFilesInfo(history.inputs[key])}
                       </li>
                     );
@@ -120,7 +120,7 @@ export const ExAppInvokedHistoryItem = (props: Props) => {
                     return null;
                   } else {
                     return (
-                      <li key={key} className='text-solid-gray-800'>
+                      <li key={key} className='text-gray-800'>
                         {key}: {String(history.inputs[key])}
                       </li>
                     );
@@ -129,14 +129,14 @@ export const ExAppInvokedHistoryItem = (props: Props) => {
               </Ul>
             </div>
           </Disclosure>
-          <Disclosure className='mt-4 w-full rounded-8 border border-solid-gray-420' open>
-            <DisclosureSummary className='w-full px-4 py-3 text-dns-17B-130'>
+          <Disclosure className='mt-4 w-full rounded-lg border border-gray-400' open>
+            <DisclosureSummary className='w-full px-4 py-3 text-base font-bold leading-tight'>
               <h4>出力結果</h4>
             </DisclosureSummary>
 
             <div className='px-4 py-3'>
               {history.status === 'ERROR' && (
-                <p className='text-error-2'>実行中にエラーが発生しました。再度お試しください。</p>
+                <p className='text-red-700'>実行中にエラーが発生しました。再度お試しください。</p>
               )}
               {history.status === 'ACCEPTED' && (
                 <div>
@@ -185,7 +185,7 @@ export const ExAppInvokedHistoryItem = (props: Props) => {
 
                   {history.artifacts && history.artifacts.length > 0 && (
                     <dl className='mt-2 border-t border-t-solid-gray-420 pt-4'>
-                      <dt className='mb-2 text-std-17B-170'>ファイル一覧:</dt>
+                      <dt className='mb-2 text-base font-bold leading-relaxed'>ファイル一覧:</dt>
                       <dd>
                         <ul className='space-y-4'>
                           {history.artifacts.map((artifact) => {
@@ -236,7 +236,7 @@ export const ExAppInvokedHistoryItem = (props: Props) => {
               size={'md'}
               type='button'
               aria-describedby={`history-${historyId}-heading`}
-              className='text-error-1! hover:bg-red-50! hover:text-error-2! active:bg-red-50! active:text-error-2! desktop:absolute desktop:right-0'
+              className='text-red-600! hover:bg-red-50! hover:text-red-700! active:bg-red-50! active:text-red-700! desktop:absolute desktop:right-0'
             >
               履歴を削除
             </Button>

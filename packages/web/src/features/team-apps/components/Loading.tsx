@@ -5,7 +5,7 @@ export const Loading = () => {
       <div
         key={idx}
         aria-hidden={true}
-        className='my-2 h-6 w-full animate-pulse rounded-4 bg-blue-50'
+        className='my-2 h-6 w-full animate-pulse rounded bg-blue-50'
       />
     ));
 };

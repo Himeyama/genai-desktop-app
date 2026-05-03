@@ -133,7 +133,7 @@ export const ImageGeneratorForm = (props: Props) => {
               プロンプト
               <RequirementBadge>※必須</RequirementBadge>
             </Label>
-            <SupportText className='text-dns-14N-130!' id='generate-image-prompt-input-support'>
+            <SupportText className='text-sm leading-tight' id='generate-image-prompt-input-support'>
               生成したい画像の説明を記載してください。文章ではなく、単語の羅列で記載します。
             </SupportText>
             <AutoResizeTextarea
@@ -151,7 +151,7 @@ export const ImageGeneratorForm = (props: Props) => {
               ネガティブプロンプト
             </Label>
             <SupportText
-              className='text-dns-14N-130!'
+              className='text-sm leading-tight'
               id='generate-image-negative-prompt-input-support'
             >
               生成したくない要素、排除したい要素を記載してください。文章ではなく、単語の羅列で記載します。
@@ -171,7 +171,7 @@ export const ImageGeneratorForm = (props: Props) => {
       <div className='mt-2 mb-2 grid grid-cols-1 gap-2'>
         <CustomSelect
           label='モデル'
-          labelClassName='text-std-16B-170 mt-0!'
+          labelClassName='text-base font-bold leading-relaxed mt-0!'
           isVertical
           isFullWidth
           value={imageGenModelId}
@@ -183,7 +183,7 @@ export const ImageGeneratorForm = (props: Props) => {
         {generationMode !== 'BACKGROUND_REMOVAL' && (
           <CustomSelect
             label='サイズ'
-            labelClassName='text-std-16B-170 mt-0!'
+            labelClassName='text-base font-bold leading-relaxed mt-0!'
             isVertical
             isFullWidth
             value={resolution.value}
@@ -214,7 +214,7 @@ export const ImageGeneratorForm = (props: Props) => {
                 setSeed(n, selectedImageIndex);
               }}
               help='乱数のシード値です。同じシード値を指定すると同じ画像が生成されます。'
-              helpTextClass='!text-dns-14N-130'
+              helpTextClass='!text-sm leading-tight'
             />
             <LoadingButton size='xs' variant='outline' onClick={onClickRandomSeed}>
               <PiDiceFive className='mr-1 text-lg' />
@@ -231,17 +231,19 @@ export const ImageGeneratorForm = (props: Props) => {
             value={imageSample}
             onChange={setImageSample}
             help='シード値をランダム設定しながら画像を指定の数だけ同時に生成します。（最大7枚まで）'
-            helpTextClass='!text-dns-14N-130'
+            helpTextClass='!text-sm leading-tight'
           />
         </div>
       )}
 
       <div className='flex flex-col gap-3'>
-        <h2 className='mb-2 text-std-16B-170 lg:text-std-18B-160'>詳細パラメーター設定</h2>
+        <h2 className='mb-2 text-base font-bold leading-relaxed lg:text-lg font-bold leading-relaxed'>
+          詳細パラメーター設定
+        </h2>
         <div>
           <CustomSelect
             label='GenerationMode'
-            labelClassName='text-std-16B-170'
+            labelClassName='text-base font-bold leading-relaxed'
             isVertical
             isFullWidth
             options={modeOptions}
@@ -265,8 +267,8 @@ export const ImageGeneratorForm = (props: Props) => {
         {generationMode !== GENERATION_MODES.TEXT_IMAGE && (
           <div className='mt-3 mb-2'>
             <div className='flex flex-col gap-1.5'>
-              <p className='text-std-16B-170'>初期画像</p>
-              <SupportText className='text-dns-14N-130!'>
+              <p className='text-base font-bold leading-relaxed'>初期画像</p>
+              <SupportText className='text-sm leading-tight'>
                 画像生成の初期状態となる画像を設定できます。初期画像を設定することで、初期画像に近い画像を生成するように誘導できます。
               </SupportText>
               <Base64Image
@@ -300,8 +302,8 @@ export const ImageGeneratorForm = (props: Props) => {
         {maskMode && (
           <div className='mt-3 mb-2'>
             <div className='flex flex-col gap-1.5'>
-              <p className='text-std-16B-170'>マスク画像</p>
-              <SupportText className='text-dns-14N-130!'>
+              <p className='text-base font-bold leading-relaxed'>マスク画像</p>
+              <SupportText className='text-sm leading-tight'>
                 画像のマスクを設定できます。マスク画像を設定することで、マスクされた領域（Inpaint）もしくは外側の領域（Outpaint）を生成できます。マスクプロンプトと併用はできません。
               </SupportText>
               <Base64Image
@@ -328,7 +330,7 @@ export const ImageGeneratorForm = (props: Props) => {
             <Label htmlFor='mask-prompt-input' size='sm'>
               マスクプロンプト
             </Label>
-            <SupportText className='text-dns-14N-130!' id='mask-prompt-input-support'>
+            <SupportText className='text-sm leading-tight' id='mask-prompt-input-support'>
               マスクしたい/排除したい要素（Inpaint）、マスクしたくない/残したい要素（Outpaint）を記載してください。文章ではなく、単語の羅列で記載します。マスク画像と併用はできません。
             </SupportText>
             <AutoResizeTextarea
@@ -347,7 +349,7 @@ export const ImageGeneratorForm = (props: Props) => {
             <div>
               <CustomSelect
                 label='プリセットパレット'
-                labelClassName='text-std-16B-170'
+                labelClassName='text-base font-bold leading-relaxed'
                 isVertical
                 options={COLORS_OPTIONS}
                 value={COLORS_OPTIONS.find((option) => option.value === colors)?.value || ''}
@@ -359,8 +361,8 @@ export const ImageGeneratorForm = (props: Props) => {
             </div>
 
             <fieldset>
-              <legend className='text-std-16B-170'>カスタムカラー</legend>
-              <SupportText className='mt-2 text-dns-14N-130!'>
+              <legend className='text-base font-bold leading-relaxed'>カスタムカラー</legend>
+              <SupportText className='mt-2 text-sm leading-tight'>
                 カスタムカラーは5色まで設定できます
               </SupportText>
               <div className='mt-2 space-y-2'>
@@ -421,7 +423,7 @@ export const ImageGeneratorForm = (props: Props) => {
           <div className='mb-2'>
             <CustomSelect
               label='コントロールモード'
-              labelClassName='text-std-16B-170'
+              labelClassName='text-base font-bold leading-relaxed'
               isVertical
               options={CONTROL_MODE_OPTIONS}
               value={controlMode}
@@ -446,7 +448,7 @@ export const ImageGeneratorForm = (props: Props) => {
             <div className='mb-2'>
               <CustomSelect
                 label='スタイルプリセット'
-                labelClassName='text-std-16B-170'
+                labelClassName='text-base font-bold leading-relaxed'
                 className='mb-2'
                 isVertical
                 isFullWidth
@@ -465,7 +467,7 @@ export const ImageGeneratorForm = (props: Props) => {
                 value={cfgScale}
                 onChange={setCfgScale}
                 help='この値が高いほどプロンプトに対して忠実な画像を生成します。（最大30まで）'
-                helpTextClass='!text-dns-14N-130'
+                helpTextClass='!text-sm leading-tight'
               />
 
               <RangeSlider
@@ -477,7 +479,7 @@ export const ImageGeneratorForm = (props: Props) => {
                 value={step}
                 onChange={setStep}
                 help='画像生成の反復回数です。Step 数が多いほど画像が洗練されますが、生成に時間がかかります。（最大50まで）'
-                helpTextClass='!text-dns-14N-130'
+                helpTextClass='!text-sm leading-tight'
               />
 
               {generationMode === GENERATION_MODES.IMAGE_VARIATION && (
@@ -491,7 +493,7 @@ export const ImageGeneratorForm = (props: Props) => {
                   value={imageStrength}
                   onChange={setImageStrength}
                   help='1に近いほど「初期画像」に近い画像が生成され、0に近いほど「初期画像」とは異なる画像が生成されます。（最大1まで）'
-                  helpTextClass='!text-dns-14N-130'
+                  helpTextClass='!text-sm leading-tight'
                 />
               )}
               {generationMode === 'IMAGE_CONDITIONING' && (
@@ -505,7 +507,7 @@ export const ImageGeneratorForm = (props: Props) => {
                   value={controlStrength}
                   onChange={setControlStrength}
                   help='1に近いほど「参照画像」の構図に基づいた画像が生成され、0に近いほど「参照画像」の構図とは異なる画像が生成されます。（最大1まで）'
-                  helpTextClass='!text-dns-14N-130'
+                  helpTextClass='!text-sm leading-tight'
                 />
               )}
             </div>

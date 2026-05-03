@@ -134,7 +134,7 @@ export const GenerateImageAssistant = (props: Props) => {
           ref={screen}
         >
           <div ref={scrollTopAnchorRef} />
-          <h2 className='mr-3 mb-2 ml-4 text-std-18B-160 lg:ml-6 lg:text-std-20B-150'>
+          <h2 className='mr-3 mb-2 ml-4 text-lg font-bold leading-relaxed lg:ml-6 lg:text-xl font-bold leading-snug'>
             チャット形式で画像生成
           </h2>
           {contents.length === 0 ? (
@@ -145,8 +145,8 @@ export const GenerateImageAssistant = (props: Props) => {
               <p className='mb-6'>
                 ※生成された画像の利用にあたっては、各ユーザーによってその利用が適切かどうかご判断ください。
               </p>
-              <div className='mr-3 ml-4 rounded-4 border border-solid-gray-536 bg-solid-gray-50 p-3 text-solid-gray-800'>
-                <h3 className='mb-2 flex items-center text-std-17B-170'>
+              <div className='mr-3 ml-4 rounded border border-gray-600 bg-gray-50 p-3 text-gray-800'>
+                <h3 className='mb-2 flex items-center text-base font-bold leading-relaxed'>
                   <PiLightbulbFilamentBold className='mr-2' />
                   ヒント
                 </h3>
@@ -180,7 +180,7 @@ export const GenerateImageAssistant = (props: Props) => {
                 <div
                   key={idx}
                   className={`flex gap-4 border-t border-t-solid-gray-420 px-6 py-3 ${
-                    c.role === 'user' ? 'bg-solid-gray-50' : ''
+                    c.role === 'user' ? 'bg-gray-50' : ''
                   }`}
                 >
                   <div className='flex-none'>
@@ -200,7 +200,7 @@ export const GenerateImageAssistant = (props: Props) => {
                       c.content.split('\n').map((m, idx) => <div key={idx}>{m}</div>)}
                     {c.role === 'assistant' && c.content.error && (
                       <div>
-                        <div className='flex items-center gap-2 font-700 text-error-1'>
+                        <div className='flex items-center gap-2 font-bold text-red-600'>
                           <PiWarningFill aria-hidden={true} />
                           エラー
                         </div>

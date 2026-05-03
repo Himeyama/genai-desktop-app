@@ -31,7 +31,7 @@ export const NotificationBanner = (props: Props) => {
           className='mt-[calc(3/16*1rem)] size-7 max-h-none max-w-none justify-self-center desktop:-my-1 desktop:size-11'
           type={type}
         />
-        <span className='pt-[calc(3/16*1rem)] text-std-17B-170 text-solid-gray-900 desktop:pt-0.5 desktop:text-std-20B-150'>
+        <span className='pt-[calc(3/16*1rem)] text-base font-bold leading-relaxed text-gray-900 desktop:pt-0.5 desktop:text-xl font-bold leading-snug'>
           {title}
         </span>
       </Tag>

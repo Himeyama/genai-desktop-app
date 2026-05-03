@@ -46,11 +46,11 @@ export const DownloadButton = ({ type, code }: DownloadButtonProps) => {
       canvas.height = height * scale;
 
       const wrappedSvg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
-          <rect width="100%" height="100%" fill="white"/>
-          ${svg}
-        </svg>
-      `;
+ <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+ <rect width="100%" height="100%" fill="white"/>
+ ${svg}
+ </svg>
+ `;
 
       const svgBase64 = btoa(unescape(encodeURIComponent(wrappedSvg)));
       const img = new Image();

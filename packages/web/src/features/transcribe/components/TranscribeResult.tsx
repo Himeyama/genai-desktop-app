@@ -21,14 +21,11 @@ export const TranscribeResult = (props: Props) => {
   const showResult = !loading && formattedOutput !== '';
 
   return (
-    <div
-      ref={scrollableContainer}
-      className='relative mt-5 rounded-8 border border-solid-gray-420 p-4'
-    >
+    <div ref={scrollableContainer} className='relative mt-5 rounded-lg border border-gray-400 p-4'>
       <h2 className='sr-only'>音声認識結果</h2>
 
       {isInitial && (
-        <div className='leading-175 text-solid-gray-536'>音声認識結果がここに表示されます</div>
+        <div className='leading-175 text-gray-600'>音声認識結果がここに表示されます</div>
       )}
 
       {transcripts.length > 0 && (

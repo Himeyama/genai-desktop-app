@@ -11,7 +11,7 @@ export const DiagramGeneratingStep = () => {
   }
 
   return (
-    <div className='flex min-h-10 items-center justify-center rounded-6 bg-solid-gray-50 p-3'>
+    <div className='flex min-h-10 items-center justify-center rounded-md bg-gray-50 p-3'>
       <ProgressIndicator label='ステップ２: 図を生成しています' />
     </div>
   );

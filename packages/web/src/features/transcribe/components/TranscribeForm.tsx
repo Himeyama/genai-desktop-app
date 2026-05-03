@@ -210,10 +210,10 @@ export const TranscribeForm = (props: Props) => {
                       variant='outline'
                       size='md'
                       className={`
-                        shrink-0
-                        group-data-[dragover=true]/drop-area:bg-blue-300 group-data-[dragover=true]/drop-area:text-blue-1200 group-data-[dragover=true]/drop-area:underline
-                        group-data-[has-error=true]/file-upload:border-error-1
-                      `}
+ shrink-0
+ group-data-[dragover=true]/drop-area:bg-blue-300 group-data-[dragover=true]/drop-area:text-blue-900 group-data-[dragover=true]/drop-area:underline
+ group-data-[has-error=true]/file-upload:border-red-600
+ `}
                       onClick={handleSelectButtonClick}
                       ref={selectButtonRef}
                       aria-labelledby={`${labelId} ${buttonId}`}
@@ -232,7 +232,7 @@ export const TranscribeForm = (props: Props) => {
                     </p>
                   )}
                   {errors.file && (
-                    <p id={errorMessagesId} className='mt-2 text-error-2'>
+                    <p id={errorMessagesId} className='mt-2 text-red-700'>
                       ＊{errors.file.message}
                     </p>
                   )}
@@ -273,7 +273,7 @@ export const TranscribeForm = (props: Props) => {
                             type='button'
                             variant='text'
                             size='xs'
-                            className='-order-1 shrink-0 min-w-12 min-h-[calc(30/16*1rem)] text-oln-16B-100'
+                            className='-order-1 shrink-0 min-w-12 min-h-[calc(30/16*1rem)] text-base font-bold leading-none'
                             onClick={() => handleRemoveFile(file.id, index)}
                             aria-labelledby={`${file.id}-remove ${file.id}-name`}
                           >

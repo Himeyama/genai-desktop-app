@@ -35,7 +35,7 @@ export const TranslatedResult = (props: Props) => {
       <div className='flex flex-none items-end lg:h-16'>
         <CustomSelect
           label='翻訳する言語：'
-          labelClassName='text-dns-14B-120'
+          labelClassName='text-sm font-bold leading-tight'
           value={language}
           className='mb-1'
           options={LANGUAGES.map((l) => {
@@ -45,10 +45,8 @@ export const TranslatedResult = (props: Props) => {
         />
       </div>
 
-      <div className='mb-3 flex flex-1 flex-col rounded-8 border border-solid-gray-420 p-4'>
-        {isInitial && (
-          <div className='leading-175 text-solid-gray-536'>翻訳結果がここに表示されます</div>
-        )}
+      <div className='mb-3 flex flex-1 flex-col rounded-lg border border-gray-400 p-4'>
+        {isInitial && <div className='leading-175 text-gray-600'>翻訳結果がここに表示されます</div>}
 
         <div ref={copyTextRef}>
           <Markdown>{typingTextOutput}</Markdown>

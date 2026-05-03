@@ -27,7 +27,7 @@ export const DrawerItem = (props: DrawerItemProps) => {
 
   return (
     <Link
-      className={`flex min-h-11 items-center rounded-4 py-1 pr-2 pl-4 hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-0 focus-visible:outline-black focus-visible:outline-solid focus-visible:ring-inset aria-[current='page']:bg-blue-100! aria-[current='page']:font-bold aria-[current='page']:text-blue-1000! aria-[current='true']:bg-blue-100! aria-[current='true']:font-bold aria-[current='true']:text-blue-1000! ${className ?? ''}`}
+      className={`flex min-h-11 items-center rounded py-1 pr-2 pl-4 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 aria-[current='page']:bg-blue-100! aria-[current='page']:font-bold aria-[current='page']:text-blue-700! aria-[current='true']:bg-blue-100! aria-[current='true']:font-bold aria-[current='true']:text-blue-700! ${className ?? ''}`}
       aria-current={ariaCurrent}
       to={to}
     >

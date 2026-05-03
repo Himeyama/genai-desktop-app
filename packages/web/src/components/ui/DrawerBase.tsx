@@ -9,7 +9,7 @@ export const DrawerBase = (props: Props) => {
   const { className, children } = props;
   return (
     <div
-      className={`flex h-full w-72 flex-col justify-between border-r border-r-solid-gray-420 bg-white text-std-16N-170 text-solid-gray-800 print:hidden ${className ?? ''}`}
+      className={`flex h-full w-72 flex-col justify-between border-r border-r-solid-gray-420 bg-white text-base leading-relaxed text-gray-800 print:hidden ${className ?? ''}`}
     >
       <nav
         aria-labelledby='side-menu-heading'

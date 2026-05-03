@@ -9,9 +9,11 @@ export const SignedOutPage = () => {
       <PageTitle title={`${PAGE_TITLE}${APP_TITLE ? ` | ${APP_TITLE}` : ''}`} />
       <div className='m-8'>
         <main id='mainContents' className='flex flex-col gap-4'>
-          <h1 className='mb-8 text-std-28B-150 lg:text-std-45B-140'>サインアウトが完了しました</h1>
+          <h1 className='mb-8 text-3xl font-bold leading-snug lg:text-6xl font-bold leading-snug'>
+            サインアウトが完了しました
+          </h1>
 
-          <p className='text-std-18N-160'>ページを閉じてください。</p>
+          <p className='text-lg leading-relaxed'>ページを閉じてください。</p>
         </main>
       </div>
     </>

@@ -8,7 +8,7 @@ export const HamburgerMenuButton = forwardRef<HTMLButtonElement, HamburgerMenuBu
 
     return (
       <button
-        className={`flex w-fit touch-manipulation items-center rounded-4 text-oln-16N-100 hover:bg-solid-gray-50 hover:underline hover:underline-offset-[calc(3/16*1rem)] focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid ${className ?? ''}`}
+        className={`flex w-fit touch-manipulation items-center rounded text-base leading-none hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 ${className ?? ''}`}
         ref={ref}
         type='button'
         {...rest}

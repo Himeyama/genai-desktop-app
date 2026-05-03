@@ -11,7 +11,7 @@ export const Label = (props: LabelProps) => {
 
   return (
     <label
-      className={`flex w-fit items-center gap-2 text-solid-gray-800 data-[size=lg]:text-std-18B-160 data-[size=md]:text-std-17B-170 data-[size=sm]:text-std-16B-170 ${className ?? ''}`}
+      className={`flex w-fit items-center gap-2 text-gray-800 data-[size=lg]:text-lg font-bold leading-relaxed data-[size=md]:text-base font-bold leading-relaxed data-[size=sm]:text-base font-bold leading-relaxed ${className ?? ''}`}
       data-size={size}
       {...rest}
     >

@@ -17,4 +17,8 @@ export const GEN_U_MENU_ITEMS: MenuItemProps[] = [
     label: '音声ファイルから文字起こし',
     to: '/transcribe',
   },
+  {
+    label: '履歴',
+    to: '/history',
+  },
 ] as const satisfies MenuItemProps[];

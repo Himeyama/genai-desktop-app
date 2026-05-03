@@ -92,7 +92,7 @@ export const ExAppPage = () => {
               <Divider className='my-6' />
 
               <div className='mb-3'>
-                <h2 className='my-4 text-std-18B-160'>利用履歴</h2>
+                <h2 className='my-4 text-lg font-bold leading-relaxed'>利用履歴</h2>
                 {exApp && (
                   <ErrorBoundary resetKeys={[exApp.exAppId]} fallbackRender={ErrorFallback}>
                     <Suspense fallback={<ExAppInvokedHistoriesLoading />}>

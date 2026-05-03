@@ -13,8 +13,8 @@ export const SketchButton = (props: Props) => {
     <button
       type='button'
       title={props.label}
-      className={`flex size-8 cursor-pointer items-center justify-center rounded-4 border hover:outline-black hover:outline-solid focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid ${
-        props.isActive ? 'border-solid-gray-800 bg-gray-200' : 'border-solid-gray-420'
+      className={`flex size-8 cursor-pointer items-center justify-center rounded border focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 ${
+        props.isActive ? 'border-gray-800 bg-gray-200' : 'border-gray-400'
       } ${props.className ?? ''}`}
       onClick={props.onClick}
       aria-pressed={props.isActive}

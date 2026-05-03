@@ -7,7 +7,7 @@ export const NotificationBannerMobileClose = (props: Props) => {
 
   return (
     <button
-      className={`mt-1 touch-manipulation self-start rounded-4 text-solid-gray-900 hover:bg-solid-gray-50 hover:outline-1 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black ${className ?? ''}`}
+      className={`mt-1 touch-manipulation self-start rounded text-gray-900 hover:bg-gray-50 focus-visible:bg-gray-100 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 ${className ?? ''}`}
       type='button'
       {...rest}
     >

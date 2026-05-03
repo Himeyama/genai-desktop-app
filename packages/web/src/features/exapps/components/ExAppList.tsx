@@ -71,11 +71,11 @@ export const ExAppList = (props: Props) => {
         </div>
       </search>
       {filteredTeams.length === 0 ? (
-        <p className='mt-8 text-std-16N-170'>該当するAIアプリはありません。</p>
+        <p className='mt-8 text-base leading-relaxed'>該当するAIアプリはありません。</p>
       ) : (
         filteredTeams.map(({ teamIdKey, teamData, filteredExApps }) => (
           <section key={teamIdKey}>
-            <h2 className='mt-8 mb-4 flex justify-start text-std-18B-160'>
+            <h2 className='mt-8 mb-4 flex justify-start text-lg font-bold leading-relaxed'>
               {teamData.teamName}（{filteredExApps.length}）
             </h2>
             <ul className='grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-2 lg:gap-3 xl:grid-cols-3 2xl:grid-cols-4'>

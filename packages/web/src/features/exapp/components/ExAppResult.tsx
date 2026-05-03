@@ -24,15 +24,15 @@ export const ExAppResult = (props: Props) => {
     <>
       <h2 className='sr-only'>AIアプリの出力</h2>
       <div
-        className={`relative mt-5 rounded-8 border p-4 ${error ? 'border-error-2' : 'border-solid-gray-420'}`}
+        className={`relative mt-5 rounded-lg border p-4 ${error ? 'border-error-2' : 'border-gray-400'}`}
       >
         {isInitial && (
-          <div className='leading-175 text-solid-gray-536'>
+          <div className='leading-175 text-gray-600'>
             AIアプリのレスポンスは、ここに表示されます
           </div>
         )}
 
-        {error && <p className='text-error-2'>{error}</p>}
+        {error && <p className='text-red-700'>{error}</p>}
 
         <div ref={copyTextRef}>
           <Markdown>{exAppResponse?.outputs ?? ''}</Markdown>

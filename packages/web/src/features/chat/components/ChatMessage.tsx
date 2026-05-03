@@ -57,9 +57,7 @@ export const ChatMessage = (props: Props) => {
 
   return (
     <article
-      className={`flex justify-start px-3 ${
-        isAssistant || isSystem ? 'bg-white' : 'bg-solid-gray-50'
-      }`}
+      className={`flex justify-start px-3 ${isAssistant || isSystem ? 'bg-white' : 'bg-gray-50'}`}
     >
       <div
         className={`${
@@ -159,7 +157,7 @@ export const ChatMessage = (props: Props) => {
             )}
 
             {isAssistant && (
-              <div className='mt-2 text-right text-dns-14N-120 text-solid-gray-536 lg:mb-0'>
+              <div className='mt-2 text-right text-sm leading-tight text-gray-600 lg:mb-0'>
                 {chatContent?.llmType}
               </div>
             )}
@@ -171,7 +169,7 @@ export const ChatMessage = (props: Props) => {
             <>
               {props.allowRetry && (
                 <ButtonIcon
-                  className='gap-x-1 text-oln-14N-100! text-solid-gray-800'
+                  className='gap-x-1 text-sm leading-none! text-gray-800'
                   onClick={() => props.retryGeneration?.()}
                 >
                   <PiArrowClockwise className='text-xl' aria-hidden={true} />
@@ -179,7 +177,7 @@ export const ChatMessage = (props: Props) => {
                 </ButtonIcon>
               )}
               <ButtonCopy
-                className='mr-0.5 text-solid-gray-800'
+                className='mr-0.5 text-gray-800'
                 text={chatContent?.content || ''}
                 targetRef={copyTextRef}
               />

@@ -7,7 +7,7 @@ export const NotificationBannerBody = (props: Props) => {
 
   return (
     <div
-      className={`col-start-1 -col-end-1 grid gap-y-2 text-std-16N-170 text-solid-gray-800 desktop:col-start-2 ${className ?? ''}`}
+      className={`col-start-1 -col-end-1 grid gap-y-2 text-base leading-relaxed text-gray-800 desktop:col-start-2 ${className ?? ''}`}
       {...rest}
     >
       {children}

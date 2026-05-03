@@ -21,11 +21,11 @@ const Base64ImageContent = (props: ContentProps) => {
   if (error) {
     return (
       <span className='flex w-full flex-col items-center'>
-        <PiFileX className={`${errorMessage ? 'size-1/4' : 'size-1/2'} text-error-1`} />
-        <span className='text-xs text-error-1'>エラー</span>
+        <PiFileX className={`${errorMessage ? 'size-1/4' : 'size-1/2'} text-red-600`} />
+        <span className='text-xs text-red-600'>エラー</span>
 
         {errorMessage && (
-          <span className='w-full text-sm wrap-break-word text-solid-gray-536'>{errorMessage}</span>
+          <span className='w-full text-sm wrap-break-word text-gray-600'>{errorMessage}</span>
         )}
       </span>
     );
@@ -35,7 +35,7 @@ const Base64ImageContent = (props: ContentProps) => {
     return loading ? (
       <ProgressIndicator />
     ) : (
-      <PiImageLight role='img' aria-label='画像未生成' className='size-3/4 text-solid-gray-420' />
+      <PiImageLight role='img' aria-label='画像未生成' className='size-3/4 text-gray-400' />
     );
   }
 
@@ -56,7 +56,7 @@ type Props = CommonProps & {
   onClick?: () => void;
 };
 
-const baseStyles = 'flex items-center justify-center rounded-4 border border-solid-gray-420';
+const baseStyles = 'flex items-center justify-center rounded border border-gray-400';
 
 export const Base64Image = (props: Props) => {
   const { clickable, format, imageBase64, onClick, className, error, errorMessage, loading } =
@@ -76,7 +76,7 @@ export const Base64Image = (props: Props) => {
   return clickable ? (
     <button
       type='button'
-      className={`${baseStyles} cursor-pointer outline-offset-1 hover:ring-1 hover:ring-white hover:outline-black hover:outline-solid focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black! focus-visible:outline-solid ${className ?? ''}`}
+      className={`${baseStyles} cursor-pointer outline-offset-1 hover:ring-1 hover:ring-white focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 ${className ?? ''}`}
       onClick={handleClick}
     >
       <Base64ImageContent

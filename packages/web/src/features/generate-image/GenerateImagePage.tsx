@@ -75,13 +75,13 @@ export const GenerateImagePage = () => {
       <div className='h-full'>
         <div className='grid h-full grid-rows-[auto_minmax(0,1fr)]'>
           <div className='border-b border-b-black px-4 pt-4 pb-2 lg:px-6'>
-            <h1 className='mb-1 flex justify-start text-std-20B-160 lg:text-std-24B-150'>
+            <h1 className='mb-1 flex justify-start text-xl font-bold leading-relaxed lg:text-2xl font-bold leading-snug'>
               画像を生成
             </h1>
             <div className='mt-2 flex w-full'>
               <CustomSelect
                 label='LLM：'
-                labelClassName='text-dns-14B-120'
+                labelClassName='text-sm font-bold leading-tight'
                 value={selectedModelId}
                 onChange={setSelectedModelId}
                 options={modelIds.map((m) => {
@@ -118,7 +118,9 @@ export const GenerateImagePage = () => {
 
               <div className='min-h-0 overflow-x-clip overflow-y-auto [scrollbar-gutter:stable]'>
                 <div className='py-3 pr-3 pl-4'>
-                  <h2 className='mb-4 text-std-18B-160 lg:text-std-20B-150'>画像生成結果</h2>
+                  <h2 className='mb-4 text-lg font-bold leading-relaxed lg:text-xl font-bold leading-snug'>
+                    画像生成結果
+                  </h2>
 
                   <GeneratedImages
                     generating={generating}

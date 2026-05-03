@@ -59,7 +59,9 @@ const components: CustomComponents = {
       <Disclosure className='my-4'>
         <DisclosureSummary>
           {isHeading ? (
-            <Heading className='my-0! inline text-std-17B-170!'>{props.title}</Heading>
+            <Heading className='my-0! inline text-base font-bold leading-relaxed!'>
+              {props.title}
+            </Heading>
           ) : (
             props.title
           )}

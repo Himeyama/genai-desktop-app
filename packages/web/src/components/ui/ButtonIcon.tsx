@@ -19,7 +19,7 @@ export const ButtonIcon = forwardRef<HTMLButtonElement, Props>((props, ref) => {
     <button
       ref={ref}
       type='button'
-      className={`relative flex min-h-9 min-w-9 items-center justify-center rounded-4 p-1.5 text-xl after:absolute after:-inset-full after:m-auto after:h-11 after:w-11 hover:bg-solid-gray-50 hover:-outline-offset-[calc(2/16*1rem)] hover:outline-black hover:outline-solid focus-visible:bg-yellow-300 focus-visible:ring-[calc(6/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:-outline-offset-4 focus-visible:outline-black focus-visible:outline-solid focus-visible:ring-inset ${disabled || loading ? 'opacity-30' : ''} ${className ?? ''}`}
+      className={`relative flex min-h-9 min-w-9 items-center justify-center rounded p-1.5 text-xl after:absolute after:-inset-full after:m-auto after:h-11 after:w-11 hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:-outline-offset-2 ${disabled || loading ? 'opacity-30' : ''} ${className ?? ''}`}
       onClick={handleClick}
       aria-disabled={disabled}
       {...rest}

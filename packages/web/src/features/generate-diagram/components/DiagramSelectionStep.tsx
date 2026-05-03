@@ -10,14 +10,14 @@ export const DiagramSelectionStep = () => {
   return (
     <>
       {diagramType === '' && (
-        <div className='flex min-h-10 items-center justify-center rounded-6 bg-solid-gray-50 p-3'>
+        <div className='flex min-h-10 items-center justify-center rounded-md bg-gray-50 p-3'>
           <ProgressIndicator label='ステップ１: 最適なダイアグラムを選んでいます' />
         </div>
       )}
 
       {diagramType !== '' && (
-        <div className='flex min-h-10 flex-col items-center justify-center rounded-6 bg-blue-50 p-3'>
-          <span className='text-solid-gray-800'>ステップ１: 完了</span>
+        <div className='flex min-h-10 flex-col items-center justify-center rounded-md bg-blue-50 p-3'>
+          <span className='text-gray-800'>ステップ１: 完了</span>
           <span className='mt-1'>
             {DIAGRAM_DATA[diagramType as keyof typeof DIAGRAM_DATA].title}
             を選択

@@ -75,8 +75,8 @@ Pumped heat,"Heating and cooling, ""commercial""",70.672
 <実装例2>
 ---
 config:
-  sankey:
-    showValues: false
+ sankey:
+ showValues: false
 ---
 sankey-beta
 

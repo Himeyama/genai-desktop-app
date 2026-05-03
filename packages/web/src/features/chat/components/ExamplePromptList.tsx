@@ -29,7 +29,7 @@ export const ExamplePromptList = (props: Props) => {
                 return (
                   <li key={`${i}-${item.title}-${j}`}>
                     <button
-                      className='-ml-1 h-9 w-full cursor-pointer px-1 text-left underline underline-offset-[calc(3/16*1rem)] hover:bg-solid-gray-50 hover:decoration-[calc(3/16*1rem)] hover:outline-2 focus-visible:rounded-4 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid'
+                      className='-ml-1 h-9 w-full cursor-pointer px-1 text-left hover:bg-gray-50 focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'
                       type='button'
                       onClick={() => {
                         onClick({

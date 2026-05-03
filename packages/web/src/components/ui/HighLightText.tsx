@@ -6,5 +6,5 @@ type Props = {
 
 export const HighLightText = (props: Props) => {
   const { children } = props;
-  return <mark className='bg-yellow-200 font-700'>{children}</mark>;
+  return <mark className='bg-yellow-200 font-bold'>{children}</mark>;
 };

@@ -41,7 +41,7 @@ export const GeneratedImages = (props: Props) => {
               <Base64Image
                 className={`${
                   idx === selectedImageIndex && (!!image.base64 || image.base64 !== '')
-                    ? 'border-solid-gray-420! outline-2 outline-blue-1000! outline-solid'
+                    ? 'border-gray-400! outline-2 outline-blue-1000! outline-solid'
                     : ''
                 } mt-3 size-10`}
                 imageBase64={image.base64}

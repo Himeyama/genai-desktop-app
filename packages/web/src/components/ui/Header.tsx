@@ -1,11 +1,8 @@
-import { useSWRConfig } from 'swr';
-import { AccountMenu } from '@/components/ui/AccountMenu';
 import {
   HamburgerMenuButton,
   HamburgerWithLabelIcon,
 } from '@/components/ui/dads/HamburgerMenuButton';
 import { Logo } from '@/components/ui/Logo';
-import { useAuth } from '@/hooks/useAuth';
 
 type Props = {
   className?: string;
@@ -16,25 +13,13 @@ type Props = {
 export const Header = (props: Props) => {
   const { className, isLandingPage, onClickMenuToggleForMobile } = props;
 
-  const { data } = useAuth();
-  const groups =
-    (data?.tokens?.accessToken.payload['cognito:groups'] as unknown as string[] | undefined) ?? [];
-
-  const { cache } = useSWRConfig();
-
-  const onClickSignout = () => {
-    for (const key of cache.keys()) {
-      cache.delete(key);
-    }
-  };
-
   return (
     <header
-      className={`flex h-(--header-height) items-center justify-start border-b border-b-solid-gray-420 bg-white pl-1.5 lg:pl-4 ${className ?? ''}`}
+      className={`flex h-(--header-height) items-center justify-start border-b border-b-gray-400 bg-white pl-1.5 lg:pl-4 ${className ?? ''}`}
     >
       {/* For Mobile view */}
       <HamburgerMenuButton
-        className={`relative mr-1.5 hover:outline-black hover:outline-solid lg:hidden`}
+        className={`relative z-10 mr-1.5 lg:hidden`}
         aria-controls='main-menu-container'
         aria-haspopup='dialog'
         onClick={onClickMenuToggleForMobile}
@@ -44,12 +29,7 @@ export const Header = (props: Props) => {
       <Logo isLandingPage={isLandingPage} />
 
       <div className='ml-auto flex h-full'>
-        <AccountMenu
-          onClickSignout={onClickSignout}
-          isShowTeamManagementMenu={
-            groups.includes('SystemAdminGroup') || groups.includes('TeamAdminGroup')
-          }
-        />
+        {/* AccountMenu was removed based on requirements */}
       </div>
     </header>
   );

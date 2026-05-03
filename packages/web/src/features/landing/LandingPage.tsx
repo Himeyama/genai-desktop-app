@@ -24,7 +24,7 @@ export const LandingPage = () => {
       <PageTitle title={APP_TITLE ? `${APP_TITLE} :` : 'トップページ'} />
       <div className='mx-6 max-w-[calc(1120/16*1rem)] pb-24 lg:mx-10'>
         <div className='mt-8 lg:mt-10'>
-          <h2 className='mb-6 flex justify-start text-std-24B-150'>おすすめ</h2>
+          <h2 className='mb-6 flex justify-start text-2xl font-bold leading-snug'>おすすめ</h2>
           <ul className='grid grid-cols-1 gap-2 md:grid-cols-2 lg:gap-3 xl:grid-cols-3'>
             {recommendedGovAI && recommendedGovAI.length > 0 ? (
               recommendedGovAI.map((govAI) => (

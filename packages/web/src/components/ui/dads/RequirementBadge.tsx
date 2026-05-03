@@ -9,7 +9,7 @@ export const RequirementBadge = (props: RequirementBadgeProps) => {
 
   return (
     <span
-      className={`inline-block text-oln-16N-100 text-red-800 data-[is-optional]:text-solid-gray-800 ${className ?? ''}`}
+      className={`inline-block text-base leading-none text-red-800 data-[is-optional]:text-gray-800 ${className ?? ''}`}
       data-is-optional={isOptional || undefined}
       {...rest}
     >

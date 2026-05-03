@@ -20,7 +20,7 @@ export const ChatNotificationBanner = () => {
             <p>本アプリは生成AIを使用しています。以下のリスクと対応をご理解ください：</p>
             <dl className='flex flex-col gap-4'>
               <div>
-                <dt className='mb-2 font-700'>リスクの例：</dt>
+                <dt className='mb-2 font-bold'>リスクの例：</dt>
                 <dd>
                   <Ul>
                     <li>ハルシネーション（でたらめ）：事実と異なる不正確な情報を生成するおそれ</li>
@@ -35,7 +35,7 @@ export const ChatNotificationBanner = () => {
                 </dd>
               </div>
               <div>
-                <dt className='mb-2 font-700'>対応アクション：</dt>
+                <dt className='mb-2 font-bold'>対応アクション：</dt>
                 <dd>
                   <Ol>
                     <li>
@@ -47,7 +47,7 @@ export const ChatNotificationBanner = () => {
                 </dd>
               </div>
               <div>
-                <dt className='mb-2 font-700'>
+                <dt className='mb-2 font-bold'>
                   チャットでのやり取りが長大になると、以下のような問題が発生します：
                 </dt>
                 <dd>

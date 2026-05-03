@@ -152,7 +152,7 @@ export const TeamAppEditForm = (props: Props) => {
         <Disclosure>
           <DisclosureSummary>マークダウン記法の入力例</DisclosureSummary>
           <div className='mt-2'>
-            <pre className='border border-transparent bg-solid-gray-50 p-3 text-dns-14N-130 leading-140 wrap-break-word whitespace-pre-wrap'>
+            <pre className='border border-transparent bg-gray-50 p-3 text-sm leading-tight leading-140 wrap-break-word whitespace-pre-wrap'>
               {MARKDOWN_EXAMPLE}
             </pre>
           </div>
@@ -338,7 +338,7 @@ export const TeamAppEditForm = (props: Props) => {
             システムエラー
           </h2>
           <div
-            className={`mx-auto flex w-full flex-col gap-2 rounded-6 bg-red-50 p-4 text-center text-error-1`}
+            className={`mx-auto flex w-full flex-col gap-2 rounded-md bg-red-50 p-4 text-center text-red-600`}
           >
             <p>{error}</p>
           </div>

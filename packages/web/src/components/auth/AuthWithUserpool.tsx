@@ -65,7 +65,7 @@ const AuthWithUserpoolContent = (props: Props) => {
           return (
             <>
               <PageTitle title={`サインイン${APP_TITLE ? ` | ${APP_TITLE}` : ''}`} />
-              <h1 className='mt-8 mb-6 flex justify-center text-std-32B-150 text-solid-gray-900'>
+              <h1 className='mt-8 mb-6 flex justify-center text-4xl font-bold leading-snug text-gray-900'>
                 ここにロゴが入る
               </h1>
             </>
@@ -77,7 +77,7 @@ const AuthWithUserpoolContent = (props: Props) => {
               <h2
                 id='auth-sign-in-header'
                 tabIndex={-1}
-                className='mx-8 mt-8 text-std-24B-150 text-solid-gray-800 focus-visible:rounded-4 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid'
+                className='mx-8 mt-8 text-2xl font-bold leading-snug text-gray-800 focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'
               >
                 サインイン
               </h2>
@@ -87,7 +87,7 @@ const AuthWithUserpoolContent = (props: Props) => {
         SignUp: {
           Header() {
             return (
-              <h2 className='mx-8 mt-8 text-std-24B-150 text-solid-gray-800 focus-visible:rounded-4 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid'>
+              <h2 className='mx-8 mt-8 text-2xl font-bold leading-snug text-gray-800 focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'>
                 アカウントを作る
               </h2>
             );
@@ -105,11 +105,11 @@ const AuthWithUserpoolContent = (props: Props) => {
                 <h2
                   ref={ref}
                   tabIndex={-1}
-                  className='text-std-24B-150 text-solid-gray-800 focus-visible:rounded-4 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid'
+                  className='text-2xl font-bold leading-snug text-gray-800 focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'
                 >
                   パスワードを再設定
                 </h2>
-                <p className='mb-2 text-solid-gray-700'>
+                <p className='mb-2 text-gray-700'>
                   登録しているメールアドレスを入力してください。確認コードを送信します
                 </p>
               </>
@@ -128,11 +128,11 @@ const AuthWithUserpoolContent = (props: Props) => {
                 <h2
                   ref={ref}
                   tabIndex={-1}
-                  className='text-std-24B-150 text-solid-gray-800 focus-visible:rounded-4 focus-visible:bg-yellow-300 focus-visible:ring-[calc(2/16*1rem)] focus-visible:ring-yellow-300 focus-visible:outline-4 focus-visible:outline-offset-[calc(2/16*1rem)] focus-visible:outline-black focus-visible:outline-solid'
+                  className='text-2xl font-bold leading-snug text-gray-800 focus-visible:rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2'
                 >
                   パスワードを再設定
                 </h2>
-                <p className='mb-2 text-solid-gray-800'>
+                <p className='mb-2 text-gray-800'>
                   登録しているメールアドレスに送信された6桁の確認コードを入力し、新しいパスワードを設定してください
                 </p>
               </>

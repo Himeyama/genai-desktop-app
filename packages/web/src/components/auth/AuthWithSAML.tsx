@@ -158,7 +158,7 @@ export const AuthWithSAML = (props: Props) => {
     return (
       <div className='fixed inset-0 m-auto grid h-screen w-screen place-content-center'>
         <div className='flex flex-col items-center gap-8' role='alert'>
-          <p className='text-std-18B-160 text-error-1'>{authError}</p>
+          <p className='text-lg font-bold leading-relaxed text-red-600'>{authError}</p>
           <Button
             size='lg'
             variant='solid-fill'
