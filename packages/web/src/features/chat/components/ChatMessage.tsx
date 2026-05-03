@@ -1,11 +1,10 @@
 import type { ShownMessage } from 'genai-web';
 import { useEffect, useRef, useState } from 'react';
-import { PiArrowClockwise, PiChalkboardTeacher, PiUserFill } from 'react-icons/pi';
+import { PiArrowClockwise, PiChalkboardTeacher } from 'react-icons/pi';
 import { useLocation } from 'react-router';
 import { Markdown } from '@/components/Markdown';
 import { ButtonCopy } from '@/components/ui/ButtonCopy';
 import { ButtonIcon } from '@/components/ui/ButtonIcon';
-import { BedrockIcon } from '@/components/ui/icons/BedrockIcon';
 import { FileCard } from '@/features/chat/components/FileCard';
 import { ZoomUpImage } from '@/features/chat/components/ZoomUpImage';
 import { ZoomUpVideo } from '@/features/chat/components/ZoomUpVideo';
@@ -57,29 +56,19 @@ export const ChatMessage = (props: Props) => {
 
   return (
     <article
-      className={`flex justify-start px-3 ${isAssistant || isSystem ? 'bg-white' : 'bg-gray-50'}`}
+      className={`flex bg-white px-3 ${isAssistant || isSystem ? 'justify-start' : 'justify-end'}`}
     >
       <div
         className={`${
           props.className ?? ''
-        } flex w-full max-w-[calc(1024/16*1rem)] flex-col justify-between p-3`}
+        } flex w-full flex-col justify-between p-3`}
       >
-        <div className='flex w-full gap-4'>
+        <div className={`flex w-full gap-4 ${isUser ? 'justify-end' : ''}`}>
           {isUser && (
-            <>
-              <h2 className='sr-only'>あなたの質問</h2>
-              <div className='h-min rounded-sm bg-blue-600 p-2 text-xl text-white'>
-                <PiUserFill aria-hidden={true} />
-              </div>
-            </>
+            <h2 className='sr-only'>あなたの質問</h2>
           )}
           {isAssistant && (
-            <>
-              <h2 className='sr-only'>LLMの回答</h2>
-              <div className='h-min rounded-sm bg-green-600 p-1'>
-                <BedrockIcon aria-hidden={true} className='size-7 fill-white' />
-              </div>
-            </>
+            <h2 className='sr-only'>LLMの回答</h2>
           )}
           {isSystem && (
             // NOTE:
@@ -90,7 +79,7 @@ export const ChatMessage = (props: Props) => {
             </div>
           )}
 
-          <div className='mt-1 w-full pr-8 lg:pr-14'>
+          <div className={`mt-1 ${isUser ? 'max-w-[80%] rounded-2xl rounded-br-none bg-blue-100 p-3 text-gray-800' : 'w-full'}`}>
             {chatContent?.trace && (
               <details className='mb-2 cursor-pointer rounded-sm border p-2'>
                 <summary className='text-sm'>
@@ -164,7 +153,7 @@ export const ChatMessage = (props: Props) => {
           </div>
         </div>
 
-        <div className='mt-2 flex items-start justify-end gap-1 pr-8 lg:pr-14 print:hidden'>
+        <div className='mt-2 flex items-start justify-end gap-1 print:hidden'>
           {isAssistant && !props.loading && !props.hideFeedback && (
             <>
               {props.allowRetry && (

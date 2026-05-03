@@ -100,12 +100,35 @@ const components: ComponentProps<typeof ReactMarkdown>['components'] = {
   img: ImageRenderer,
   sup: SupRenderer,
   code: CodeRenderer,
+  h1: ({ children }) => <h1 className='my-4 text-3xl font-bold'>{children}</h1>,
+  h2: ({ children }) => <h2 className='my-3 text-2xl font-bold'>{children}</h2>,
+  h3: ({ children }) => <h3 className='my-2 text-xl font-bold'>{children}</h3>,
+  h4: ({ children }) => <h4 className='my-2 text-lg font-bold'>{children}</h4>,
+  h5: ({ children }) => <h5 className='my-1 text-base font-bold'>{children}</h5>,
+  h6: ({ children }) => <h6 className='my-1 text-sm font-bold'>{children}</h6>,
+  p: ({ children }) => <p className='my-2'>{children}</p>,
+  ul: ({ children }) => <ul className='my-2 ml-6 list-disc'>{children}</ul>,
+  ol: ({ children }) => <ol className='my-2 ml-6 list-decimal'>{children}</ol>,
+  li: ({ children }) => <li className='my-1'>{children}</li>,
+  blockquote: ({ children }) => (
+    <blockquote className='my-2 border-l-4 border-gray-300 py-1 pl-4 italic text-gray-700'>
+      {children}
+    </blockquote>
+  ),
+  table: ({ children }) => (
+    <div className='my-4 overflow-x-auto'>
+      <table className='min-w-full border-collapse border border-gray-300'>{children}</table>
+    </div>
+  ),
+  thead: ({ children }) => <thead className='bg-gray-100'>{children}</thead>,
+  th: ({ children }) => <th className='border border-gray-300 px-4 py-2 font-semibold'>{children}</th>,
+  td: ({ children }) => <td className='border border-gray-300 px-4 py-2'>{children}</td>,
 };
 
 export const Markdown = React.memo(({ className, prefix, children }: Props) => {
   return (
     <ErrorBoundary fallback={<ErrorText>コンテンツの表示中にエラーが発生しました。</ErrorText>}>
-      <div className={`prose max-w-full ${className ?? ''}`}>
+      <div className={`prose max-w-full leading-[1.75] ${className ?? ''}`}>
         <ReactMarkdown
           remarkPlugins={[remarkGfm, remarkBreaks]}
           remarkRehypeOptions={{ clobberPrefix: prefix }}
