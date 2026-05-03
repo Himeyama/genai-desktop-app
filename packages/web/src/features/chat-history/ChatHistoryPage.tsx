@@ -23,9 +23,6 @@ export const ChatHistoryPage = () => {
         <h1 className='mb-4 flex justify-start text-xl font-bold leading-relaxed lg:text-2xl font-bold leading-snug'>
           {PAGE_TITLE}
         </h1>
-        <p className='mb-4 lg:mb-6'>
-          このページに表示されない履歴は、利用した各AIアプリのページ下部で確認できます。
-        </p>
         <div className='flex flex-col gap-3'>
           <search className='relative mb-2 flex w-full flex-col gap-1.5'>
             <Label htmlFor='search-chat-input' size='md'>

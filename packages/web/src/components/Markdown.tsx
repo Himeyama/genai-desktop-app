@@ -78,13 +78,15 @@ const CodeRenderer = ({ className, children, node }: ComponentProps<'code'> & Ex
 
   if (isCodeBlock) {
     return (
-      <>
-        <div className='flex'>
-          <span className='flex-auto'>{language} </span>
-          <ButtonCopy className='mr-2 justify-end text-gray-400' text={codeText} />
+      <div className='my-4 overflow-hidden rounded-md bg-[#0a0c10] ring-1 ring-gray-700'>
+        <div className='flex items-center justify-between bg-gray-800 px-4 py-1.5'>
+          <span className='font-mono text-xs text-gray-200'>{language}</span>
+          <ButtonCopy className='text-gray-400 hover:!bg-gray-700 hover:text-white' text={codeText} />
         </div>
-        <CodeBlock lang={language as BundledLanguage}>{codeText}</CodeBlock>
-      </>
+        <div className='overflow-x-auto p-4 text-sm [&_pre]:!bg-transparent [&_pre]:!m-0'>
+          <CodeBlock lang={language as BundledLanguage}>{codeText}</CodeBlock>
+        </div>
+      </div>
     );
   }
 
