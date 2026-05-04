@@ -77,8 +77,8 @@ const CodeRenderer = ({ className, children, node }: ComponentProps<'code'> & Ex
   }
 
   if (isCodeBlock) {
-    return (
-      <div className='my-4 overflow-hidden rounded-md bg-[#0a0c10] ring-1 ring-gray-700'>
+    const codeBlockContent = (
+      <div className='my-4 overflow-hidden rounded-md bg-[#0a0c10] ring-1 ring-gray-700 font-mono'>
         <div className='flex items-center justify-between bg-gray-800 px-4 py-1.5'>
           <span className='font-mono text-xs text-gray-200'>{language}</span>
           <ButtonCopy className='text-gray-400 hover:!bg-gray-700 hover:text-white' text={codeText} />
@@ -88,10 +88,23 @@ const CodeRenderer = ({ className, children, node }: ComponentProps<'code'> & Ex
         </div>
       </div>
     );
+
+    if (language === 'json') {
+      return (
+        <details className='my-4 cursor-pointer rounded-md border border-gray-300 bg-gray-50 p-2'>
+          <summary className='font-bold text-sm text-gray-700'>JSON</summary>
+          <div className='mt-2 cursor-auto'>
+            {codeBlockContent}
+          </div>
+        </details>
+      );
+    }
+
+    return codeBlockContent;
   }
 
   return (
-    <span className='inline rounded-md border border-gray-800/30 bg-gray-800/10 px-1 py-0.5'>
+    <span className='inline rounded-md border border-gray-800/30 bg-gray-800/10 px-1 py-0.5 !font-mono'>
       {codeText}
     </span>
   );

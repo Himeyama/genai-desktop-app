@@ -78,17 +78,18 @@ export const ChatMessage = (props: Props) => {
 
           <div className={`mt-1 ${isUser ? 'max-w-[80%] rounded-2xl rounded-br-none bg-blue-100 p-3 text-gray-800' : 'w-full'}`}>
             {chatContent?.trace && (
-              <details className='mb-2 cursor-pointer rounded-sm border p-2'>
-                <summary className='text-sm'>
-                  <div className='inline-flex gap-1'>
-                    トレース
-                    {props.loading && !chatContent?.content && (
+              <div className='mb-2 rounded-sm border p-2 font-sans'>
+                {props.loading && !chatContent?.content && (
+                  <div className='mb-2 text-sm font-bold'>
+                    <div className='inline-flex gap-1'>
                       <div className='size-5 animate-spin rounded-full border-4 border-blue-500 border-t-transparent'></div>
-                    )}
+                    </div>
                   </div>
-                </summary>
-                <Markdown prefix={`${props.idx}-trace`}>{chatContent.trace}</Markdown>
-              </details>
+                )}
+                <Markdown className='!font-sans [&_pre]:!font-mono [&_code]:!font-mono' prefix={`${props.idx}-trace`}>
+                  {chatContent.trace}
+                </Markdown>
+              </div>
             )}
             {chatContent?.extraData && (
               <div className='-mt-1 mb-2 flex flex-wrap gap-2 empty:mt-0! empty:mb-0!'>

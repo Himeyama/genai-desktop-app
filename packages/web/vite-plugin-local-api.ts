@@ -302,17 +302,17 @@ async function* providerStream(
     } else if (part.type === 'tool-call') {
       yield {
         text: '',
-        trace: `\n🔄 **${part.toolName}** を実行中...\n- 引数: \`${JSON.stringify(part.input)}\`\n`,
+        trace: `\n**${part.toolName}**\n- 引数: \`${JSON.stringify(part.input)}\`\n`,
       };
     } else if (part.type === 'tool-result') {
       yield {
         text: '',
-        trace: `\n✅ **${part.toolName}** 完了\n\`\`\`json\n${JSON.stringify(part.output, null, 2)}\n\`\`\`\n`,
+        trace: `\n\`\`\`json\n${JSON.stringify(part.output, null, 2)}\n\`\`\`\n`,
       };
     } else if (part.type === 'error') {
       yield {
         text: '',
-        trace: `\n❌ **エラー発生**: ${String(part.error)}\n`,
+        trace: `\n**エラー発生**: ${String(part.error)}\n`,
       };
     }
   }
