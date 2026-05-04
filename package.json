@@ -17,7 +17,6 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
     "esbuild": "^0.28.0",
-    "ollama-ai-provider": "^1.2.0",
     "typescript": "^6.0.2",
     "vitest": "^4.1.4",
     "zod": "^4.3.6"

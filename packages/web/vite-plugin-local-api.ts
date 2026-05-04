@@ -1,11 +1,13 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Plugin } from 'vite';
-import { generateImage, streamText } from 'ai';
+import { generateImage, streamText, tool, stepCountIs } from 'ai';
+import { z } from 'zod';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { createXai } from '@ai-sdk/xai';
 import { createOllama } from 'ollama-ai-provider-v2';
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
+import * as cheerio from 'cheerio';
 
 // ===== Types =====
 type Role = 'system' | 'user' | 'assistant';
@@ -196,7 +198,8 @@ async function* providerStream(
   modelId: string,
   messages: SimpleMessage[],
   env: Record<string, string>,
-): AsyncGenerator<string> {
+  useTools = false,
+): AsyncGenerator<{ text: string; trace?: string }> {
   const sep = modelId.indexOf('/');
   if (sep === -1) throw new Error(`Invalid modelId "${modelId}". Use provider/model-name`);
   const provider = modelId.slice(0, sep);
@@ -205,7 +208,7 @@ async function* providerStream(
   let model;
 
   if (provider === 'openai') {
-    model = createOpenAI({ apiKey: env.OPENAI_API_KEY ?? '' })(modelName);
+    model = createOpenAI({ apiKey: env.OPENAI_API_KEY ?? '' }).chat(modelName);
   } else if (provider === 'anthropic') {
     model = createAnthropic({ apiKey: env.ANTHROPIC_API_KEY ?? '' })(modelName);
   } else if (provider === 'xai') {
@@ -215,18 +218,103 @@ async function* providerStream(
   } else if (provider === 'openrouter') {
     model = createOpenRouter({ apiKey: env.OPENROUTER_API_KEY ?? '' })(modelName);
   } else {
-    throw new Error(`Unknown provider: ${provider}`);  }
+    throw new Error(`Unknown provider: ${provider}`);
+  }
 
   const result = streamText({
     model,
     messages: messages.map(m => ({
       role: m.role as 'system' | 'user' | 'assistant',
       content: m.content,
-    }))
+    })),
+    ...(useTools && {
+      stopWhen: stepCountIs(5),
+      tools: {
+        WebSearch: tool({
+          description: 'Web上で情報を検索します。ユーザーの質問に答えるために最新の情報が必要な場合に使用します。',
+          inputSchema: z.object({
+            query: z.string().describe('検索クエリ'),
+          }),
+          execute: async ({ query }) => {
+            try {
+              console.log(`[WebSearch] query: ${query}`);
+              const url = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+              const response = await fetch(url, {
+                headers: {
+                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                  'Accept-Language': 'ja,en-US;q=0.7,en;q=0.3',
+                },
+              });
+              if (!response.ok) return { error: `HTTP Error: ${response.status}` };
+              const html = await response.text();
+              const $ = cheerio.load(html);
+              const results: Array<{ title: string; url: string; snippet: string }> = [];
+              $('.result__body').each((i, el) => {
+                if (i >= 5) return false;
+                const title = $(el).find('.result__title').text().trim();
+                const href = $(el).find('a.result__url').attr('href') ?? $(el).find('.result__url').text().trim();
+                const snippet = $(el).find('.result__snippet').text().trim();
+                if (title) results.push({ title, url: href, snippet });
+              });
+              return results.length > 0 ? results : { error: '検索結果が見つかりませんでした' };
+            } catch (e) {
+              console.error('[WebSearch] Error:', e);
+              return { error: '検索に失敗しました' };
+            }
+          },
+        }),
+        WebFetch: tool({
+          description: '指定されたURLのWebページの内容を取得し、テキストとして抽出します。WebSearchの結果を深掘りしたい場合に使用します。',
+          inputSchema: z.object({
+            url: z.string().describe('取得するWebページのURL'),
+          }),
+          execute: async ({ url }) => {
+            try {
+              console.log(`[WebFetch] url: ${url}`);
+              const response = await fetch(url as string, {
+                headers: {
+                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                },
+              });
+              if (!response.ok) {
+                return { error: `HTTP Error: ${response.status}` };
+              }
+              const html = await response.text();
+              const $ = cheerio.load(html);
+              $('script, style, nav, header, footer, iframe, noscript').remove();
+              let text = $('body').text();
+              text = text.replace(/\s+/g, ' ').trim();
+              return { content: text.substring(0, 5000) };
+            } catch (e) {
+              console.error('[WebFetch] Error:', e);
+              return { error: 'ページの取得に失敗しました' };
+            }
+          },
+        }),
+      },
+    }),
   });
 
-  for await (const chunk of result.textStream) {
-    yield chunk;
+  for await (const part of result.fullStream) {
+    if (part.type === 'text-delta') {
+      yield { text: part.text };
+    } else if (part.type === 'tool-call') {
+      yield {
+        text: '',
+        trace: `\n🔄 **${part.toolName}** を実行中...\n- 引数: \`${JSON.stringify(part.input)}\`\n`,
+      };
+    } else if (part.type === 'tool-result') {
+      yield {
+        text: '',
+        trace: `\n✅ **${part.toolName}** 完了\n\`\`\`json\n${JSON.stringify(part.output, null, 2)}\n\`\`\`\n`,
+      };
+    } else if (part.type === 'error') {
+      yield {
+        text: '',
+        trace: `\n❌ **エラー発生**: ${String(part.error)}\n`,
+      };
+    }
   }
 }
 
@@ -370,8 +458,8 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
                 'Transfer-Encoding': 'chunked',
               });
               try {
-                for await (const text of providerStream(modelId, messages, env)) {
-                  res.write(`${JSON.stringify({ text })}\n`);
+                for await (const chunk of providerStream(modelId, messages, env, true)) {
+                  res.write(`${JSON.stringify({ text: chunk.text, trace: chunk.trace })}\n`);
                 }
                 res.write(`${JSON.stringify({ text: '', stopReason: 'end_turn' })}\n`);
               } catch (err) {
@@ -383,8 +471,8 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
             if (predictMatch[1] === 'title') {
               let title = '';
               const prompt = body.prompt ?? '';
-              for await (const text of providerStream(modelId, [{ role: 'user', content: prompt }], env)) {
-                title += text;
+              for await (const chunk of providerStream(modelId, [{ role: 'user', content: prompt }], env)) {
+                if (chunk.text) title += chunk.text;
               }
               return send(res, 200, title.trim());
             }

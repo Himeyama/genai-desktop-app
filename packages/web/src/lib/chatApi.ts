@@ -54,12 +54,21 @@ export async function* predictStream(req: PredictRequest) {
 
   const reader = res.body.getReader();
   const decoder = new TextDecoder('utf-8');
+  let buffer = '';
 
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
-    yield decoder.decode(value, { stream: true });
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    // 最後の要素は不完全な行の可能性があるため次回に持ち越す
+    buffer = lines.pop() ?? '';
+    for (const line of lines) {
+      if (line) yield line;
+    }
   }
+  // バッファに残った最後の行を flush
+  if (buffer) yield buffer;
 }
 
 export const predictTitle = async (req: PredictTitleRequest) => {

@@ -227,7 +227,9 @@ const useChatStore = create<{
             .indexOf(m.messageId);
 
           if (idx >= 0) {
-            draft[id].messages[idx] = m;
+            // バックエンドは trace を保存しないため、インメモリの値を引き継ぐ
+            const trace = draft[id].messages[idx].trace;
+            draft[id].messages[idx] = { ...m, trace };
           }
         }
       });
@@ -457,45 +459,53 @@ const useChatStore = create<{
     // Assistant の発言を更新
     let tmpChunk = '';
 
-    for await (const chunk of stream) {
-      const chunks = chunk.split('\n');
+    try {
+      for await (const chunk of stream) {
+        const chunks = chunk.split('\n');
 
-      for (const c of chunks) {
-        if (c && c.length > 0) {
-          const payload = JSON.parse(c) as StreamingChunk;
+        for (const c of chunks) {
+          if (c && c.length > 0) {
+            let payload: StreamingChunk;
+            try {
+              payload = JSON.parse(c) as StreamingChunk;
+            } catch {
+              continue;
+            }
 
-          if (payload.text.length > 0) {
-            tmpChunk += payload.text;
-          }
+            if (payload.text && payload.text.length > 0) {
+              tmpChunk += payload.text;
+            }
 
-          if (payload.stopReason && payload.stopReason.length > 0) {
-            updateStopReason(id, payload.stopReason);
-          }
+            if (payload.stopReason && payload.stopReason.length > 0) {
+              updateStopReason(id, payload.stopReason);
+            }
 
-          // Trace
-          if (payload.trace) {
-            addChunkToAssistantMessage(id, '', payload.trace, model);
-          }
+            // Trace
+            if (payload.trace) {
+              addChunkToAssistantMessage(id, '', payload.trace, model);
+            }
 
-          // SessionId
-          if (payload.sessionId) {
-            setSessionId(payload.sessionId);
+            // SessionId
+            if (payload.sessionId) {
+              setSessionId(payload.sessionId);
+            }
           }
         }
-      }
 
-      // chunk は 10 文字以上でまとめて処理する
-      // バッファリングしないと以下のエラーが出る
-      // Maximum update depth exceeded
-      if (tmpChunk.length >= 10) {
+        // chunk は 10 文字以上でまとめて処理する
+        // バッファリングしないと以下のエラーが出る
+        // Maximum update depth exceeded
+        if (tmpChunk.length >= 10) {
+          addChunkToAssistantMessage(id, tmpChunk, undefined, model);
+          tmpChunk = '';
+        }
+      }
+    } finally {
+      // 例外発生時もローディング状態を必ず解除する
+      if (tmpChunk.length > 0) {
         addChunkToAssistantMessage(id, tmpChunk, undefined, model);
-        tmpChunk = '';
       }
-    }
-
-    // tmpChunk に文字列が残っている場合は処理する
-    if (tmpChunk.length > 0) {
-      addChunkToAssistantMessage(id, tmpChunk, undefined, model);
+      setLoading(id, false);
     }
 
     // メッセージの後処理（例：footnote の付与）
@@ -517,8 +527,6 @@ const useChatStore = create<{
         };
       });
     }
-
-    setLoading(id, false);
 
     const chatId = await createChatIfNotExist(id, get().chats[id].chat);
 
