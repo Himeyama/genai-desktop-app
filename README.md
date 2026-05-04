@@ -29,6 +29,28 @@ AGENTS.md を参照してください。
 - 画像生成
 - ダイアグラム生成
 
+### 使用可能なモデル
+
+デフォルトで以下のモデルが利用可能です。
+
+| プロバイダー | 用途 | モデルID |
+| --- | --- | --- |
+| Ollama | テキスト生成 | `ollama/gemma4:e4b` |
+| Ollama | テキスト生成 | `ollama/qwen3.5:9b` |
+| Anthropic | テキスト生成 | `anthropic/claude-opus-4-7` |
+| Anthropic | テキスト生成 | `anthropic/claude-sonnet-4-6` |
+| Anthropic | テキスト生成 | `anthropic/claude-haiku-4-5` |
+| OpenAI | テキスト生成 | `openai/gpt-5.4` |
+| OpenAI | テキスト生成 | `openai/gpt-5.4-mini` |
+| OpenAI | テキスト生成 | `openai/gpt-5.4-nano` |
+| xAI | テキスト生成 | `xai/grok-4.3` |
+| xAI | テキスト生成 | `xai/grok-4-fast` |
+| OpenRouter | テキスト生成 | `openrouter/qwen/qwen3.6-35b-a3b` |
+| OpenRouter | テキスト生成 | `openrouter/deepseek/deepseek-v4-flash` |
+| xAI | 画像生成 | `xai/grok-imagine-image` |
+| OpenAI | 画像生成 | `openai/gpt-image-2` |
+| OpenAI | 画像生成 | `openai/gpt-4o-image` |
+
 ## 関連リンク
 
 - [ガバメント AI、プロジェクト「源内」の構想紹介 - デジタル庁 note 記事](https://digital-gov.note.jp/n/ndc07326b7491)
