@@ -264,19 +264,28 @@ public static class LocalApiServer
 
         if (provider == "openai")
         {
-            throw new NotImplementedException("OpenAI requires latest ME.AI adapter syntax.");
+            string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? "";
+            return new global::OpenAI.Chat.ChatClient(modelName, apiKey).AsIChatClient();
         }
         else if (provider == "anthropic")
         {
-            throw new NotImplementedException("Anthropic is currently pending an adapter package.");
+            string apiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY") ?? "";
+            var anthropicOptions = new global::Anthropic.Core.ClientOptions { ApiKey = apiKey };
+            return new global::Anthropic.AnthropicClient(anthropicOptions).AsIChatClient(modelName);
         }
         else if (provider == "xai")
         {
-            throw new NotImplementedException("xAI requires latest ME.AI adapter syntax.");
+            string apiKey = Environment.GetEnvironmentVariable("XAI_API_KEY") ?? "";
+            var openaiOptions = new global::OpenAI.OpenAIClientOptions { Endpoint = new Uri("https://api.x.ai/v1") };
+            var chatClient = new global::OpenAI.Chat.ChatClient(modelName, new System.ClientModel.ApiKeyCredential(apiKey), openaiOptions);
+            return chatClient.AsIChatClient();
         }
         else if (provider == "openrouter")
         {
-            throw new NotImplementedException("OpenRouter requires latest ME.AI adapter syntax.");
+            string apiKey = Environment.GetEnvironmentVariable("OPENROUTER_API_KEY") ?? "";
+            var openaiOptions = new global::OpenAI.OpenAIClientOptions { Endpoint = new Uri("https://openrouter.ai/api/v1") };
+            var chatClient = new global::OpenAI.Chat.ChatClient(modelName, new System.ClientModel.ApiKeyCredential(apiKey), openaiOptions);
+            return chatClient.AsIChatClient();
         }
         else if (provider == "ollama")
         {
