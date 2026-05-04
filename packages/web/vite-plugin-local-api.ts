@@ -134,7 +134,7 @@ const chatStore = {
 };
 
 // ===== AI providers =====
-async function generateImage(prompt: string, modelName: string, apiKey: string, provider: string) {
+async function generateImage(prompt: string, modelName: string, apiKey: string, provider: string, width?: number, height?: number, aspectRatio?: string) {
   let apiUrl = 'https://api.openai.com/v1/images/generations';
   let apiModelName = modelName;
 
@@ -152,7 +152,30 @@ async function generateImage(prompt: string, modelName: string, apiKey: string, 
   };
 
   if (provider === 'openai') {
-    body.size = '1024x1024';
+    if (width && height) {
+      if (apiModelName === 'gpt-image-1.5') {
+        // dall-e-3 (gpt-4o-image mapped to gpt-image-1.5) supports: 1024x1024, 1024x1792, 1792x1024
+        if (width > height) body.size = '1792x1024';
+        else if (height > width) body.size = '1024x1792';
+        else body.size = '1024x1024';
+      } else {
+        // dall-e-2 supports 256x256, 512x512, 1024x1024
+        if (width <= 256) body.size = '256x256';
+        else if (width <= 512) body.size = '512x512';
+        else body.size = '1024x1024';
+      }
+    } else {
+      body.size = '1024x1024';
+    }
+  } else if (provider === 'xai') {
+    if (aspectRatio) {
+      body.aspect_ratio = aspectRatio;
+    } else {
+      // default aspect ratio
+      body.aspect_ratio = '1:1';
+    }
+    // xAI does NOT support 'size' parameter
+    delete body.size;
   }
 
   const res = await fetch(apiUrl, {
@@ -304,10 +327,21 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
         try {
           // ---- Image Generation ----
           if (imageGenMatch) {
-            type ImageGenBody = { model?: { modelId?: string }; params: { textPrompt: Array<{ text: string }> } };
+            type ImageGenBody = { 
+              model?: { modelId?: string }; 
+              params: { 
+                textPrompt: Array<{ text: string }>;
+                width?: number;
+                height?: number;
+                aspectRatio?: string;
+              } 
+            };
             const body = (await readBody(req)) as ImageGenBody;
             const modelId = body.model?.modelId ?? 'openai:gpt-image-2';
             const prompt = body.params.textPrompt?.[0]?.text ?? '';
+            const width = body.params.width;
+            const height = body.params.height;
+            const aspectRatio = body.params.aspectRatio;
             
             const sep = modelId.indexOf(':');
             const provider = sep !== -1 ? modelId.slice(0, sep) : 'openai';
@@ -316,7 +350,7 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
             const apiKey = env[`${provider.toUpperCase()}_API_KEY`] ?? '';
             
             try {
-              const b64Json = await generateImage(prompt, modelName, apiKey, provider);
+              const b64Json = await generateImage(prompt, modelName, apiKey, provider, width, height, aspectRatio);
               return send(res, 200, b64Json);
             } catch (err) {
               console.error('[ImageGen Local API Error]', err);
