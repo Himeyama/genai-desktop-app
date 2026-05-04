@@ -1,5 +1,10 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Plugin } from 'vite';
+import { generateImage, streamText } from 'ai';
+import { createOpenAI } from '@ai-sdk/openai';
+import { createAnthropic } from '@ai-sdk/anthropic';
+import { createXai } from '@ai-sdk/xai';
+import { createOllama } from 'ollama-ai-provider-v2';
 
 // ===== Types =====
 type Role = 'system' | 'user' | 'assistant';
@@ -134,139 +139,56 @@ const chatStore = {
 };
 
 // ===== AI providers =====
-async function generateImage(prompt: string, modelName: string, apiKey: string, provider: string, width?: number, height?: number, aspectRatio?: string) {
-  let apiUrl = 'https://api.openai.com/v1/images/generations';
-  let apiModelName = modelName;
 
-  if (provider === 'xai') {
-    apiUrl = 'https://api.x.ai/v1/images/generations';
+async function generateImageHandler(prompt: string, modelId: string, env: Record<string, string>, width?: number, height?: number, aspectRatio?: string) {
+  const sep = modelId.indexOf(':');
+  const provider = sep !== -1 ? modelId.slice(0, sep) : 'openai';
+  const rawModelName = sep !== -1 ? modelId.slice(sep + 1) : modelId;
+  let apiModelName = rawModelName;
+
+  let model;
+
+  if (provider === 'openai') {
+    if (rawModelName === 'gpt-4o-image') apiModelName = 'gpt-image-1.5';
+    const openai = createOpenAI({ apiKey: env.OPENAI_API_KEY });
+    model = openai.image(apiModelName);
+  } else if (provider === 'xai') {
+    const xai = createXai({ apiKey: env.XAI_API_KEY });
+    model = xai.image(apiModelName);
   } else {
-    // Default to OpenAI
-    if (modelName === 'gpt-4o-image') apiModelName = 'gpt-image-1.5';
+    throw new Error(`Unsupported image provider: ${provider}`);
   }
 
-  const body: any = {
-    model: apiModelName,
-    prompt: prompt,
-    n: 1,
-  };
+  let size: `${number}x${number}` | undefined = undefined;
+  let finalAspectRatio: string | undefined = undefined;
 
   if (provider === 'openai') {
     if (width && height) {
       if (apiModelName === 'gpt-image-1.5') {
-        // dall-e-3 (gpt-4o-image mapped to gpt-image-1.5) supports: 1024x1024, 1024x1792, 1792x1024
-        if (width > height) body.size = '1792x1024';
-        else if (height > width) body.size = '1024x1792';
-        else body.size = '1024x1024';
+        if (width > height) size = '1792x1024';
+        else if (height > width) size = '1024x1792';
+        else size = '1024x1024';
       } else {
-        // dall-e-2 supports 256x256, 512x512, 1024x1024
-        if (width <= 256) body.size = '256x256';
-        else if (width <= 512) body.size = '512x512';
-        else body.size = '1024x1024';
+        if (width <= 256) size = '256x256';
+        else if (width <= 512) size = '512x512';
+        else size = '1024x1024';
       }
     } else {
-      body.size = '1024x1024';
+      size = '1024x1024';
     }
   } else if (provider === 'xai') {
-    if (aspectRatio) {
-      body.aspect_ratio = aspectRatio;
-    } else {
-      // default aspect ratio
-      body.aspect_ratio = '1:1';
-    }
-    // xAI does NOT support 'size' parameter
-    delete body.size;
+    finalAspectRatio = aspectRatio || '1:1';
   }
 
-  const res = await fetch(apiUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(body),
+  const result = await generateImage({
+    model,
+    prompt,
+    n: 1,
+    size,
+    aspectRatio: finalAspectRatio as any,
   });
 
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`${provider} API error: ${res.status} ${errorText}`);
-  }
-
-  const data = await res.json() as any;
-
-  if (data.data?.[0]?.b64_json) {
-    return data.data[0].b64_json;
-  } else if (data.data?.[0]?.url) {
-    const imgRes = await fetch(data.data[0].url);
-    if (!imgRes.ok) throw new Error('Failed to fetch generated image URL');
-    const arrayBuffer = await imgRes.arrayBuffer();
-    return Buffer.from(arrayBuffer).toString('base64');
-  }
-
-  throw new Error('No image generated in the response.');
-}
-async function* streamXAI(modelName: string, messages: SimpleMessage[], apiKey: string) {
-  const { default: OpenAI } = await import('openai');
-  const openai = new OpenAI({ apiKey: apiKey || undefined, baseURL: 'https://api.x.ai/v1' });
-  const response = await openai.chat.completions.create({ model: modelName, messages, stream: true });
-  for await (const chunk of response) {
-    const text = chunk.choices[0]?.delta?.content ?? '';
-    if (text) yield text;
-  }
-}
-
-async function* streamOpenAI(modelName: string, messages: SimpleMessage[], apiKey: string) {
-  const { default: OpenAI } = await import('openai');
-  const openai = new OpenAI({ apiKey: apiKey || undefined });
-  const response = await openai.chat.completions.create({ model: modelName, messages, stream: true });
-  for await (const chunk of response) {
-    const text = chunk.choices[0]?.delta?.content ?? '';
-    if (text) yield text;
-  }
-}
-
-async function* streamAnthropic(modelName: string, messages: SimpleMessage[], apiKey: string) {
-  const { default: Anthropic } = await import('@anthropic-ai/sdk');
-  const anthropic = new Anthropic({ apiKey });
-  const system = messages.filter((m) => m.role === 'system').map((m) => m.content).join('\n');
-  const nonSystem = messages
-    .filter((m) => m.role !== 'system')
-    .map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content }));
-  const s = anthropic.messages.stream({
-    model: modelName,
-    max_tokens: 8096,
-    ...(system ? { system } : {}),
-    messages: nonSystem,
-  });
-  for await (const event of s) {
-    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-      yield event.delta.text;
-    }
-  }
-}
-
-async function* streamOllama(modelName: string, messages: SimpleMessage[], baseUrl: string) {
-  const res = await fetch(`${baseUrl}/api/chat`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: modelName, messages, stream: true }),
-  });
-  if (!res.ok || !res.body) throw new Error(`Ollama error: ${res.status}`);
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buf = '';
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    buf += decoder.decode(value, { stream: true });
-    const lines = buf.split('\n');
-    buf = lines.pop() ?? '';
-    for (const line of lines) {
-      if (!line.trim()) continue;
-      const data = JSON.parse(line) as { message?: { content?: string } };
-      if (data.message?.content) yield data.message.content;
-    }
-  }
+  return result.image.base64;
 }
 
 async function* providerStream(
@@ -279,11 +201,30 @@ async function* providerStream(
   const provider = modelId.slice(0, sep);
   const modelName = modelId.slice(sep + 1);
 
-  if (provider === 'openai') yield* streamOpenAI(modelName, messages, env.OPENAI_API_KEY ?? '');
-  else if (provider === 'anthropic') yield* streamAnthropic(modelName, messages, env.ANTHROPIC_API_KEY ?? '');
-  else if (provider === 'ollama') yield* streamOllama(modelName, messages, env.OLLAMA_BASE_URL ?? 'http://localhost:11434');
-  else if (provider === 'xai') yield* streamXAI(modelName, messages, env.XAI_API_KEY ?? '');
-  else throw new Error(`Unknown provider: ${provider}`);
+  let model;
+
+  if (provider === 'openai') {
+    model = createOpenAI({ apiKey: env.OPENAI_API_KEY ?? '' })(modelName);
+  } else if (provider === 'anthropic') {
+    model = createAnthropic({ apiKey: env.ANTHROPIC_API_KEY ?? '' })(modelName);
+  } else if (provider === 'xai') {
+    model = createXai({ apiKey: env.XAI_API_KEY ?? '' })(modelName);
+  } else if (provider === 'ollama') {
+    model = createOllama({ baseURL: (env.OLLAMA_BASE_URL ?? 'http://localhost:11434') + '/api' })(modelName);
+  } else {
+    throw new Error(`Unknown provider: ${provider}`);  }
+
+  const result = streamText({
+    model,
+    messages: messages.map(m => ({
+      role: m.role as 'system' | 'user' | 'assistant',
+      content: m.content,
+    }))
+  });
+
+  for await (const chunk of result.textStream) {
+    yield chunk;
+  }
 }
 
 // ===== Middleware helpers =====
@@ -327,14 +268,14 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
         try {
           // ---- Image Generation ----
           if (imageGenMatch) {
-            type ImageGenBody = { 
-              model?: { modelId?: string }; 
-              params: { 
+            type ImageGenBody = {
+              model?: { modelId?: string };
+              params: {
                 textPrompt: Array<{ text: string }>;
                 width?: number;
                 height?: number;
                 aspectRatio?: string;
-              } 
+              }
             };
             const body = (await readBody(req)) as ImageGenBody;
             const modelId = body.model?.modelId ?? 'openai:gpt-image-2';
@@ -342,15 +283,9 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
             const width = body.params.width;
             const height = body.params.height;
             const aspectRatio = body.params.aspectRatio;
-            
-            const sep = modelId.indexOf(':');
-            const provider = sep !== -1 ? modelId.slice(0, sep) : 'openai';
-            const modelName = sep !== -1 ? modelId.slice(sep + 1) : modelId;
-            
-            const apiKey = env[`${provider.toUpperCase()}_API_KEY`] ?? '';
-            
+
             try {
-              const b64Json = await generateImage(prompt, modelName, apiKey, provider, width, height, aspectRatio);
+              const b64Json = await generateImageHandler(prompt, modelId, env, width, height, aspectRatio);
               return send(res, 200, b64Json);
             } catch (err) {
               console.error('[ImageGen Local API Error]', err);

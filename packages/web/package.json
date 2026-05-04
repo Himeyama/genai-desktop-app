@@ -41,6 +41,9 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@ai-sdk/anthropic": "^3.0.71",
+    "@ai-sdk/openai": "^3.0.53",
+    "@ai-sdk/xai": "^3.0.83",
     "@anthropic-ai/sdk": "^0.39.0",
     "@tailwindcss/vite": "^4.2.2",
     "@testing-library/react": "^16.3.2",
@@ -50,7 +53,9 @@
     "@types/react-dom": "^19.2.3",
     "@types/react-signature-canvas": "^1.0.7",
     "@vitejs/plugin-react": "^6.0.1",
+    "ai": "^6.0.168",
     "jsdom": "^29.0.2",
+    "ollama-ai-provider-v2": "^3.5.0",
     "openai": "^4.104.0",
     "shiki": "^4.0.2",
     "tailwindcss": "^4.2.2",
