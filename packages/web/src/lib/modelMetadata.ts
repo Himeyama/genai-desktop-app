@@ -400,23 +400,32 @@ export const modelMetadata: Record<string, ModelMetadata> = {
     flags: MODEL_FEATURE.TEXT_DOC,
     displayName: 'Palmyra X5',
   },
+  // OpenRouter
+  'openrouter:qwen/qwen3.6-35b-a3b': {
+    flags: MODEL_FEATURE.TEXT_DOC,
+    displayName: 'Qwen 3.6 35B A3B',
+  },
+  'openrouter:deepseek/deepseek-v4-flash': {
+    flags: MODEL_FEATURE.TEXT_DOC,
+    displayName: 'DeepSeek V4 Flash',
+  },
 
   // === Image ===
 
   // xAI Image Gen
-  'xai:grok-imagine-image': {
+  'xai/grok-imagine-image': {
     flags: MODEL_FEATURE.IMAGE_GEN,
-    displayName: 'xai:grok-imagine-image',
+    displayName: 'xai/grok-imagine-image',
   },
 
   // OpenAI Image Gen
-  'openai:gpt-image-2': {
+  'openai/gpt-image-2': {
     flags: MODEL_FEATURE.IMAGE_GEN,
-    displayName: 'openai:gpt-image-2',
+    displayName: 'openai/gpt-image-2',
   },
-  'openai:gpt-4o-image': {
+  'openai/gpt-4o-image': {
     flags: MODEL_FEATURE.IMAGE_GEN,
-    displayName: 'openai:gpt-4o-image',
+    displayName: 'openai/gpt-4o-image',
   },
 
   // Stability AI Image Gen

@@ -5,6 +5,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { createAnthropic } from '@ai-sdk/anthropic';
 import { createXai } from '@ai-sdk/xai';
 import { createOllama } from 'ollama-ai-provider-v2';
+import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 
 // ===== Types =====
 type Role = 'system' | 'user' | 'assistant';
@@ -141,7 +142,7 @@ const chatStore = {
 // ===== AI providers =====
 
 async function generateImageHandler(prompt: string, modelId: string, env: Record<string, string>, width?: number, height?: number, aspectRatio?: string) {
-  const sep = modelId.indexOf(':');
+  const sep = modelId.indexOf('/');
   const provider = sep !== -1 ? modelId.slice(0, sep) : 'openai';
   const rawModelName = sep !== -1 ? modelId.slice(sep + 1) : modelId;
   let apiModelName = rawModelName;
@@ -196,8 +197,8 @@ async function* providerStream(
   messages: SimpleMessage[],
   env: Record<string, string>,
 ): AsyncGenerator<string> {
-  const sep = modelId.indexOf(':');
-  if (sep === -1) throw new Error(`Invalid modelId "${modelId}". Use provider:model-name`);
+  const sep = modelId.indexOf('/');
+  if (sep === -1) throw new Error(`Invalid modelId "${modelId}". Use provider/model-name`);
   const provider = modelId.slice(0, sep);
   const modelName = modelId.slice(sep + 1);
 
@@ -211,6 +212,8 @@ async function* providerStream(
     model = createXai({ apiKey: env.XAI_API_KEY ?? '' })(modelName);
   } else if (provider === 'ollama') {
     model = createOllama({ baseURL: (env.OLLAMA_BASE_URL ?? 'http://localhost:11434') + '/api' })(modelName);
+  } else if (provider === 'openrouter') {
+    model = createOpenRouter({ apiKey: env.OPENROUTER_API_KEY ?? '' })(modelName);
   } else {
     throw new Error(`Unknown provider: ${provider}`);  }
 
@@ -247,7 +250,7 @@ const send = (res: ServerResponse, status: number, data: unknown) => {
 
 // ===== Plugin =====
 export function localApiPlugin(env: Record<string, string>): Plugin {
-  const defaultModel = env.DEFAULT_MODEL ?? 'ollama:llama3.2';
+  const defaultModel = env.DEFAULT_MODEL ?? 'ollama/llama3.2';
 
   return {
     name: 'vite-plugin-local-api',
