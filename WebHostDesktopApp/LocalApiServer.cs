@@ -329,6 +329,21 @@ public static class LocalApiServer
         app.MapGet("/api/status", () => new { status = "running", timestamp = DateTime.UtcNow });
         app.MapGet("/exapps", () => Results.Ok(new List<object>()));
 
+        app.MapGet("/teams/{teamId}", (string teamId) =>
+        {
+            if (teamId == "00000000-0000-0000-0000-000000000000")
+            {
+                return Results.Ok(new
+                {
+                    teamId = teamId,
+                    teamName = "共通アプリ",
+                    createdDate = DateTime.UtcNow.ToString("O"),
+                    updatedDate = DateTime.UtcNow.ToString("O")
+                });
+            }
+            return Results.NotFound(new { error = "Not found" });
+        });
+
         app.MapGet("/systemcontexts", () => Results.Ok(DataStore.ListSystemContexts()));
         app.MapPost("/systemcontexts", async (HttpContext context) =>
         {
@@ -430,18 +445,19 @@ public static class LocalApiServer
                     
                     if (update.Contents != null)
                     {
+                        var jOpts = new JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
                         foreach(AIContent content in update.Contents)
                         {
                             if (content is FunctionCallContent funcCall)
                             {
-                                string traceStr = $"\n**{funcCall.Name}**\n- 引数: `{JsonSerializer.Serialize(funcCall.Arguments)}`\n";
-                                string traceChunk = JsonSerializer.Serialize(new { text = "", trace = traceStr });
+                                string traceStr = $"\n**{funcCall.Name}**\n- 引数: `{JsonSerializer.Serialize(funcCall.Arguments, jOpts)}`\n";
+                                string traceChunk = JsonSerializer.Serialize(new { text = "", trace = traceStr }, jOpts);
                                 await context.Response.WriteAsync($"{traceChunk}\n");
                             }
                             else if (content is FunctionResultContent funcResult)
                             {
-                                string traceStr = $"\n```json\n{JsonSerializer.Serialize(funcResult.Result)}\n```\n";
-                                string traceChunk = JsonSerializer.Serialize(new { text = "", trace = traceStr });
+                                string traceStr = $"\n```json\n{JsonSerializer.Serialize(funcResult.Result, jOpts)}\n```\n";
+                                string traceChunk = JsonSerializer.Serialize(new { text = "", trace = traceStr }, jOpts);
                                 await context.Response.WriteAsync($"{traceChunk}\n");
                             }
                         }

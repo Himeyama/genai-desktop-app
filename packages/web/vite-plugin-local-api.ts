@@ -352,11 +352,26 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
         const predictMatch = pathname.match(/^\/predict\/(stream|title)$/);
         const scMatch = pathname.match(/^\/systemcontexts(?:\/([^/]+))?(?:\/([^/]+))?$/);
         const exAppsMatch = pathname === '/exapps' && method === 'GET';
+        const teamsMatch = pathname.match(/^\/teams\/([^/]+)$/);
         const imageGenMatch = pathname === '/image/generate' && method === 'POST';
 
-        if (!chatMatch && !predictMatch && !scMatch && !exAppsMatch && !imageGenMatch) return next();
+        if (!chatMatch && !predictMatch && !scMatch && !exAppsMatch && !teamsMatch && !imageGenMatch) return next();
 
         try {
+          // ---- Teams routes ----
+          if (teamsMatch && method === 'GET') {
+            const [, teamId] = teamsMatch;
+            if (teamId === '00000000-0000-0000-0000-000000000000') {
+              return send(res, 200, {
+                teamId: teamId,
+                teamName: '共通アプリ',
+                createdDate: new Date().toISOString(),
+                updatedDate: new Date().toISOString()
+              });
+            }
+            return send(res, 404, { error: 'Not found' });
+          }
+
           // ---- Image Generation ----
           if (imageGenMatch) {
             type ImageGenBody = {
