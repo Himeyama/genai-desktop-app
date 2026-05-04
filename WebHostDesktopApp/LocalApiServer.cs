@@ -498,10 +498,92 @@ public static class LocalApiServer
         // ---------------------------------
         // Image Generation
         // ---------------------------------
-        app.MapPost("/image/generate", (HttpContext context) =>
+        app.MapPost("/image/generate", async (HttpContext context) =>
         {
-            // Placeholder for Image Generation, similar logic using OpenAIClient.GetImageClient()
-            return Results.Problem("Not implemented yet");
+            try
+            {
+                JsonElement root = await JsonSerializer.DeserializeAsync<JsonElement>(context.Request.Body);
+                string modelId = "openai/gpt-4o-image";
+                if (root.TryGetProperty("model", out JsonElement modelProp) && modelProp.TryGetProperty("modelId", out JsonElement idProp))
+                {
+                    modelId = idProp.GetString() ?? modelId;
+                }
+
+                string prompt = "";
+                if (root.TryGetProperty("params", out JsonElement paramsProp) && paramsProp.TryGetProperty("textPrompt", out JsonElement promptsProp) && promptsProp.GetArrayLength() > 0)
+                {
+                    prompt = promptsProp[0].GetProperty("text").GetString() ?? "";
+                }
+
+                int sep = modelId.IndexOf('/');
+                string provider = sep != -1 ? modelId.Substring(0, sep) : "openai";
+                string rawModelName = sep != -1 ? modelId.Substring(sep + 1) : modelId;
+                string apiModelName = rawModelName;
+
+                // NOTE: DO NOT automatically convert openai model names to "dall-e-X".
+                // Pass the requested modelName (e.g. gpt-4o-image, gpt-image-2) directly to the provider,
+                // as the backend might be routing through a proxy or an updated provider implementation.
+                // This is a strict rule to prevent repeated failures.
+
+                if (provider == "openai")
+                {
+                    string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? "";
+                    if (string.IsNullOrEmpty(apiKey)) return Results.BadRequest(new { message = "OPENAI_API_KEY is missing." });
+
+                    var imageClient = new global::OpenAI.Images.ImageClient(apiModelName, apiKey);
+                    global::OpenAI.Images.ImageGenerationOptions options = new global::OpenAI.Images.ImageGenerationOptions();
+                    
+                    global::OpenAI.Images.GeneratedImage image = await imageClient.GenerateImageAsync(prompt, options);
+                    
+                    string base64 = "";
+                    if (image.ImageBytes != null)
+                    {
+                        base64 = Convert.ToBase64String(image.ImageBytes.ToArray());
+                    }
+                    else if (image.ImageUri != null)
+                    {
+                        using HttpClient hc = new HttpClient();
+                        byte[] bytes = await hc.GetByteArrayAsync(image.ImageUri);
+                        base64 = Convert.ToBase64String(bytes);
+                    }
+                    
+                    return Results.Text(JsonSerializer.Serialize(base64), "application/json");
+                }
+                else if (provider == "xai")
+                {
+                    string apiKey = Environment.GetEnvironmentVariable("XAI_API_KEY") ?? "";
+                    if (string.IsNullOrEmpty(apiKey)) return Results.BadRequest(new { message = "XAI_API_KEY is missing." });
+
+                    var openaiOptions = new global::OpenAI.OpenAIClientOptions { Endpoint = new Uri("https://api.x.ai/v1") };
+                    var imageClient = new global::OpenAI.Images.ImageClient(apiModelName, new System.ClientModel.ApiKeyCredential(apiKey), openaiOptions);
+                    global::OpenAI.Images.ImageGenerationOptions options = new global::OpenAI.Images.ImageGenerationOptions();
+                    
+                    global::OpenAI.Images.GeneratedImage image = await imageClient.GenerateImageAsync(prompt, options);
+                    
+                    string base64 = "";
+                    if (image.ImageBytes != null)
+                    {
+                        base64 = Convert.ToBase64String(image.ImageBytes.ToArray());
+                    }
+                    else if (image.ImageUri != null)
+                    {
+                        using HttpClient hc = new HttpClient();
+                        byte[] bytes = await hc.GetByteArrayAsync(image.ImageUri);
+                        base64 = Convert.ToBase64String(bytes);
+                    }
+                    
+                    return Results.Text(JsonSerializer.Serialize(base64), "application/json");
+                }
+                else
+                {
+                    return Results.BadRequest(new { message = $"Unsupported image provider: {provider}" });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Image Generation Error] {ex}");
+                return Results.BadRequest(new { message = ex.Message });
+            }
         });
 
         _ = app.RunAsync();

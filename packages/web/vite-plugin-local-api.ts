@@ -147,12 +147,15 @@ async function generateImageHandler(prompt: string, modelId: string, env: Record
   const sep = modelId.indexOf('/');
   const provider = sep !== -1 ? modelId.slice(0, sep) : 'openai';
   const rawModelName = sep !== -1 ? modelId.slice(sep + 1) : modelId;
-  let apiModelName = rawModelName;
+  const apiModelName = rawModelName;
+
+  // NOTE: DO NOT automatically convert openai model names to "dall-e-X".
+  // Pass the requested modelName directly to the provider.
+  // This is a strict rule to prevent repeated failures.
 
   let model;
 
   if (provider === 'openai') {
-    if (rawModelName === 'gpt-4o-image') apiModelName = 'gpt-image-1.5';
     const openai = createOpenAI({ apiKey: env.OPENAI_API_KEY });
     model = openai.image(apiModelName);
   } else if (provider === 'xai') {
@@ -165,21 +168,10 @@ async function generateImageHandler(prompt: string, modelId: string, env: Record
   let size: `${number}x${number}` | undefined = undefined;
   let finalAspectRatio: string | undefined = undefined;
 
-  if (provider === 'openai') {
-    if (width && height) {
-      if (apiModelName === 'gpt-image-1.5') {
-        if (width > height) size = '1792x1024';
-        else if (height > width) size = '1024x1792';
-        else size = '1024x1024';
-      } else {
-        if (width <= 256) size = '256x256';
-        else if (width <= 512) size = '512x512';
-        else size = '1024x1024';
-      }
-    } else {
-      size = '1024x1024';
-    }
-  } else if (provider === 'xai') {
+  // NOTE: We omit 'size' and 'response_format' enforcement to prevent proxy/backend validation errors
+  // like "unknown parameter" or "argument not supported". The AI SDK defaults usually handle this.
+
+  if (provider === 'xai') {
     finalAspectRatio = aspectRatio || '1:1';
   }
 
@@ -395,7 +387,8 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
               return send(res, 200, b64Json);
             } catch (err) {
               console.error('[ImageGen Local API Error]', err);
-              return send(res, 500, { error: err instanceof Error ? err.message : String(err) });
+              // NOTE: Use a proper status code (like 400) and return `message` to match the frontend `ApiError` expectation
+              return send(res, 400, { message: err instanceof Error ? err.message : String(err) });
             }
           }
 

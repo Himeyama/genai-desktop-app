@@ -3,8 +3,8 @@ import { AmazonBaseImageGenerationMode, AmazonUIImageGenerationMode, ControlMode
 export const MAX_SAMPLE = 7;
 
 export const OPENAI_MODELS = {
-  GPT2_IMAGE: 'openai:gpt-image-2',
-  GPT_4O_IMAGE: 'openai:gpt-4o-image',
+  GPT2_IMAGE: 'openai/gpt-image-2',
+  GPT_4O_IMAGE: 'openai/gpt-4o-image',
 };
 
 export const AMAZON_MODELS = {
@@ -24,7 +24,7 @@ const STABILITY_AI_MODELS = {
 };
 
 export const XAI_MODELS = {
-  GROK_IMAGINE_IMAGE: 'xai:grok-imagine-image',
+  GROK_IMAGINE_IMAGE: 'xai/grok-imagine-image',
 };
 
 export const GENERATION_MODES: Record<
