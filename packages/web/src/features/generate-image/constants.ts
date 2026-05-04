@@ -23,6 +23,10 @@ const STABILITY_AI_MODELS = {
   SD3_5: 'stability.sd3-5-large-v1:0',
 };
 
+export const XAI_MODELS = {
+  GROK_IMAGINE_IMAGE: 'xai:grok-imagine-image',
+};
+
 export const GENERATION_MODES: Record<
   AmazonBaseImageGenerationMode,
   AmazonBaseImageGenerationMode
@@ -282,5 +286,9 @@ export const MODEL_INFO: Record<string, ModelInfo<'base' | 'advanced'>> = {
       AMAZON_ADVANCED_GENERATION_MODE.BACKGROUND_REMOVAL,
     ],
     resolutionPresets: DEFAULT_MODEL_PRESETS,
+  },
+  [XAI_MODELS.GROK_IMAGINE_IMAGE]: {
+    supportedModes: [GENERATION_MODES.TEXT_IMAGE],
+    resolutionPresets: STABILITY_AI_2024_MODEL_PRESETS,
   },
 };

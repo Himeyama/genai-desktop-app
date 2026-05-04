@@ -403,6 +403,12 @@ export const modelMetadata: Record<string, ModelMetadata> = {
 
   // === Image ===
 
+  // xAI Image Gen
+  'xai:grok-imagine-image': {
+    flags: MODEL_FEATURE.IMAGE_GEN,
+    displayName: 'xai:grok-imagine-image',
+  },
+
   // OpenAI Image Gen
   'openai:gpt-image-2': {
     flags: MODEL_FEATURE.IMAGE_GEN,

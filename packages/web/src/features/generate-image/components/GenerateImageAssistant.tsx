@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { PiLightbulbFilamentBold, PiUserFill, PiWarningFill } from 'react-icons/pi';
 import { useLocation } from 'react-router';
 import { Button } from '@/components/ui/dads/Button';
@@ -20,13 +20,12 @@ type Props = {
   content: string;
   isGeneratingImage: boolean;
   onChangeContent: (s: string) => void;
-  onGenerate: (prompt: string, negativePrompt: string, stylePreset?: string) => Promise<void>;
+  onUpdateParams: (prompt: string, negativePrompt: string, stylePreset?: string) => void;
 };
 
 export const GenerateImageAssistant = (props: Props) => {
   const { pathname } = useLocation();
   const { loading, messages, postChat, popMessage } = useChat(pathname);
-  const [isAutoGenerating, setIsAutoGenerating] = useState(false);
   const { screen, scrollTopAnchorRef, scrollBottomAnchorRef } = useScreen();
   const { scrollableContainer, setFollowing } = useFollow();
 
@@ -99,10 +98,7 @@ export const GenerateImageAssistant = (props: Props) => {
       message.content.prompt &&
       message.content.negativePrompt
     ) {
-      setIsAutoGenerating(true);
-      props.onGenerate(message.content.prompt, message.content.negativePrompt).finally(() => {
-        setIsAutoGenerating(false);
-      });
+      props.onUpdateParams(message.content.prompt, message.content.negativePrompt);
     }
   }, [loading]);
 
@@ -121,7 +117,7 @@ export const GenerateImageAssistant = (props: Props) => {
   const lastMessage = contents.length > 0 ? contents[contents.length - 1] : null;
   const { liveStatusMessage } = useLiveStatusMessage({
     isAssistant: lastMessage?.role === 'assistant',
-    loading: loading || isAutoGenerating,
+    loading: loading,
     content: lastMessage?.role === 'assistant' ? lastMessage?.content.comment : '',
   });
 
@@ -218,20 +214,7 @@ export const GenerateImageAssistant = (props: Props) => {
                       </div>
                     )}
                     {c.role === 'assistant' &&
-                      c.content.prompt !== null &&
-                      (contents.length - 1 === idx &&
-                      props.isGeneratingImage &&
-                      isAutoGenerating ? (
-                        <>
-                          <div className='flex items-center gap-1'>
-                            <div className='mr-1.5 ml-0.5 size-5 rounded-full border-3 border-success-1' />
-                            プロンプト生成完了
-                          </div>
-                          <div className='mt-2 flex items-center gap-1'>
-                            <ProgressIndicator label='画像生成中' />
-                          </div>
-                        </>
-                      ) : (
+                      c.content.prompt !== null && (
                         <>
                           {c.content.comment.split('\n').map((m, idx) => (
                             <div key={idx}>{m}</div>
@@ -245,7 +228,7 @@ export const GenerateImageAssistant = (props: Props) => {
                                   size='sm'
                                   key={idx}
                                   onClick={() => {
-                                    props.onGenerate(
+                                    props.onUpdateParams(
                                       c.content.prompt ?? '',
                                       c.content.negativePrompt ?? '',
                                       preset,
@@ -259,7 +242,7 @@ export const GenerateImageAssistant = (props: Props) => {
                                 variant='text'
                                 size='sm'
                                 onClick={() => {
-                                  props.onGenerate(
+                                  props.onUpdateParams(
                                     c.content.prompt ?? '',
                                     c.content.negativePrompt ?? '',
                                     '',
@@ -271,7 +254,7 @@ export const GenerateImageAssistant = (props: Props) => {
                             </div>
                           </div>
                         </>
-                      ))}
+                      )}
                   </div>
                 </div>
               ))}

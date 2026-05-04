@@ -1,7 +1,5 @@
-import { Fragment } from 'react/jsx-runtime';
 import { Base64Image } from '@/features/generate-image/components/Base64Image';
 import { useGenerateImageStore } from '@/features/generate-image/stores/useGenerateImageStore';
-import { generateRandomSeed } from '../utils/generateRandomSeed';
 
 type Props = {
   generating: boolean;
@@ -10,16 +8,9 @@ type Props = {
 };
 
 export const GeneratedImages = (props: Props) => {
-  const { generating, selectedImageIndex, setSelectedImageIndex } = props;
+  const { generating, selectedImageIndex } = props;
 
-  const { image, imageSample, seed, setSeed } = useGenerateImageStore();
-
-  const onSelectImage = (idx: number) => {
-    if (seed[idx] < 0) {
-      setSeed(generateRandomSeed(), idx);
-    }
-    setSelectedImageIndex(idx);
-  };
+  const { image } = useGenerateImageStore();
 
   return (
     <>

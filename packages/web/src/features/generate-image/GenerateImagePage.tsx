@@ -100,8 +100,7 @@ export const GenerateImagePage = () => {
                   content={chatContent}
                   onChangeContent={setChatContent}
                   isGeneratingImage={generating}
-                  onGenerate={async (p, np, sp) => {
-                    // 設定に変更があった場合のみ生成する
+                  onUpdateParams={(p, np, sp) => {
                     if (p !== prompt || np !== negativePrompt || (sp ?? '') !== stylePreset) {
                       setSelectedImageIndex(0);
                       setPrompt(p);
@@ -109,7 +108,6 @@ export const GenerateImagePage = () => {
                       if (sp !== undefined) {
                         setStylePreset(sp);
                       }
-                      return handleGenerateImage(p, np, sp);
                     }
                   }}
                 />

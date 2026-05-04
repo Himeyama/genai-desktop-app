@@ -244,7 +244,7 @@ export const ImageGeneratorForm = (props: Props) => {
           </h2>
         <div>
           <CustomSelect
-            label='GenerationMode'
+            label='生成モード'
             labelClassName='text-base font-bold leading-relaxed'
             isVertical
             isFullWidth
@@ -253,7 +253,7 @@ export const ImageGeneratorForm = (props: Props) => {
             onChange={(v) => setGenerationMode(v as AmazonUIImageGenerationMode)}
           />
           <Disclosure className='mt-2'>
-            <DisclosureSummary>GenerationModeの各項目について</DisclosureSummary>
+            <DisclosureSummary>生成モードの各項目について</DisclosureSummary>
             <Ul className='mt-2 ml-4'>
               <li>TEXT_IMAGE: テキストから画像を生成します</li>
               <li>IMAGE_VARIATION: 参照画像から類似画像を生成します</li>
@@ -462,7 +462,7 @@ export const ImageGeneratorForm = (props: Props) => {
             <div className='grid grid-cols-1 gap-2'>
               <RangeSlider
                 className='w-full'
-                label='CFG Scale'
+                label='CFGスケール'
                 id='cfg-scale'
                 min={0}
                 max={30}
@@ -474,7 +474,7 @@ export const ImageGeneratorForm = (props: Props) => {
 
               <RangeSlider
                 className='w-full'
-                label='Step'
+                label='ステップ数'
                 id='step-number'
                 min={10}
                 max={50}
@@ -487,7 +487,7 @@ export const ImageGeneratorForm = (props: Props) => {
               {generationMode === GENERATION_MODES.IMAGE_VARIATION && (
                 <RangeSlider
                   className='w-full'
-                  label='ImageStrength'
+                  label='画像強度 (ImageStrength)'
                   id='image-strength'
                   min={0}
                   max={1}
@@ -501,7 +501,7 @@ export const ImageGeneratorForm = (props: Props) => {
               {generationMode === 'IMAGE_CONDITIONING' && (
                 <RangeSlider
                   className='w-full'
-                  label='ControlStrength'
+                  label='制御強度 (ControlStrength)'
                   id='control-strength'
                   min={0}
                   max={1}

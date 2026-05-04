@@ -134,31 +134,43 @@ const chatStore = {
 };
 
 // ===== AI providers =====
-async function generateImage(prompt: string, modelName: string, apiKey: string) {
+async function generateImage(prompt: string, modelName: string, apiKey: string, provider: string) {
+  let apiUrl = 'https://api.openai.com/v1/images/generations';
   let apiModelName = modelName;
-  if (modelName === 'gpt-4o-image') apiModelName = 'gpt-image-1.5';
 
-  const res = await fetch('https://api.openai.com/v1/images/generations', {
+  if (provider === 'xai') {
+    apiUrl = 'https://api.x.ai/v1/images/generations';
+  } else {
+    // Default to OpenAI
+    if (modelName === 'gpt-4o-image') apiModelName = 'gpt-image-1.5';
+  }
+
+  const body: any = {
+    model: apiModelName,
+    prompt: prompt,
+    n: 1,
+  };
+
+  if (provider === 'openai') {
+    body.size = '1024x1024';
+  }
+
+  const res = await fetch(apiUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify({
-      model: apiModelName,
-      prompt: prompt,
-      n: 1,
-      size: '1024x1024',
-    }),
+    body: JSON.stringify(body),
   });
-  
+
   if (!res.ok) {
     const errorText = await res.text();
-    throw new Error(`OpenAI API error: ${res.status} ${errorText}`);
+    throw new Error(`${provider} API error: ${res.status} ${errorText}`);
   }
-  
+
   const data = await res.json() as any;
-  
+
   if (data.data?.[0]?.b64_json) {
     return data.data[0].b64_json;
   } else if (data.data?.[0]?.url) {
@@ -167,10 +179,9 @@ async function generateImage(prompt: string, modelName: string, apiKey: string) 
     const arrayBuffer = await imgRes.arrayBuffer();
     return Buffer.from(arrayBuffer).toString('base64');
   }
-  
+
   throw new Error('No image generated in the response.');
 }
-
 async function* streamXAI(modelName: string, messages: SimpleMessage[], apiKey: string) {
   const { default: OpenAI } = await import('openai');
   const openai = new OpenAI({ apiKey: apiKey || undefined, baseURL: 'https://api.x.ai/v1' });
@@ -305,7 +316,7 @@ export function localApiPlugin(env: Record<string, string>): Plugin {
             const apiKey = env[`${provider.toUpperCase()}_API_KEY`] ?? '';
             
             try {
-              const b64Json = await generateImage(prompt, modelName, apiKey);
+              const b64Json = await generateImage(prompt, modelName, apiKey, provider);
               return send(res, 200, b64Json);
             } catch (err) {
               console.error('[ImageGen Local API Error]', err);
