@@ -11,9 +11,14 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   let hasOllama = false;
+  let ollamaModels: string[] = [];
   try {
     execSync('ollama --version', { stdio: 'ignore' });
     hasOllama = true;
+    
+    const result = execSync('ollama list', { encoding: 'utf-8' });
+    const lines = result.trim().split('\n').slice(1);
+    ollamaModels = lines.map(line => 'ollama/' + line.split(/\s+/)[0]).filter(m => m !== 'ollama/');
   } catch (e) {
     hasOllama = false;
   }
@@ -25,6 +30,7 @@ export default defineConfig(({ mode }) => {
       'import.meta.env.VITE_APP_HAS_XAI_API_KEY': JSON.stringify(!!env.XAI_API_KEY),
       'import.meta.env.VITE_APP_HAS_OPENROUTER_API_KEY': JSON.stringify(!!env.OPENROUTER_API_KEY),
       'import.meta.env.VITE_APP_HAS_OLLAMA': JSON.stringify(hasOllama),
+      'import.meta.env.VITE_APP_OLLAMA_MODELS': JSON.stringify(JSON.stringify(ollamaModels)),
     },
     resolve: {
       alias: {

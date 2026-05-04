@@ -14,6 +14,10 @@ const endpointNames: string[] = JSON.parse(import.meta.env.VITE_APP_ENDPOINT_NAM
   .map((name: string) => name.trim())
   .filter((name: string) => name);
 
+const ollamaModelIds: string[] = import.meta.env.VITE_APP_OLLAMA_MODELS
+  ? JSON.parse(import.meta.env.VITE_APP_OLLAMA_MODELS)
+  : [];
+
 const imageGenModelIds: string[] = (
   JSON.parse(import.meta.env.VITE_APP_IMAGE_MODEL_IDS) as string[]
 )
@@ -23,6 +27,7 @@ const imageGenModelIds: string[] = (
 const textModels = [
   ...bedrockModelIds.map((name) => ({ modelId: name, type: 'bedrock' }) as Model),
   ...endpointNames.map((name) => ({ modelId: name, type: 'sagemaker' }) as Model),
+  ...ollamaModelIds.map((name) => ({ modelId: name, type: 'ollama' }) as Model),
 ];
 const imageGenModels = [
   ...imageGenModelIds.map((name) => ({ modelId: name, type: 'bedrock' }) as Model),
@@ -38,6 +43,7 @@ export const findModelByModelId = (modelId: string) => {
 
 export const findModelDisplayNameByModelId = (modelId: string): string => {
   let displayName = modelMetadata[modelId]?.displayName ?? modelId;
+
   if (duplicateBaseModelIds.has(modelId.replace(CRI_PREFIX_PATTERN, ''))) {
     const matched = modelId.match(CRI_PREFIX_PATTERN);
     if (matched) {
@@ -63,7 +69,7 @@ export const isModelAvailable = (modelId: string): boolean => {
 };
 
 export const MODELS = {
-  modelIds: [...bedrockModelIds, ...endpointNames],
+  modelIds: [...bedrockModelIds, ...endpointNames, ...ollamaModelIds],
   modelMetadata,
   imageGenModelIds: imageGenModelIds,
   imageGenModels: imageGenModels,

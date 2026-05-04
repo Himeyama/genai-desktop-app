@@ -27,6 +27,7 @@ interface ImportMetaEnv {
   readonly VITE_APP_HAS_XAI_API_KEY: boolean;
   readonly VITE_APP_HAS_OPENROUTER_API_KEY: boolean;
   readonly VITE_APP_HAS_OLLAMA: boolean;
+  readonly VITE_APP_OLLAMA_MODELS: string;
 }
 
 interface ImportMeta {

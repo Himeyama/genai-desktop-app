@@ -3,7 +3,7 @@ import { PrimaryKey } from './base';
 export type Role = 'system' | 'user' | 'assistant';
 
 export type Model = {
-  type: 'bedrock' | 'bedrockAgent' | 'sagemaker';
+  type: 'bedrock' | 'bedrockAgent' | 'sagemaker' | 'ollama';
   modelId: string;
   sessionId?: string;
 };
