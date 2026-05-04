@@ -1,6 +1,5 @@
 import { useLocation } from 'react-router';
 import { PageTitle } from '@/components/PageTitle';
-import { Divider } from '@/components/ui/dads/Divider';
 import { APP_TITLE } from '@/constants';
 import { GenerateTextForm } from '@/features/generate-text/components/GenerateTextForm';
 import { GenerateTextHeader } from '@/features/generate-text/components/GenerateTextHeader';
@@ -51,14 +50,13 @@ export const GenerateTextPage = () => {
       <PageTitle title={`文章を生成${APP_TITLE ? ` | ${APP_TITLE}` : ''}`} />
       <div className='mx-6 py-6 lg:mx-10 lg:pb-8'>
         <GenerateTextHeader />
-        <Divider className='my-6' />
         <GenerateTextForm setFollowing={setFollowing} getGeneratedText={getGeneratedText} />
-        <Divider className='my-3 lg:my-6' />
-        <GenerateTextResult
+        <div className="w-full mt-4 lg:mt-6"><GenerateTextResult
           scrollableContainer={scrollableContainer}
           typingTextOutput={typingTextOutput}
           text={text}
         />
+        </div>
       </div>
       <div aria-live='assertive' aria-atomic='true' className='sr-only'>
         {liveStatusMessage}

@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { Checkbox } from '@/components/ui/dads/Checkbox';
 import { Disclosure, DisclosureSummary } from '@/components/ui/dads/Disclosure';
-import { Divider } from '@/components/ui/dads/Divider';
 import { ErrorText } from '@/components/ui/dads/ErrorText';
 import { Input } from '@/components/ui/dads/Input';
 import { Label } from '@/components/ui/dads/Label';
@@ -159,8 +158,7 @@ export const TeamAppEditForm = (props: Props) => {
         </Disclosure>
       </div>
 
-      <Divider className='my-6' />
-
+      <div className="h-6" />
       <div className='flex flex-col gap-1.5'>
         <Label htmlFor={`team-app-endpoint-url`} size='lg'>
           APIエンドポイントのURL<RequirementBadge>※必須</RequirementBadge>
@@ -249,8 +247,7 @@ export const TeamAppEditForm = (props: Props) => {
         )}
       </div>
 
-      <Divider className='my-6' />
-
+      <div className="h-6" />
       <div className='flex flex-col gap-1.5'>
         <Label htmlFor={`team-app-system-prompt`} size='lg'>
           システムプロンプト
@@ -291,8 +288,7 @@ export const TeamAppEditForm = (props: Props) => {
         )}
       </div>
 
-      <Divider className='my-6' />
-
+      <div className="h-6" />
       <div className='flex flex-col items-start gap-1.5'>
         <Label htmlFor={`team-app-status`} size='lg'>
           公開ステータス
@@ -323,8 +319,7 @@ export const TeamAppEditForm = (props: Props) => {
         )}
       </div>
 
-      <Divider className='my-6' />
-
+      <div className="h-6" />
       <fieldset>
         <Legend className='mb-1.5' size='lg'>
           その他の設定

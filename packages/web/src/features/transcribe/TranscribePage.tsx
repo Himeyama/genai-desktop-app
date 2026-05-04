@@ -1,5 +1,4 @@
 import { PageTitle } from '@/components/PageTitle';
-import { Divider } from '@/components/ui/dads/Divider';
 import { APP_TITLE } from '@/constants';
 import { TranscribeForm } from '@/features/transcribe/components/TranscribeForm';
 import { TranscribeResult } from '@/features/transcribe/components/TranscribeResult';
@@ -42,17 +41,15 @@ export const TranscribePage = () => {
       <PageTitle title={`音声ファイルから文字起こし${APP_TITLE ? ` | ${APP_TITLE}` : ''}`} />
       <div className='mx-6 py-6 lg:mx-10 lg:pb-8'>
         <TranscribeHeader />
-        <Divider className='my-6' />
         <TranscribeForm setFollowing={setFollowing} />
 
-        <Divider className='my-3 lg:my-6' />
-
-        <TranscribeResult
+        <div className="w-full mt-4 lg:mt-6"><TranscribeResult
           scrollableContainer={scrollableContainer}
           transcripts={transcripts}
           formattedOutput={formattedOutput}
           speakerMapping={speakerMapping}
         />
+        </div>
       </div>
       <div aria-live='assertive' aria-atomic='true' className='sr-only'>
         {liveStatusMessage}

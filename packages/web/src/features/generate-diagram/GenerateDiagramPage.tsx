@@ -1,6 +1,5 @@
 import { useLocation } from 'react-router';
 import { PageTitle } from '@/components/PageTitle';
-import { Divider } from '@/components/ui/dads/Divider';
 import { APP_TITLE } from '@/constants';
 import { DiagramGenerateForm } from '@/features/generate-diagram/components/DiagramGenerateForm';
 import { DiagramGeneratingStep } from '@/features/generate-diagram/components/DiagramGeneratingStep';
@@ -42,10 +41,8 @@ export const GenerateDiagramPage = () => {
       <PageTitle title={`ダイアグラムを生成${APP_TITLE ? ` | ${APP_TITLE}` : ''}`} />
       <div className='mx-6 py-6 lg:mx-10 lg:pb-8'>
         <DiagramHeader />
-        <Divider className='my-6' />
         <DiagramGenerateForm />
-        <Divider className='my-3 lg:my-6' />
-        <div className='w-full'>
+        <div className='w-full mt-4 lg:mt-6'>
           <h2 className='sr-only'>生成結果</h2>
           <div className='relative mt-5 min-h-20 rounded-lg border border-gray-400 p-4'>
             <div className=''>

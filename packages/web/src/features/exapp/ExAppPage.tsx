@@ -2,7 +2,6 @@ import { Suspense, useEffect, useMemo } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useLocation, useParams } from 'react-router';
 import { PageTitle } from '@/components/PageTitle';
-import { Divider } from '@/components/ui/dads/Divider';
 import { ErrorText } from '@/components/ui/dads/ErrorText';
 import { ProgressIndicator } from '@/components/ui/dads/ProgressIndicator';
 import { ErrorFallback } from '@/components/ui/ErrorFallback';
@@ -81,16 +80,14 @@ export const ExAppPage = () => {
           {!isExAppLoading && exApp && (
             <>
               <ExAppHeader exApp={exApp} />
-              <Divider className='my-6' />
+              <div className="h-6" />
               <ExAppForm exApp={exApp} uiJson={uiJson} defaultValues={defaultValuesJson} />
-              <Divider className='my-6' />
-
+              <div className="h-6" />
               <ExAppResult
                 shouldShowConversationHistory={exApp.placeholder.includes('conversation_history')}
               />
 
-              <Divider className='my-6' />
-
+              <div className="h-6" />
               <div className='mb-3'>
                 <h2 className='my-4 text-lg font-bold leading-relaxed'>利用履歴</h2>
                 {exApp && (
