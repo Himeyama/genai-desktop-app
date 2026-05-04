@@ -43,8 +43,9 @@ AI API は Vite 開発サーバーのミドルウェア（`vite-plugin-local-api
 ```
 OPENAI_API_KEY=sk-...
 ANTHROPIC_API_KEY=sk-ant-...
+OPENROUTER_API_KEY=sk-or-v1-...
 OLLAMA_BASE_URL=http://localhost:11434  # Ollama 使用時
-DEFAULT_MODEL=ollama:gemma4:e4b
+DEFAULT_MODEL=ollama/gemma4:e4b
 ```
 
 ### 起動（1コマンドのみ）
@@ -52,14 +53,16 @@ DEFAULT_MODEL=ollama:gemma4:e4b
 mise exec -- npm run dev -w packages/web
 ```
 
-モデルは `provider:model-name` 形式。`provider` は `openai` / `anthropic` / `ollama` のいずれか。
+モデルは `provider/model-name` 形式。`provider` は `openai` / `anthropic` / `xai` / `ollama` / `openrouter` のいずれか。
 `VITE_APP_MODEL_IDS` に JSON 配列形式で追加すると UI の選択肢に表示される。
 
 ### 現在設定済みモデル（`VITE_APP_MODEL_IDS`）
 ```
-ollama:gemma4:e4b, ollama:qwen3.5:9b
-anthropic:claude-opus-4-7, anthropic:claude-sonnet-4-6, anthropic:claude-haiku-4-5
-openai:gpt-5.4, openai:gpt-5.4-mini, openai:gpt-5.4-nano
+ollama/gemma4:e4b, ollama/qwen3.5:9b
+anthropic/claude-opus-4-7, anthropic/claude-sonnet-4-6, anthropic/claude-haiku-4-5
+openai/gpt-5.4, openai/gpt-5.4-mini, openai/gpt-5.4-nano
+xai/grok-4.3, xai/grok-4-fast
+openrouter/qwen/qwen3.6-35b-a3b, openrouter/deepseek/deepseek-v4-flash
 ```
 Ollama はローカル実行のためキー不要。OpenAI / Anthropic は `.env.local` にキーが必要。
 
@@ -93,9 +96,9 @@ Ollama はローカル実行のためキー不要。OpenAI / Anthropic は `.env
 2. `if (!chatMatch && ... && !xxxMatch) return next();` に追加
 3. `try` ブロック内にハンドラーを追加（機能不要なら空配列/空オブジェクトを返すだけでよい）
 
-### Ollama の `provider:model-name` パース
-`providerStream` は `modelId.indexOf(':')` で最初の `:` だけを区切り文字として使う。
-`ollama:gemma4:e4b` → provider=`ollama`、modelName=`gemma4:e4b` と正しくパースされる。
+### `provider/model-name` のパース
+`providerStream` は `modelId.indexOf('/')` で最初の `/` だけを区切り文字として使う。
+`openrouter/deepseek/deepseek-v4-flash` → provider=`openrouter`、modelName=`deepseek/deepseek-v4-flash` と正しくパースされる。
 
 ## テスト・Lint
 
