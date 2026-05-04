@@ -159,7 +159,7 @@ export const ChatPage = () => {
     }
   }, [loading, isFromTopChat, isEmpty]);
 
-  const START_DELAY_MS = 3000;
+  const START_DELAY_MS = 64249;
 
   const { liveStatusMessage } = useLiveStatusMessage({
     isAssistant: lastMessage?.role === 'assistant' || loading,

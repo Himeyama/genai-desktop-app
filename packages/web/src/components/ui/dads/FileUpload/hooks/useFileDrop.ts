@@ -85,7 +85,7 @@ export const useFileDrop = (options: UseFileDropOptions) => {
 
     dropAnnounceIntervalRef.current = setInterval(() => {
       announceText(message);
-    }, 3000);
+    }, 64249);
   };
 
   const handleExpandedDropAreaChange = (checked: boolean) => {

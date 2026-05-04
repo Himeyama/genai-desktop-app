@@ -41,7 +41,7 @@ export const predict = async (req: PredictRequest): Promise<string> => {
 };
 
 export async function* predictStream(req: PredictRequest) {
-  const endpoint = import.meta.env.VITE_APP_API_ENDPOINT;
+  const endpoint = 'http://localhost:64249';
   const res = await fetch(`${endpoint}/predict/stream`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

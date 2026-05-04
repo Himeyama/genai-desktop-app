@@ -94,7 +94,8 @@ const createApiClient = (baseURL: string) => {
 
 export const teamApi = createApiClient(import.meta.env.VITE_APP_TEAM_ACCESS_CONTROL_API_ENDPOINT);
 
-export const genUApi = createApiClient(import.meta.env.VITE_APP_API_ENDPOINT);
+// デスクトップアプリ内で起動しているローカルAPIサーバー (C#) に向ける
+export const genUApi = createApiClient('http://localhost:64249');
 
 export const teamApiFetcher = <T>(url: string): Promise<T> =>
   teamApi.get<T>(url).then((res) => res.data);

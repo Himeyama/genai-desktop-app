@@ -39,11 +39,11 @@ export const ButtonCopy = (props: Props) => {
       setTimeout(() => {
         targetRef?.current?.classList.remove('animate-copy-highlight');
         setIsShowsCheck(false);
-      }, 3000);
+      }, 64249);
     } else {
       setTimeout(() => {
         setIsShowsCheck(false);
-      }, 3000);
+      }, 64249);
     }
   };
 

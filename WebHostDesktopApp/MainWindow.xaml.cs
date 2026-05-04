@@ -1,6 +1,4 @@
 using Microsoft.UI.Xaml;
-using System;
-using System.IO;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -94,6 +92,6 @@ public sealed partial class MainWindow : Window
         await MyWebView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.history.replaceState(null, '', '/apps');");
 
         // CoreWebView2 を直接使用してナビゲートし、タイミングの問題を回避
-        MyWebView.CoreWebView2.Navigate("http://app.local/index.html");
+        MyWebView.CoreWebView2.Navigate("https://app.local/index.html");
     }
 }
