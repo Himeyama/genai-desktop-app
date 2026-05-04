@@ -2,6 +2,7 @@ import type { ShownMessage } from 'genai-web';
 import { useEffect, useRef, useState } from 'react';
 import { PiArrowClockwise, PiChalkboardTeacher } from 'react-icons/pi';
 import { useLocation } from 'react-router';
+import { unescapeUnicode } from '@/utils/unescapeUnicode';
 import { Markdown } from '@/components/Markdown';
 import { ButtonCopy } from '@/components/ui/ButtonCopy';
 import { ButtonIcon } from '@/components/ui/ButtonIcon';
@@ -32,7 +33,10 @@ export const ChatMessage = (props: Props) => {
   const isUser = chatContent?.role === 'user';
   const isSystem = chatContent?.role === 'system';
 
-  const { typingTextOutput } = useTyping(isAssistant && props.loading, chatContent?.content ?? '');
+  const { typingTextOutput } = useTyping(
+    isAssistant && props.loading,
+    unescapeUnicode(chatContent?.content ?? ''),
+  );
 
   const [signedUrls, setSignedUrls] = useState<string[]>([]);
 
@@ -58,25 +62,19 @@ export const ChatMessage = (props: Props) => {
     <article
       className={`flex bg-white px-3 ${isAssistant || isSystem ? 'justify-start' : 'justify-end'}`}
     >
-      <div
-        className={`${
-          props.className ?? ''
-        } flex w-full flex-col justify-between p-3`}
-      >
+      <div className={`${props.className ?? ''} flex w-full flex-col justify-between p-3`}>
         <div className={`flex w-full gap-4 ${isUser ? 'justify-end' : ''}`}>
-          {isUser && (
-            <h2 className='sr-only'>あなたの質問</h2>
-          )}
-          {isAssistant && (
-            <h2 className='sr-only'>LLMの回答</h2>
-          )}
+          {isUser && <h2 className='sr-only'>あなたの質問</h2>}
+          {isAssistant && <h2 className='sr-only'>LLMの回答</h2>}
           {isSystem && (
             <div className='h-min rounded-sm bg-light-blue-700 p-2 text-xl text-white'>
               <PiChalkboardTeacher aria-hidden={true} />
             </div>
           )}
 
-          <div className={`mt-1 ${isUser ? 'max-w-[80%] rounded-2xl rounded-br-none bg-blue-100 p-3 text-gray-800' : 'w-full'}`}>
+          <div
+            className={`mt-1 ${isUser ? 'max-w-[80%] rounded-2xl rounded-br-none bg-blue-100 p-3 text-gray-800' : 'w-full'}`}
+          >
             {chatContent?.trace && (
               <div className='mb-2 rounded-sm border p-2 font-sans'>
                 {props.loading && !chatContent?.content && (
@@ -86,8 +84,11 @@ export const ChatMessage = (props: Props) => {
                     </div>
                   </div>
                 )}
-                <Markdown className='!font-sans [&_pre]:!font-mono [&_code]:!font-mono' prefix={`${props.idx}-trace`}>
-                  {chatContent.trace}
+                <Markdown
+                  className='!font-sans [&_pre]:!font-mono [&_code]:!font-mono'
+                  prefix={`${props.idx}-trace`}
+                >
+                  {unescapeUnicode(chatContent.trace)}
                 </Markdown>
               </div>
             )}
@@ -165,7 +166,7 @@ export const ChatMessage = (props: Props) => {
               )}
               <ButtonCopy
                 className='mr-0.5 text-gray-800'
-                text={chatContent?.content || ''}
+                text={unescapeUnicode(chatContent?.content || '')}
                 targetRef={copyTextRef}
               />
             </>
