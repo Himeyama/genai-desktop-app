@@ -38,9 +38,12 @@ export const useGenerateImageHandler = (
     imageStrength,
     controlStrength,
     controlMode,
+    customEndpointEnabled,
+    customEndpointUrl,
+    customEndpointModel,
   } = useGenerateImageStore();
 
-  const { generateImage } = useGenerateImage();
+  const { generateImage, generateImageFromCustomEndpoint } = useGenerateImage();
   const { imageGenModels } = MODELS;
 
   const [width, height] = resolution.label.split('x').map((v) => Number(v));
@@ -54,7 +57,7 @@ export const useGenerateImageHandler = (
     setGenerating(true);
 
     const modelConfig = MODEL_INFO[imageGenModelId];
-    if (!modelConfig) {
+    if (!customEndpointEnabled && !modelConfig) {
       console.error(`Unknown model: ${imageGenModelId}`);
       setGenerating(false);
       return;
@@ -124,8 +127,26 @@ export const useGenerateImageHandler = (
         };
       }
 
+      if (customEndpointEnabled) {
+        const isAspectRatio = resolution.value.includes(':');
+        return generateImageFromCustomEndpoint(
+          _prompt,
+          customEndpointUrl,
+          customEndpointModel,
+          isAspectRatio ? undefined : resolution.value,
+          isAspectRatio ? resolution.value : undefined,
+          _seed,
+        )
+          .then((res) => {
+            setImage(idx, res);
+          })
+          .catch((e: Error) => {
+            setImageError(idx, e.message);
+          });
+      }
+
       // 解像度の設定
-      if (modelConfig.resolutionPresets[0].value.includes(':')) {
+      if (modelConfig!.resolutionPresets[0].value.includes(':')) {
         params = {
           ...params,
           aspectRatio: resolution.value,

@@ -30,6 +30,7 @@ type Props = {
   isVertical?: boolean;
   selectSize?: SelectBlockSize;
   onChange: (value: string) => void;
+  disabled?: boolean;
 };
 
 // Determine the position of the support text for a select box.
@@ -62,6 +63,7 @@ export const CustomSelect = (props: Props) => {
     isVertical,
     isFullWidth,
     selectSize = 'sm',
+    disabled,
   } = props;
 
   const supportTextPosition = getSupportTextPosition(isVertical, description);
@@ -80,10 +82,10 @@ export const CustomSelect = (props: Props) => {
         {supportTextPosition === 'top' && (
           <Description className={SupportTextStyles}>{description}</Description>
         )}
-        <Listbox value={value} onChange={onChange}>
+        <Listbox value={value} onChange={onChange} disabled={disabled}>
           <div className={`relative ${isFullWidth ? 'min-w-0 flex-1 w-full' : ''}`}>
             <ListboxButton
-              className={`group/button relative rounded border border-gray-600 bg-white pr-10 pl-3 text-left text-gray-800 hover:border-black focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 data-[select-size=lg]:h-14 data-[select-size=md]:h-12 data-[select-size=sm]:h-10 ${isFullWidth ? 'w-full' : 'w-fit'}`}
+              className={`group/button relative rounded border pr-10 pl-3 text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 data-[select-size=lg]:h-14 data-[select-size=md]:h-12 data-[select-size=sm]:h-10 ${disabled ? 'cursor-not-allowed border-gray-300 bg-gray-50 text-gray-400' : 'border-gray-600 bg-white text-gray-800 hover:border-black'} ${isFullWidth ? 'w-full' : 'w-fit'}`}
               data-select-size={selectSize}
             >
               <span className='block truncate'>{selectedLabel}</span>

@@ -42,6 +42,9 @@ type GenerateImageState = {
   imageSample: number;
   image: ImageResult[];
   chatContent: string;
+  customEndpointEnabled: boolean;
+  customEndpointUrl: string;
+  customEndpointModel: string;
 };
 
 type GenerateImageActions = {
@@ -67,6 +70,9 @@ type GenerateImageActions = {
   clearImage: () => void;
   setChatContent: (chatContent: string) => void;
   clear: () => void;
+  setCustomEndpointEnabled: (enabled: boolean) => void;
+  setCustomEndpointUrl: (url: string) => void;
+  setCustomEndpointModel: (model: string) => void;
 };
 
 export type GenerateImageStore = GenerateImageState & GenerateImageActions;
@@ -103,6 +109,9 @@ const createInitialState = (): GenerateImageState => ({
     error: false,
   }),
   chatContent: '',
+  customEndpointEnabled: false,
+  customEndpointUrl: '',
+  customEndpointModel: '',
 });
 
 export const useGenerateImageStore = create<GenerateImageStore>((set, get) => {
@@ -180,5 +189,8 @@ export const useGenerateImageStore = create<GenerateImageStore>((set, get) => {
     clearImage: () => set({ image: [...initialState.image] }),
     setChatContent: (chatContent) => set({ chatContent }),
     clear: () => set(createInitialState()),
+    setCustomEndpointEnabled: (customEndpointEnabled) => set({ customEndpointEnabled }),
+    setCustomEndpointUrl: (customEndpointUrl) => set({ customEndpointUrl }),
+    setCustomEndpointModel: (customEndpointModel) => set({ customEndpointModel }),
   };
 });

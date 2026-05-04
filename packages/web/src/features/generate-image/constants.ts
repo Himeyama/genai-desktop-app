@@ -212,6 +212,17 @@ export const STABILITY_AI_2024_MODEL_PRESETS = [
   { value: '21:9', label: '1536 x 640' },
 ];
 
+export const CUSTOM_ENDPOINT_RESOLUTION_PRESETS = [
+  { value: '1024x1024', label: '1024 x 1024' },
+  { value: '512x512', label: '512 x 512' },
+  { value: '768x768', label: '768 x 768' },
+  { value: '1024x1792', label: '1024 x 1792（縦長）' },
+  { value: '1792x1024', label: '1792 x 1024（横長）' },
+  { value: '1:1', label: '1:1（アスペクト比）' },
+  { value: '16:9', label: '16:9（アスペクト比）' },
+  { value: '9:16', label: '9:16（アスペクト比）' },
+];
+
 export const MODEL_INFO: Record<string, ModelInfo<'base' | 'advanced'>> = {
   [OPENAI_MODELS.GPT2_IMAGE]: {
     supportedModes: ['TEXT_IMAGE'],

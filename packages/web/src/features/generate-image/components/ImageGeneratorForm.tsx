@@ -11,18 +11,17 @@ import { RequirementBadge } from '@/components/ui/dads/RequirementBadge';
 import { SupportText } from '@/components/ui/dads/SupportText';
 import { Ul } from '@/components/ui/dads/Ul';
 import { LoadingButton } from '@/components/ui/LoadingButton';
+import { Switch } from '@/components/ui/Switch';
 import { Base64Image } from '@/features/generate-image/components/Base64Image';
 import { RangeSlider } from '@/features/generate-image/components/RangeSlider';
-import {
-  type GenerateImageStore,
-  useGenerateImageStore,
-} from '@/features/generate-image/stores/useGenerateImageStore';
+import { useGenerateImageStore } from '@/features/generate-image/stores/useGenerateImageStore';
 import { findModelDisplayNameByModelId, MODELS } from '@/models';
 import {
   AMAZON_ADVANCED_GENERATION_MODE,
   OPENAI_MODELS,
   COLORS_OPTIONS,
   CONTROL_MODE_OPTIONS,
+  CUSTOM_ENDPOINT_RESOLUTION_PRESETS,
   GENERATION_MODES,
   STYLE_PRESET_OPTIONS,
 } from '../constants';
@@ -89,7 +88,17 @@ export const ImageGeneratorForm = (props: Props) => {
     resolution,
     setResolution,
     resolutionPresets,
+    customEndpointEnabled,
+    setCustomEndpointEnabled,
+    customEndpointUrl,
+    setCustomEndpointUrl,
+    customEndpointModel,
+    setCustomEndpointModel,
   } = useGenerateImageStore();
+
+  const activeResolutionPresets = customEndpointEnabled
+    ? CUSTOM_ENDPOINT_RESOLUTION_PRESETS
+    : resolutionPresets;
 
   const colorList = colors ? colors.split(',').map((color) => color.trim()) : [];
 
@@ -170,6 +179,48 @@ export const ImageGeneratorForm = (props: Props) => {
       )}
 
       <div className='mt-2 mb-2 grid grid-cols-1 gap-2'>
+        <Switch
+          label='カスタムエンドポイント'
+          checked={customEndpointEnabled}
+          onSwitch={setCustomEndpointEnabled}
+        />
+
+        {customEndpointEnabled && (
+          <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-1'>
+              <Label htmlFor='custom-endpoint-url' size='sm'>
+                エンドポイント URL
+              </Label>
+              <SupportText className='text-sm leading-tight' id='custom-endpoint-url-support'>
+                リクエスト先のベース URL を入力してください（例: http://localhost:8080）
+              </SupportText>
+              <Input
+                id='custom-endpoint-url'
+                type='url'
+                value={customEndpointUrl}
+                onChange={(e) => setCustomEndpointUrl(e.target.value)}
+                placeholder='http://localhost:8080'
+                blockSize='sm'
+                className='w-full'
+              />
+            </div>
+            <div className='flex flex-col gap-1'>
+              <Label htmlFor='custom-endpoint-model' size='sm'>
+                モデル名
+              </Label>
+              <Input
+                id='custom-endpoint-model'
+                type='text'
+                value={customEndpointModel}
+                onChange={(e) => setCustomEndpointModel(e.target.value)}
+                placeholder='flux-dev'
+                blockSize='sm'
+                className='w-full'
+              />
+            </div>
+          </div>
+        )}
+
         <CustomSelect
           label='モデル'
           labelClassName='text-base font-bold leading-relaxed mt-0!'
@@ -177,6 +228,7 @@ export const ImageGeneratorForm = (props: Props) => {
           isFullWidth
           value={imageGenModelId}
           onChange={setImageGenModelId}
+          disabled={customEndpointEnabled}
           options={imageGenModelIds.map((m) => {
             return { value: m, label: findModelDisplayNameByModelId(m) };
           })}
@@ -187,16 +239,18 @@ export const ImageGeneratorForm = (props: Props) => {
             labelClassName='text-base font-bold leading-relaxed mt-0!'
             isVertical
             isFullWidth
-            value={resolution.value}
+            value={activeResolutionPresets.some((p) => p.value === resolution.value)
+              ? resolution.value
+              : activeResolutionPresets[0]?.value ?? ''}
             onChange={(value: string) => {
-              const selectedResolution = resolutionPresets.find(
-                (option: GenerateImageStore['resolution']) => option.value === value,
+              const selectedResolution = activeResolutionPresets.find(
+                (option) => option.value === value,
               );
               if (selectedResolution) {
                 setResolution(selectedResolution);
               }
             }}
-            options={resolutionPresets}
+            options={activeResolutionPresets}
           />
         )}
       </div>
