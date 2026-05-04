@@ -6,7 +6,7 @@
 
 ## 概要
 
-玄海（GenKAI）は、デジタル庁が開発・運用する生成 AI 利活用基盤 (源内) を改変した WebUI です。
+玄海（GenKAI）は、デジタル庁が開発・運用する生成 AI 利活用基盤 (源内) を改変した Web アプリです。
 
 業務特化の生成 AI アプリケーションを、迅速かつ安全かつ簡単に利用できる環境を提供します。
 
@@ -58,4 +58,3 @@ AGENTS.md を参照してください。
 ## ライセンス
 
 - Software: Licensed under the [MIT License](LICENSE).
-- Documentation: Licensed under the [Creative Commons Attribution 4.0 International License](LICENSE-CC-BY) (CC BY 4.0).

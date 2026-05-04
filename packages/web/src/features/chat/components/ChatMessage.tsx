@@ -71,9 +71,6 @@ export const ChatMessage = (props: Props) => {
             <h2 className='sr-only'>LLMの回答</h2>
           )}
           {isSystem && (
-            // NOTE:
-            // 元々GenUではシステムプロンプトを表示するためのものだったが、源内ではヘッダー側に移動したので未使用
-            // ただ、他のページで使用している可能性があるかもしれないので、念の為に残しておく
             <div className='h-min rounded-sm bg-light-blue-700 p-2 text-xl text-white'>
               <PiChalkboardTeacher aria-hidden={true} />
             </div>
