@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WebHostDesktopApp (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "WebHostDesktopApp (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
