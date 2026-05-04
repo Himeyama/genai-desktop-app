@@ -79,7 +79,7 @@ export const TranslatePage = () => {
   return (
     <LayoutBody className='flex h-full flex-col'>
       <PageTitle title={`翻訳${APP_TITLE ? ` | ${APP_TITLE}` : ''}`} />
-      <div className='mx-6 flex min-h-0 max-w-[calc(1120/16*1rem)] flex-1 flex-col py-6 lg:mx-10 lg:pb-8'>
+      <div className='mx-6 flex min-h-0 flex-1 flex-col py-6 lg:mx-10 lg:pb-8'>
         <TranslateHeader auto={auto} setAuto={setAuto} />
         <div className='mt-4 flex min-h-0 flex-1 flex-col'>
           <TranslateForm

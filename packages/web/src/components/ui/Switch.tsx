@@ -21,9 +21,9 @@ export const Switch = (props: Props) => {
           }}
         />
         <span
-          className={`relative block h-7 w-12 rounded-[calc(infinity*1px)] border-2 border-transparent bg-gray-400 peer-checked:bg-blue-600 peer-focus-visible:outline-2 peer-focus-visible:outline-blue-600 peer-focus-visible:outline-offset-2 before:m-0.5 before:block before:size-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] peer-checked:before:translate-x-full after:absolute after:inset-x-0 after:-inset-y-full after:m-auto after:h-11 forced-colors:border-[ButtonBorder] forced-colors:peer-checked:border-[Highlight] forced-colors:peer-checked:bg-[Highlight] forced-colors:before:bg-[Highlight] forced-colors:peer-checked:before:bg-[Canvas]`}
+          className={`relative block h-7 w-12 shrink-0 rounded-[calc(infinity*1px)] border-2 border-transparent bg-gray-400 peer-checked:bg-blue-600 peer-focus-visible:outline-2 peer-focus-visible:outline-blue-600 peer-focus-visible:outline-offset-2 before:m-0.5 before:block before:size-5 before:rounded-full before:bg-white before:transition-transform before:content-[''] peer-checked:before:translate-x-full after:absolute after:inset-x-0 after:-inset-y-full after:m-auto after:h-11 forced-colors:border-[ButtonBorder] forced-colors:peer-checked:border-[Highlight] forced-colors:peer-checked:bg-[Highlight] forced-colors:before:bg-[Highlight] forced-colors:peer-checked:before:bg-[Canvas]`}
         />
-        <span className='text-base leading-none'>{label}</span>
+        <span className='whitespace-nowrap text-base leading-none'>{label}</span>
       </label>
     </div>
   );

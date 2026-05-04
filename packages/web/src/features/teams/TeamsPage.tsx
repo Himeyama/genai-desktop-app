@@ -27,7 +27,7 @@ export const TeamsPage = () => {
   return (
     <LayoutBody>
       <PageTitle title={`チーム管理${APP_TITLE ? ` | ${APP_TITLE}` : ''}`} />
-      <div className='mx-6 max-w-[calc(1024/16*1rem)] py-6 pb-12 lg:mx-10 lg:pb-16'>
+      <div className='mx-6 py-6 pb-12 lg:mx-10 lg:pb-16'>
         <h1 className='mb-4 flex justify-start text-xl font-bold leading-relaxed lg:text-2xl font-bold leading-snug'>
           チーム管理
         </h1>

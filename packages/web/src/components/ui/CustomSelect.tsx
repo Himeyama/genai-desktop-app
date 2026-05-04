@@ -67,9 +67,9 @@ export const CustomSelect = (props: Props) => {
   const selectedLabel = getSelectedValue(options, value);
 
   return (
-    <Field className={`relative ${className ?? ''}`}>
+    <Field className={`relative ${isFullWidth ? 'w-full min-w-0' : ''} ${className ?? ''}`}>
       <div
-        className={`flex ${isVertical ? 'flex-col gap-y-1.5' : 'flex-row items-center gap-x-0.5'}`}
+        className={`flex ${isVertical ? 'flex-col gap-y-1.5' : 'flex-row items-center gap-x-0.5'} ${isFullWidth ? 'w-full min-w-0' : ''}`}
       >
         {label && (
           <Label className={`flex w-fit items-center gap-2 text-gray-800 ${labelClassName ?? ''}`}>
@@ -80,7 +80,7 @@ export const CustomSelect = (props: Props) => {
           <Description className={SupportTextStyles}>{description}</Description>
         )}
         <Listbox value={value} onChange={onChange}>
-          <div className='relative'>
+          <div className={`relative ${isFullWidth ? 'min-w-0 flex-1 w-full' : ''}`}>
             <ListboxButton
               className={`group/button relative rounded border border-gray-600 bg-white pr-10 pl-3 text-left text-gray-800 hover:border-black focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 data-[select-size=lg]:h-14 data-[select-size=md]:h-12 data-[select-size=sm]:h-10 ${isFullWidth ? 'w-full' : 'w-fit'}`}
               data-select-size={selectSize}

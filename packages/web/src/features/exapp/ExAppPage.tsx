@@ -72,7 +72,7 @@ export const ExAppPage = () => {
   return (
     <LayoutBody>
       <PageTitle title={pageTitle} />
-      <div className='mx-6 max-w-[calc(1024/16*1rem)] pt-6 pb-6 lg:mx-10 lg:pb-8'>
+      <div className='mx-6 pt-6 pb-6 lg:mx-10 lg:pb-8'>
         <div>
           {isExAppLoading && <ProgressIndicator label='AIアプリを読み込み中...' />}
 

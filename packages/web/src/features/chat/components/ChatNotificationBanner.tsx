@@ -12,7 +12,7 @@ export const ChatNotificationBanner = () => {
       type='warning'
       title='生成AI利用時の注意事項'
       headingLevel='h2'
-      className='max-w-[calc(1024/16*1rem)] font-serif leading-[1.75]'
+      className='font-serif leading-[1.75]'
     >
       <NotificationBannerBody>
         <div className='flex flex-col gap-4'>

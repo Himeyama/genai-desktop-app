@@ -7,10 +7,11 @@ export const ModelSelector = () => {
   const { modelIds: availableModels } = MODELS;
 
   return (
-    <div className='mt-2 flex w-full items-end justify-start lg:mt-0 print:hidden'>
+    <div className='mt-2 flex w-full min-w-0 items-end justify-start lg:mt-0 print:hidden'>
       <CustomSelect
         label='LLM：'
-        labelClassName='text-sm font-bold leading-tight'
+        labelClassName='text-sm font-bold leading-tight shrink-0'
+        isFullWidth
         value={selectedModelId}
         onChange={setSelectedModelId}
         options={availableModels.map((m) => {
