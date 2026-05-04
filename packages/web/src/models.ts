@@ -47,6 +47,21 @@ export const findModelDisplayNameByModelId = (modelId: string): string => {
   return displayName;
 };
 
+export const isModelAvailable = (modelId: string): boolean => {
+  const sep = modelId.indexOf('/');
+  if (sep === -1) {
+    return true;
+  }
+  const provider = modelId.slice(0, sep);
+  if (provider === 'openai') return import.meta.env.VITE_APP_HAS_OPENAI_API_KEY ?? true;
+  if (provider === 'anthropic') return import.meta.env.VITE_APP_HAS_ANTHROPIC_API_KEY ?? true;
+  if (provider === 'xai') return import.meta.env.VITE_APP_HAS_XAI_API_KEY ?? true;
+  if (provider === 'openrouter') return import.meta.env.VITE_APP_HAS_OPENROUTER_API_KEY ?? true;
+  if (provider === 'ollama') return import.meta.env.VITE_APP_HAS_OLLAMA ?? true;
+  
+  return true;
+};
+
 export const MODELS = {
   modelIds: [...bedrockModelIds, ...endpointNames],
   modelMetadata,

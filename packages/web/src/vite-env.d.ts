@@ -22,6 +22,11 @@ interface ImportMetaEnv {
   readonly VITE_APP_USE_CASE_BUILDER_ENABLED: string;
   readonly VITE_APP_OPTIMIZE_PROMPT_FUNCTION_ARN: string;
   readonly VITE_APP_HIDDEN_USE_CASES: string;
+  readonly VITE_APP_HAS_OPENAI_API_KEY: boolean;
+  readonly VITE_APP_HAS_ANTHROPIC_API_KEY: boolean;
+  readonly VITE_APP_HAS_XAI_API_KEY: boolean;
+  readonly VITE_APP_HAS_OPENROUTER_API_KEY: boolean;
+  readonly VITE_APP_HAS_OLLAMA: boolean;
 }
 
 interface ImportMeta {

@@ -16,6 +16,7 @@ type SupportTextPosition = 'top' | 'bottom';
 type Option = {
   value: string;
   label: string;
+  disabled?: boolean;
 };
 
 type Props = {
@@ -102,8 +103,9 @@ export const CustomSelect = (props: Props) => {
                 // Therefore we still cannot use the state as `data-[focus]` for focus-visible currently.
                 <ListboxOption
                   key={`${option.value}-${idx}`}
-                  className={({ focus }) =>
-                    `relative h-9 py-2 pr-4 pl-10 text-gray-800 select-none hover:bg-gray-50 data-selected:bg-blue-50! data-selected:text-blue-700! ${focus ? 'bg-gray-100' : ''} `
+                  disabled={option.disabled}
+                  className={({ focus, disabled }) =>
+                    `relative h-9 py-2 pr-4 pl-10 select-none ${disabled ? 'text-gray-400' : 'text-gray-800 hover:bg-gray-50 data-selected:bg-blue-50! data-selected:text-blue-700!'} ${focus && !disabled ? 'bg-gray-100' : ''} `
                   }
                   value={option.value}
                 >
