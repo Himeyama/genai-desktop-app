@@ -4,6 +4,10 @@
 
 ![](docs/images/screenshot.png)
 
+## 構成図
+
+![](docs/images/arch.drawio.png)
+
 ## 概要
 
 玄海（GenKAI）は、デジタル庁が開発・運用する生成 AI 利活用基盤 (源内) を改変した Web アプリです。
@@ -51,9 +55,10 @@ AGENTS.md を参照してください。
 | OpenAI | 画像生成 | `openai/gpt-image-2` |
 | OpenAI | 画像生成 | `openai/gpt-4o-image` |
 
-## 関連リンク
-
-- [ガバメント AI、プロジェクト「源内」の構想紹介 - デジタル庁 note 記事](https://digital-gov.note.jp/n/ndc07326b7491)
+## アプリケーションの作成
+```ps1
+.\publish.ps1
+```
 
 ## ライセンス
 
