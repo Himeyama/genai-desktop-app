@@ -21,6 +21,7 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
+        e.Handled = true;
         try
         {
             string errorPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "error.log");

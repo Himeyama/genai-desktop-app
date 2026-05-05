@@ -42,40 +42,42 @@ public sealed partial class MainWindow : Window
 
     private async void InitializeWebView2()
     {
-        // Set environment variable to pass arguments to the WebView2 browser process
-        Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--disable-web-security");
-        
+        // Allow fetch() from https://app.local (virtual host) to reach http://localhost:64249 (API server).
+        // Must be set before EnsureCoreWebView2Async() launches the browser process.
+        Environment.SetEnvironmentVariable("WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", "--disable-web-security --allow-running-insecure-content");
         await MyWebView.EnsureCoreWebView2Async();
-        
-        // Map the virtual host name to the local directory
-        // The exe will be deep in bin/x64/Debug/net9.0-windows10.0.xxxxx/win-x64/
-        string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "..", "..", "packages", "web", "dist");
-        // Fallback or simpler approach is to search up from BaseDirectory until we find packages
-        DirectoryInfo? currentDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-        while (currentDir != null && !Directory.Exists(Path.Combine(currentDir.FullName, "packages")))
+
+        // Resolve the frontend folder.
+        // Priority 1: 'frontend' folder next to the exe (publish.ps1 output).
+        // Priority 2: Walk up to find the repo's packages/web/dist (dev build scenario).
+        string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "frontend");
+
+        if (!Directory.Exists(folderPath))
         {
-            currentDir = currentDir.Parent;
-        }
-        
-        if (currentDir != null)
-        {
-            folderPath = Path.Combine(currentDir.FullName, "packages", "web", "dist");
-            // Ensure the web dist directory exists, if not we will just map to the base dir to prevent crashing immediately
-            if (!Directory.Exists(folderPath))
+            DirectoryInfo? currentDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            while (currentDir != null && !Directory.Exists(Path.Combine(currentDir.FullName, "packages")))
             {
-                 Directory.CreateDirectory(folderPath);
-                 File.WriteAllText(Path.Combine(folderPath, "index.html"), "<h1>Waiting for web app build...</h1>");
+                currentDir = currentDir.Parent;
             }
-        }
-        else
-        {
-            // fallback
-             folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "packages", "web", "dist");
-             if (!Directory.Exists(folderPath))
-             {
-                 Directory.CreateDirectory(folderPath);
-                 File.WriteAllText(Path.Combine(folderPath, "index.html"), "<h1>Fallback path used. Waiting for web app build...</h1>");
-             }
+
+            if (currentDir != null)
+            {
+                folderPath = Path.Combine(currentDir.FullName, "packages", "web", "dist");
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                    File.WriteAllText(Path.Combine(folderPath, "index.html"), "<h1>Waiting for web app build...</h1>");
+                }
+            }
+            else
+            {
+                folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "packages", "web", "dist");
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                    File.WriteAllText(Path.Combine(folderPath, "index.html"), "<h1>Fallback path used. Waiting for web app build...</h1>");
+                }
+            }
         }
 
         folderPath = Path.GetFullPath(folderPath);

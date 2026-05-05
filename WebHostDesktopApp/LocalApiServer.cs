@@ -249,6 +249,47 @@ public static class AITools
 
 public static class LocalApiServer
 {
+    // Hold a reference so the WebApplication is not GC'd while Kestrel runs in background.
+    private static WebApplication? _app;
+
+    // Load key=value pairs from an env file, skipping comments and blank lines.
+    // Only sets variables that are not already present in the environment.
+    private static void LoadEnvFile(string path)
+    {
+        if (!File.Exists(path)) return;
+        foreach (string rawLine in File.ReadAllLines(path))
+        {
+            string line = rawLine.Trim();
+            if (line.Length == 0 || line.StartsWith('#')) continue;
+            int eq = line.IndexOf('=');
+            if (eq <= 0) continue;
+            string key = line[..eq].Trim();
+            string value = line[(eq + 1)..].Trim();
+            if (!string.IsNullOrEmpty(key) && Environment.GetEnvironmentVariable(key) == null)
+                Environment.SetEnvironmentVariable(key, value);
+        }
+    }
+
+    // Populate environment variables from config.env (next to exe) or packages/web/.env.local (dev).
+    private static void LoadConfig()
+    {
+        // Installed-app scenario: config.env next to the exe.
+        string configEnv = Path.Combine(AppContext.BaseDirectory, "config.env");
+        if (File.Exists(configEnv))
+        {
+            LoadEnvFile(configEnv);
+            return;
+        }
+
+        // Dev scenario: walk up to find the repo root, then read packages/web/.env.local.
+        DirectoryInfo? dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && !Directory.Exists(Path.Combine(dir.FullName, "packages")))
+            dir = dir.Parent;
+
+        if (dir != null)
+            LoadEnvFile(Path.Combine(dir.FullName, "packages", "web", ".env.local"));
+    }
+
     private static IChatClient CreateChatClient(string modelId)
     {
         int sep = modelId.IndexOf('/');
@@ -299,8 +340,10 @@ public static class LocalApiServer
         throw new Exception($"Unknown provider: {provider}");
     }
 
-    public static Task StartAsync(int port = 64249)
+    public static async Task StartAsync(int port = 64249)
     {
+        LoadConfig();
+
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
         builder.WebHost.UseUrls($"http://localhost:{port}");
         builder.Services.AddCors(o => o.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
@@ -591,7 +634,7 @@ public static class LocalApiServer
             }
         });
 
-        _ = app.RunAsync();
-        return Task.CompletedTask;
+        _app = app;
+        await _app.StartAsync();
     }
 }

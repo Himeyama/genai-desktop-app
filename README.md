@@ -55,7 +55,9 @@ AGENTS.md を参照してください。
 | OpenAI | 画像生成 | `openai/gpt-image-2` |
 | OpenAI | 画像生成 | `openai/gpt-4o-image` |
 
-## アプリケーションの作成
+## インストーラーの作成
+以下のスクリプトを実行すると、Install.exe が作成されます。
+
 ```ps1
 .\publish.ps1
 ```

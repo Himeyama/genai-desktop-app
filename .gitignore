@@ -10,3 +10,6 @@ ToDo.md
 # MkDocs documentation
 site*/
 .cache
+
+publish/
+Install.exe
