@@ -2,7 +2,7 @@
 !define PRODUCT_NAME "玄海"
 !define INSTALL_DIR "$LOCALAPPDATA\玄海"
 !define PUBLISH_DIR "publish"
-!define EXEC_FILE "WebHostDesktopApp.exe"
+!define EXEC_FILE "genkai.exe"
 !define PRODUCT_PUBLISHER "ひかり"
 
 # Modern UI
@@ -52,13 +52,13 @@ Section
     # スタート メニューにショートカットを登録
     CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
     SetOutPath "$INSTDIR"
-    CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXEC_FILE}" "" "$INSTDIR\Assets\AppIcon.ico"
+    CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${EXEC_FILE}" "" "$INSTDIR\${EXEC_FILE}"
 
     # レジストリに登録
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayName" "${PRODUCT_NAME}"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "Publisher" "${PRODUCT_PUBLISHER}"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayIcon" "$INSTDIR\Assets\AppIcon.ico"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayIcon" "$INSTDIR\${EXEC_FILE}"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayVersion" "${VERSION}"
     WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "InstallDate" "${DATE}"
     WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "EstimatedSize" "${SIZE}"
