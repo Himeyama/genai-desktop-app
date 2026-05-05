@@ -75,7 +75,16 @@ function parseTraceSections(
         const idx = ev.id != null ? idToIndex.get(ev.id) : undefined;
         const section = idx != null ? sections[idx] : sections[sections.length - 1];
         if (section) {
-          section.body += '```json:出力\n' + JSON.stringify(ev.output, null, 2) + '\n```\n';
+          // output が文字列 JSON の場合は一度パースしてから整形する
+          let outputValue = ev.output;
+          if (typeof outputValue === 'string') {
+            try {
+              outputValue = JSON.parse(outputValue);
+            } catch {
+              // パース失敗時はそのまま使用
+            }
+          }
+          section.body += '```json:出力\n' + JSON.stringify(outputValue, null, 2) + '\n```\n';
           section.status = 'done';
         }
       } else if (ev.type === 'error') {

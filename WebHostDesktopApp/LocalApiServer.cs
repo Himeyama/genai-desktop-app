@@ -187,18 +187,32 @@ public static class AITools
             doc.LoadHtml(html);
 
             List<object> results = [];
-            IEnumerable<HtmlNode>? nodes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'result__body')]")?.Take(5);
+            // 広告を除いた web-result のみ対象にする
+            IEnumerable<HtmlNode>? nodes = doc.DocumentNode
+                .SelectNodes("//div[contains(@class,'web-result')]//div[contains(@class,'result__body')]")
+                ?.Take(5);
             if (nodes != null)
             {
                 foreach (HtmlNode? node in nodes)
                 {
-                    string title = node.SelectSingleNode(".//*[contains(@class, 'result__title')]")?.InnerText?.Trim() ?? "";
-                    HtmlNode hrefNode = node.SelectSingleNode(".//a[contains(@class, 'result__url')]");
-                    string href = hrefNode?.GetAttributeValue("href", "") ?? node.SelectSingleNode(".//*[contains(@class, 'result__url')]")?.InnerText?.Trim() ?? "";
-                    string snippet = node.SelectSingleNode(".//*[contains(@class, 'result__snippet')]")?.InnerText?.Trim() ?? "";
+                    string title = node.SelectSingleNode(".//*[contains(@class,'result__title')]")?.InnerText?.Trim() ?? "";
+
+                    // result__a の href は //duckduckgo.com/l/?uddg=<encoded-real-url> 形式
+                    string rawHref = node.SelectSingleNode(".//a[contains(@class,'result__a')]")?.GetAttributeValue("href", "") ?? "";
+                    string realUrl = rawHref;
+                    int uddgIdx = rawHref.IndexOf("uddg=", StringComparison.Ordinal);
+                    if (uddgIdx >= 0)
+                    {
+                        string encoded = rawHref[(uddgIdx + 5)..];
+                        int ampIdx = encoded.IndexOf('&');
+                        if (ampIdx >= 0) encoded = encoded[..ampIdx];
+                        realUrl = Uri.UnescapeDataString(encoded);
+                    }
+
+                    string snippet = node.SelectSingleNode(".//*[contains(@class,'result__snippet')]")?.InnerText?.Trim() ?? "";
                     if (!string.IsNullOrEmpty(title))
                     {
-                        results.Add(new { title, url = href, snippet });
+                        results.Add(new { title, url = realUrl, snippet });
                     }
                 }
             }
