@@ -68,7 +68,7 @@ public static class DataStore
 
     // Chat Operations
     public static List<Chat> ListChats() =>
-        _store.Values.OrderByDescending(c => c.UpdatedDate).Cast<Chat>().ToList();
+        [.. _store.Values.OrderByDescending(c => c.UpdatedDate).Cast<Chat>()];
 
     public static Chat CreateChat()
     {
@@ -109,7 +109,7 @@ public static class DataStore
     {
         if (!_store.TryGetValue(uuid, out StoredChat? c)) return [];
         string now = DateTime.UtcNow.ToString("O");
-        List<Message> recorded = incoming.Select(m => new Message
+        List<Message> recorded = [.. incoming.Select(m => new Message
         {
             Id = $"msg#{m.MessageId}",
             CreatedDate = m.CreatedDate ?? now,
@@ -119,7 +119,7 @@ public static class DataStore
             Feedback = "",
             Role = m.Role,
             Content = m.Content
-        }).ToList();
+        })];
         c.Messages.AddRange(recorded);
         c.UpdatedDate = now;
         return recorded;
@@ -127,7 +127,7 @@ public static class DataStore
 
     // SystemContext Operations
     public static List<SystemContext> ListSystemContexts() =>
-        _scStore.Values.OrderBy(c => c.CreatedDate).ToList();
+        [.. _scStore.Values.OrderBy(c => c.CreatedDate)];
 
     public static SystemContext CreateSystemContext(string title, string text)
     {
