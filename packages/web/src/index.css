@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 @layer base {
   @import "@aws-amplify/ui-react/styles.css";
 
@@ -20,31 +21,8 @@
     @apply leading-[1.75];
   }
 
-  h1 {
-    @apply text-3xl font-bold font-["Noto_Sans_JP",sans-serif] leading-[1.75];
-  }
-  h2 {
-    @apply text-2xl font-bold font-["Noto_Sans_JP",sans-serif] leading-[1.75];
-  }
-  h3 {
-    @apply text-xl font-bold font-["Noto_Sans_JP",sans-serif] leading-[1.75];
-  }
-  h4 {
-    @apply text-lg font-bold font-["Noto_Sans_JP",sans-serif] leading-[1.75];
-  }
-  h5 {
-    @apply text-base font-bold font-["Noto_Sans_JP",sans-serif] leading-[1.75];
-  }
-  h6 {
-    @apply text-sm font-bold font-["Noto_Sans_JP",sans-serif] leading-[1.75];
-  }
-
   b, strong {
-    @apply font-bold font-["Noto_Sans_JP",sans-serif];
-  }
-
-  .prose {
-    @apply font-serif;
+    @apply font-bold;
   }
 }
 
