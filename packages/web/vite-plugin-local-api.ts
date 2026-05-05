@@ -294,12 +294,12 @@ async function* providerStream(
     } else if (part.type === 'tool-call') {
       yield {
         text: '',
-        trace: `\n<!-- TOOL:${part.toolName} -->\n- 引数: \`${JSON.stringify(part.input)}\`\n`,
+        trace: `\n<!-- TOOL:${part.toolName} -->\n\`\`\`json:入力\n${JSON.stringify(part.input, null, 2)}\n\`\`\`\n`,
       };
     } else if (part.type === 'tool-result') {
       yield {
         text: '',
-        trace: `\n\`\`\`json\n${JSON.stringify(part.output, null, 2)}\n\`\`\`\n`,
+        trace: `\n\`\`\`json:出力\n${JSON.stringify(part.output, null, 2)}\n\`\`\`\n`,
       };
     } else if (part.type === 'error') {
       yield {

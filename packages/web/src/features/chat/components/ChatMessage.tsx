@@ -25,26 +25,92 @@ function parseTraceSections(
   loading: boolean,
   stopReason?: string,
 ): TraceSection[] {
-  const parts = trace.split(/(?=\n<!-- TOOL:)/).filter((s) => s.trim());
-  if (parts.length === 0) {
-    return [{ name: '', body: trace, status: loading ? 'loading' : stopReason === 'error' ? 'error' : 'done' }];
-  }
-  return parts.map((part, i) => {
-    const isLast = i === parts.length - 1;
-    const hasResult = (part.match(/```json/g) ?? []).length >= 2;
-    const nameMatch = /<!-- TOOL:([^-\n]+) -->/.exec(part);
-    const name = nameMatch?.[1]?.trim() ?? '';
-    const body = part.replace(/\n?<!-- TOOL:[^-\n]+ -->\n?/, '');
-    let status: TraceSectionStatus;
-    if (isLast && loading && !hasResult) {
-      status = 'loading';
-    } else if (isLast && stopReason === 'error' && !hasResult) {
-      status = 'error';
-    } else {
-      status = 'done';
+  if (!trace.trim()) return [];
+
+  // JSONL 形式の新しいフォーマットか、または従来のフォーマットかを判定しながらパースする
+  const sections: TraceSection[] = [];
+  const lines = trace.split('\n');
+  let currentSection: TraceSection | null = null;
+  let isLegacyFormat = false;
+
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    try {
+      // JSONとしてパースを試みる (新フォーマット)
+      const ev = JSON.parse(line);
+      if (ev.type === 'call') {
+        let inputObj = ev.input;
+        if (typeof ev.input === 'string') {
+          try { inputObj = JSON.parse(ev.input); } catch (e) {}
+        }
+        currentSection = {
+          name: ev.name || 'tool',
+          status: 'loading',
+          body: '```json:入力\n' + JSON.stringify(inputObj, null, 2) + '\n```\n',
+        };
+        sections.push(currentSection);
+      } else if (ev.type === 'result') {
+        if (currentSection) {
+          let outputObj = ev.output;
+          if (typeof ev.output === 'string') {
+            try { outputObj = JSON.parse(ev.output); } catch (e) {}
+          }
+          currentSection.body += '```json:出力\n' + JSON.stringify(outputObj, null, 2) + '\n```\n';
+          currentSection.status = 'done';
+        }
+      } else if (ev.type === 'error') {
+        if (currentSection) {
+          currentSection.body += '\n**エラー発生**: ' + String(ev.error) + '\n';
+          currentSection.status = 'error';
+        }
+      }
+    } catch (e) {
+      // JSONパースに失敗した場合、従来の文字列ベースのフォーマットとみなす
+      isLegacyFormat = true;
+      break;
     }
-    return { name, body, status };
-  });
+  }
+
+  if (isLegacyFormat) {
+    // 従来のフォーマットの場合のパース
+    // \n<!-- TOOL: ではなく <!-- TOOL: の位置で分割し、複数ツールに対応する
+    const parts = trace.split(/(?=<!-- TOOL:)/).filter((s) => s.trim());
+    if (parts.length === 0) {
+      return [{ name: '', body: trace, status: loading ? 'loading' : stopReason === 'error' ? 'error' : 'done' }];
+    }
+    return parts.map((part, i) => {
+      const isLast = i === parts.length - 1;
+      const hasResult = (part.match(/```json/g) ?? []).length >= 2;
+      // ツール名にハイフンやアンダースコアなどを含めるため、[^\s>-] ではなく、--> までの任意の文字列にマッチさせる
+      const nameMatch = /<!-- TOOL:(.*?) -->/.exec(part);
+      const name = nameMatch?.[1]?.trim() ?? '';
+      const body = part.replace(/<!-- TOOL:.*? -->\n?/, '');
+      let status: TraceSectionStatus;
+      if (isLast && loading && !hasResult) {
+        status = 'loading';
+      } else if (isLast && stopReason === 'error' && !hasResult) {
+        status = 'error';
+      } else {
+        status = 'done';
+      }
+      return { name, body, status };
+    });
+  }
+
+  // 新フォーマットの場合の最終状態調整
+  if (sections.length > 0) {
+    const lastSection = sections[sections.length - 1];
+    const hasResult = lastSection.body.includes('```json:出力');
+    if (loading && !hasResult && lastSection.status !== 'error') {
+      lastSection.status = 'loading';
+    } else if (stopReason === 'error' && !hasResult) {
+      lastSection.status = 'error';
+    } else if (lastSection.status === 'loading' && !loading) {
+      lastSection.status = 'done';
+    }
+  }
+
+  return sections;
 }
 
 type Props = {
@@ -112,10 +178,10 @@ export const ChatMessage = (props: Props) => {
             className={`mt-1 ${isUser ? 'max-w-[80%] rounded-2xl rounded-br-none bg-blue-100 p-3 text-gray-800' : 'w-full'}`}
           >
             {chatContent?.trace && (
-              <div className='mb-2 rounded-sm border p-2 font-sans'>
+              <div className='mb-2 flex flex-col gap-2 font-sans'>
                 {parseTraceSections(chatContent.trace, props.loading ?? false, props.stopReason).map(
                   (section, i) => (
-                    <div key={i} className='mb-1'>
+                    <div key={i} className='rounded-sm border p-2'>
                       <div className='flex items-center gap-2'>
                         {section.status === 'loading' ? (
                           <div className='size-3 shrink-0 animate-pulse rounded-full bg-blue-500' />
@@ -127,7 +193,7 @@ export const ChatMessage = (props: Props) => {
                         <span className='font-bold text-sm'>{section.name}</span>
                       </div>
                       {section.body.trim() && (
-                        <div className='ml-5 min-w-0 overflow-hidden'>
+                        <div className='ml-5 mt-1 min-w-0 overflow-hidden'>
                           <Markdown
                             className='!font-sans [&_pre]:!font-mono [&_code]:!font-mono'
                             prefix={`${props.idx}-trace-${i}`}

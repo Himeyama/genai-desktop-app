@@ -498,13 +498,15 @@ public static class LocalApiServer
                         {
                             if (content is FunctionCallContent funcCall)
                             {
-                                string traceStr = $"\n<!-- TOOL:{funcCall.Name} -->\n入力\n```json\n{JsonSerializer.Serialize(funcCall.Arguments, jOpts)}\n```\n";
+                                var ev = new { type = "call", name = funcCall.Name, input = funcCall.Arguments };
+                                string traceStr = JsonSerializer.Serialize(ev, jOpts) + "\n";
                                 string traceChunk = JsonSerializer.Serialize(new { text = "", trace = traceStr }, jOpts);
                                 await context.Response.WriteAsync($"{traceChunk}\n");
                             }
                             else if (content is FunctionResultContent funcResult)
                             {
-                                string traceStr = $"出力\n```json\n{JsonSerializer.Serialize(funcResult.Result, jOpts)}\n```\n";
+                                var ev = new { type = "result", name = funcResult.CallId ?? "", output = funcResult.Result };
+                                string traceStr = JsonSerializer.Serialize(ev, jOpts) + "\n";
                                 string traceChunk = JsonSerializer.Serialize(new { text = "", trace = traceStr }, jOpts);
                                 await context.Response.WriteAsync($"{traceChunk}\n");
                             }

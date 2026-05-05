@@ -67,7 +67,9 @@ const SupRenderer = ({ children }: ComponentProps<'sup'>) => (
 );
 
 const CodeRenderer = ({ className, children, node }: ComponentProps<'code'> & ExtraProps) => {
-  const language = /language-(\w+)/.exec(className || '')?.[1];
+  const match = /language-(\w+)(?::(.+))?/.exec(className || '');
+  const language = match?.[1];
+  const title = match?.[2] || 'JSON';
   const isCodeBlock = !!language;
   const codeText = String(children).replace(/\n$/, '');
 
@@ -92,7 +94,7 @@ const CodeRenderer = ({ className, children, node }: ComponentProps<'code'> & Ex
     if (language === 'json') {
       return (
         <details className='my-4 cursor-pointer rounded-md border border-gray-300 bg-gray-50 p-2'>
-          <summary className='font-bold text-sm text-gray-700'>JSON</summary>
+          <summary className='font-bold text-sm text-gray-700'>{title}</summary>
           <div className='mt-2 cursor-auto'>
             {codeBlockContent}
           </div>
