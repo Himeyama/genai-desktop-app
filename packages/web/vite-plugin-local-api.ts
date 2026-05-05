@@ -294,7 +294,7 @@ async function* providerStream(
     } else if (part.type === 'tool-call') {
       yield {
         text: '',
-        trace: `\n**${part.toolName}**\n- 引数: \`${JSON.stringify(part.input)}\`\n`,
+        trace: `\n<!-- TOOL:${part.toolName} -->\n- 引数: \`${JSON.stringify(part.input)}\`\n`,
       };
     } else if (part.type === 'tool-result') {
       yield {

@@ -12,11 +12,47 @@ import { ZoomUpVideo } from '@/features/chat/components/ZoomUpVideo';
 import { useFiles } from '@/hooks/useFiles';
 import { useTyping } from '@/hooks/useTyping';
 
+type TraceSectionStatus = 'loading' | 'error' | 'done';
+
+type TraceSection = {
+  name: string;
+  body: string;
+  status: TraceSectionStatus;
+};
+
+function parseTraceSections(
+  trace: string,
+  loading: boolean,
+  stopReason?: string,
+): TraceSection[] {
+  const parts = trace.split(/(?=\n<!-- TOOL:)/).filter((s) => s.trim());
+  if (parts.length === 0) {
+    return [{ name: '', body: trace, status: loading ? 'loading' : stopReason === 'error' ? 'error' : 'done' }];
+  }
+  return parts.map((part, i) => {
+    const isLast = i === parts.length - 1;
+    const hasResult = (part.match(/```json/g) ?? []).length >= 2;
+    const nameMatch = /<!-- TOOL:([^-\n]+) -->/.exec(part);
+    const name = nameMatch?.[1]?.trim() ?? '';
+    const body = part.replace(/\n?<!-- TOOL:[^-\n]+ -->\n?/, '');
+    let status: TraceSectionStatus;
+    if (isLast && loading && !hasResult) {
+      status = 'loading';
+    } else if (isLast && stopReason === 'error' && !hasResult) {
+      status = 'error';
+    } else {
+      status = 'done';
+    }
+    return { name, body, status };
+  });
+}
+
 type Props = {
   className?: string;
   idx?: number;
   chatContent?: ShownMessage;
   loading?: boolean;
+  stopReason?: string;
   hideFeedback?: boolean;
   allowRetry?: boolean;
   retryGeneration?: () => void;
@@ -77,19 +113,32 @@ export const ChatMessage = (props: Props) => {
           >
             {chatContent?.trace && (
               <div className='mb-2 rounded-sm border p-2 font-sans'>
-                {props.loading && !chatContent?.content && (
-                  <div className='mb-2 text-sm font-bold'>
-                    <div className='inline-flex gap-1'>
-                      <div className='size-5 animate-spin rounded-full border-4 border-blue-500 border-t-transparent'></div>
+                {parseTraceSections(chatContent.trace, props.loading ?? false, props.stopReason).map(
+                  (section, i) => (
+                    <div key={i} className='mb-1'>
+                      <div className='flex items-center gap-2'>
+                        {section.status === 'loading' ? (
+                          <div className='size-3 shrink-0 animate-pulse rounded-full bg-blue-500' />
+                        ) : section.status === 'error' ? (
+                          <div className='size-3 shrink-0 rounded-full bg-red-500' />
+                        ) : (
+                          <div className='size-3 shrink-0 rounded-full bg-green-500' />
+                        )}
+                        <span className='font-bold text-sm'>{section.name}</span>
+                      </div>
+                      {section.body.trim() && (
+                        <div className='ml-5 min-w-0 overflow-hidden'>
+                          <Markdown
+                            className='!font-sans [&_pre]:!font-mono [&_code]:!font-mono'
+                            prefix={`${props.idx}-trace-${i}`}
+                          >
+                            {unescapeUnicode(section.body)}
+                          </Markdown>
+                        </div>
+                      )}
                     </div>
-                  </div>
+                  ),
                 )}
-                <Markdown
-                  className='!font-sans [&_pre]:!font-mono [&_code]:!font-mono'
-                  prefix={`${props.idx}-trace`}
-                >
-                  {unescapeUnicode(chatContent.trace)}
-                </Markdown>
               </div>
             )}
             {chatContent?.extraData && (

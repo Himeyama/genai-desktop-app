@@ -482,6 +482,7 @@ public static class LocalApiServer
                     .Build();
 
                 IAsyncEnumerable<ChatResponseUpdate> stream = functionCallingClient.GetStreamingResponseAsync(messages, options);
+                JsonSerializerOptions jOpts = new() { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
 
                 await foreach (ChatResponseUpdate update in stream)
                 {
@@ -490,21 +491,20 @@ public static class LocalApiServer
                         string chunk = JsonSerializer.Serialize(new { text = update.Text });
                         await context.Response.WriteAsync($"{chunk}\n");
                     }
-                    
+
                     if (update.Contents != null)
                     {
-                        JsonSerializerOptions jOpts = new() { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
-                        foreach(AIContent content in update.Contents)
+                        foreach (AIContent content in update.Contents)
                         {
                             if (content is FunctionCallContent funcCall)
                             {
-                                string traceStr = $"\n**{funcCall.Name}**\n- 引数: `{JsonSerializer.Serialize(funcCall.Arguments, jOpts)}`\n";
+                                string traceStr = $"\n<!-- TOOL:{funcCall.Name} -->\n入力\n```json\n{JsonSerializer.Serialize(funcCall.Arguments, jOpts)}\n```\n";
                                 string traceChunk = JsonSerializer.Serialize(new { text = "", trace = traceStr }, jOpts);
                                 await context.Response.WriteAsync($"{traceChunk}\n");
                             }
                             else if (content is FunctionResultContent funcResult)
                             {
-                                string traceStr = $"\n```json\n{JsonSerializer.Serialize(funcResult.Result, jOpts)}\n```\n";
+                                string traceStr = $"出力\n```json\n{JsonSerializer.Serialize(funcResult.Result, jOpts)}\n```\n";
                                 string traceChunk = JsonSerializer.Serialize(new { text = "", trace = traceStr }, jOpts);
                                 await context.Response.WriteAsync($"{traceChunk}\n");
                             }

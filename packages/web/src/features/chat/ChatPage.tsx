@@ -60,6 +60,7 @@ export const ChatPage = () => {
     updateSystemContext,
     getCurrentSystemContext,
     retryGeneration,
+    getStopReason,
   } = useChat(pathname, chatId);
 
   const { scrollableContainer, setFollowing } = useFollow();
@@ -159,7 +160,7 @@ export const ChatPage = () => {
     }
   }, [loading, isFromTopChat, isEmpty]);
 
-  const START_DELAY_MS = 64249;
+  const START_DELAY_MS = 3000;
 
   const { liveStatusMessage } = useLiveStatusMessage({
     isAssistant: lastMessage?.role === 'assistant' || loading,
@@ -210,6 +211,7 @@ export const ChatPage = () => {
                       key={chat.messageId ?? `message-${idx}`}
                       chatContent={chat}
                       loading={loading && idx === messages.length - 1}
+                      stopReason={idx === messages.length - 1 ? getStopReason() : undefined}
                       allowRetry={idx === messages.length - 1}
                       retryGeneration={onRetry}
                     />
