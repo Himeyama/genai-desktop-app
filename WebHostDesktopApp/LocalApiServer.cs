@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using HtmlAgilityPack;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.FileProviders;
 using OpenAI.Images;
 
 namespace WebHostDesktopApp;
@@ -31,7 +32,7 @@ public class Chat
 
 public class StoredChat : Chat
 {
-    [JsonPropertyName("messages")] public List<Message> Messages { get; set; } = new();
+    [JsonPropertyName("messages")] public List<Message> Messages { get; set; } = [];
 }
 
 public class Message
@@ -81,7 +82,7 @@ public static class DataStore
             Usecase = "chat",
             Title = "新しいチャット",
             UpdatedDate = now,
-            Messages = new List<Message>()
+            Messages = []
         };
         _store[uuid] = chat;
         return chat;
@@ -102,11 +103,11 @@ public static class DataStore
     }
 
     public static List<Message> ListMessages(string uuid) =>
-        _store.TryGetValue(uuid, out StoredChat? c) ? c.Messages : new List<Message>();
+        _store.TryGetValue(uuid, out StoredChat? c) ? c.Messages : [];
 
     public static List<Message> CreateMessages(string uuid, List<IncomingMessageData> incoming)
     {
-        if (!_store.TryGetValue(uuid, out StoredChat? c)) return new List<Message>();
+        if (!_store.TryGetValue(uuid, out StoredChat? c)) return [];
         string now = DateTime.UtcNow.ToString("O");
         List<Message> recorded = incoming.Select(m => new Message
         {
@@ -185,7 +186,7 @@ public static class AITools
             HtmlDocument doc = new();
             doc.LoadHtml(html);
 
-            List<object> results = new();
+            List<object> results = [];
             IEnumerable<HtmlNode>? nodes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'result__body')]")?.Take(5);
             if (nodes != null)
             {
@@ -231,7 +232,7 @@ public static class AITools
 
             string text = doc.DocumentNode.SelectSingleNode("//body")?.InnerText ?? "";
             text = System.Text.RegularExpressions.Regex.Replace(text, @"\s+", " ").Trim();
-            if (text.Length > 5000) text = text.Substring(0, 5000);
+            if (text.Length > 5000) text = text[..5000];
 
             return JsonSerializer.Serialize(new { content = text });
         }
@@ -251,17 +252,17 @@ public static class LocalApiServer
     private static IChatClient CreateChatClient(string modelId)
     {
         int sep = modelId.IndexOf('/');
-        string provider = sep != -1 ? modelId.Substring(0, sep) : "openai";
-        string modelName = sep != -1 ? modelId.Substring(sep + 1) : modelId;
+        string provider = sep != -1 ? modelId[..sep] : "openai";
+        string modelName = sep != -1 ? modelId[(sep + 1)..] : modelId;
 
         // Vercel AI SDK compatible stream format building requires ChatOptions with Tools
         ChatOptions options = new()
         {
-            Tools = new List<AITool>
-            {
+            Tools =
+            [
                 AIFunctionFactory.Create(AITools.WebSearch),
                 AIFunctionFactory.Create(AITools.WebFetch)
-            }
+            ]
         };
 
         if (provider == "openai")
@@ -309,18 +310,20 @@ public static class LocalApiServer
 
         // 静的ファイルの配信設定 (フロントエンド)
         string webRootPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "packages", "web", "dist"));
+        if (!Directory.Exists(webRootPath))
+            webRootPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "frontend"));
         if (Directory.Exists(webRootPath))
         {
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(webRootPath),
+                FileProvider = new PhysicalFileProvider(webRootPath),
                 RequestPath = ""
             });
 
             // API 以外のリクエストでファイルが存在しない場合は index.html を返す (SPA ルーティング用)
             app.MapFallbackToFile("index.html", new StaticFileOptions
             {
-                FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(webRootPath)
+                FileProvider = new PhysicalFileProvider(webRootPath)
             });
         }
         else
@@ -391,7 +394,7 @@ public static class LocalApiServer
         app.MapPost("/chats/{id}/messages", async (string id, HttpContext context) =>
         {
             JsonElement root = await JsonSerializer.DeserializeAsync<JsonElement>(context.Request.Body);
-            List<IncomingMessageData> inMsgs = JsonSerializer.Deserialize<List<IncomingMessageData>>(root.GetProperty("messages").GetRawText()) ?? new();
+            List<IncomingMessageData> inMsgs = JsonSerializer.Deserialize<List<IncomingMessageData>>(root.GetProperty("messages").GetRawText()) ?? [];
             return Results.Ok(new { messages = DataStore.CreateMessages(id, inMsgs) });
         });
 
@@ -404,7 +407,7 @@ public static class LocalApiServer
                 modelId = idProp.GetString() ?? modelId;
             }
 
-            List<ChatMessage> messages = new();
+            List<ChatMessage> messages = [];
             if (root.TryGetProperty("messages", out JsonElement msgsProp))
             {
                 foreach (JsonElement msg in msgsProp.EnumerateArray())
@@ -424,11 +427,11 @@ public static class LocalApiServer
 
                 ChatOptions options = new()
                 {
-                    Tools = new List<AITool>
-                    {
+                    Tools =
+                    [
                         AIFunctionFactory.Create(AITools.WebSearch),
                         AIFunctionFactory.Create(AITools.WebFetch)
-                    }
+                    ]
                 };
 
                 IChatClient functionCallingClient = new ChatClientBuilder(chatClient)
@@ -518,8 +521,8 @@ public static class LocalApiServer
                 }
 
                 int sep = modelId.IndexOf('/');
-                string provider = sep != -1 ? modelId.Substring(0, sep) : "openai";
-                string rawModelName = sep != -1 ? modelId.Substring(sep + 1) : modelId;
+                string provider = sep != -1 ? modelId[..sep] : "openai";
+                string rawModelName = sep != -1 ? modelId[(sep + 1)..] : modelId;
                 string apiModelName = rawModelName;
 
                 // NOTE: DO NOT automatically convert openai model names to "dall-e-X".

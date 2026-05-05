@@ -23,7 +23,7 @@ public partial class App : Application
     {
         try
         {
-            var errorPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "error.log");
+            string errorPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "error.log");
             File.WriteAllText(errorPath, e.Exception.ToString() + "\n" + e.Message);
         }
         catch { }
@@ -33,7 +33,7 @@ public partial class App : Application
     /// Invoked when the application is launched.
     /// </summary>
     /// <param name="args">Details about the launch request and process.</param>
-    protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         // ローカルAPIサーバーをバックグラウンドで起動
         await LocalApiServer.StartAsync(64249);
