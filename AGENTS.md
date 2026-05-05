@@ -33,6 +33,13 @@ mise exec -- npm run build -w packages/web
 mise exec -- npm run preview -w packages/web
 ```
 
+## バックエンドについて
+
+**本番・ローカル開発ともに、バックエンドは `WebHostDesktopApp`（WinUI 3 デスクトップアプリ）が担当する。**
+
+- バックエンドは `WebHostDesktopApp` プロジェクトである。
+- バックエンドのロジック（ストリーミング推論・ツール呼び出しのトレース形式など）を変更する場合は `WebHostDesktopApp` 側を修正すること。
+
 ## ローカル開発環境（AWS 不要・サーバーレス）
 
 AI API は Vite 開発サーバーのミドルウェア（`vite-plugin-local-api.ts`）として動作するため、別プロセス不要。

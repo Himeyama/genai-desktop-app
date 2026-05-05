@@ -27,53 +27,11 @@ function parseTraceSections(
 ): TraceSection[] {
   if (!trace.trim()) return [];
 
-  // JSONL 形式の新しいフォーマットか、または従来のフォーマットかを判定しながらパースする
-  const sections: TraceSection[] = [];
   const lines = trace.split('\n');
-  let currentSection: TraceSection | null = null;
-  let isLegacyFormat = false;
-
-  for (const line of lines) {
-    if (!line.trim()) continue;
-    try {
-      // JSONとしてパースを試みる (新フォーマット)
-      const ev = JSON.parse(line);
-      if (ev.type === 'call') {
-        let inputObj = ev.input;
-        if (typeof ev.input === 'string') {
-          try { inputObj = JSON.parse(ev.input); } catch (e) {}
-        }
-        currentSection = {
-          name: ev.name || 'tool',
-          status: 'loading',
-          body: '```json:入力\n' + JSON.stringify(inputObj, null, 2) + '\n```\n',
-        };
-        sections.push(currentSection);
-      } else if (ev.type === 'result') {
-        if (currentSection) {
-          let outputObj = ev.output;
-          if (typeof ev.output === 'string') {
-            try { outputObj = JSON.parse(ev.output); } catch (e) {}
-          }
-          currentSection.body += '```json:出力\n' + JSON.stringify(outputObj, null, 2) + '\n```\n';
-          currentSection.status = 'done';
-        }
-      } else if (ev.type === 'error') {
-        if (currentSection) {
-          currentSection.body += '\n**エラー発生**: ' + String(ev.error) + '\n';
-          currentSection.status = 'error';
-        }
-      }
-    } catch (e) {
-      // JSONパースに失敗した場合、従来の文字列ベースのフォーマットとみなす
-      isLegacyFormat = true;
-      break;
-    }
-  }
+  const isLegacyFormat = lines.find((l) => l.trim())?.startsWith('{') === false;
 
   if (isLegacyFormat) {
-    // 従来のフォーマットの場合のパース
-    // \n<!-- TOOL: ではなく <!-- TOOL: の位置で分割し、複数ツールに対応する
+    // 従来の HTML コメント形式のパース
     const parts = trace.split(/(?=<!-- TOOL:)/).filter((s) => s.trim());
     if (parts.length === 0) {
       return [{ name: '', body: trace, status: loading ? 'loading' : stopReason === 'error' ? 'error' : 'done' }];
@@ -81,7 +39,6 @@ function parseTraceSections(
     return parts.map((part, i) => {
       const isLast = i === parts.length - 1;
       const hasResult = (part.match(/```json/g) ?? []).length >= 2;
-      // ツール名にハイフンやアンダースコアなどを含めるため、[^\s>-] ではなく、--> までの任意の文字列にマッチさせる
       const nameMatch = /<!-- TOOL:(.*?) -->/.exec(part);
       const name = nameMatch?.[1]?.trim() ?? '';
       const body = part.replace(/<!-- TOOL:.*? -->\n?/, '');
@@ -97,16 +54,49 @@ function parseTraceSections(
     });
   }
 
-  // 新フォーマットの場合の最終状態調整
-  if (sections.length > 0) {
-    const lastSection = sections[sections.length - 1];
-    const hasResult = lastSection.body.includes('```json:出力');
-    if (loading && !hasResult && lastSection.status !== 'error') {
-      lastSection.status = 'loading';
-    } else if (stopReason === 'error' && !hasResult) {
-      lastSection.status = 'error';
-    } else if (lastSection.status === 'loading' && !loading) {
-      lastSection.status = 'done';
+  // JSONL 形式: id で call と result を対応付ける
+  // sections は call の到着順を保持し、id → index のマップで result を紐付ける
+  const sections: TraceSection[] = [];
+  const idToIndex = new Map<string, number>();
+
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    try {
+      const ev = JSON.parse(line);
+      if (ev.type === 'call') {
+        const section: TraceSection = {
+          name: ev.name || 'tool',
+          status: 'loading',
+          body: '```json:入力\n' + JSON.stringify(ev.input, null, 2) + '\n```\n',
+        };
+        const idx = sections.push(section) - 1;
+        if (ev.id) idToIndex.set(ev.id, idx);
+      } else if (ev.type === 'result') {
+        const idx = ev.id != null ? idToIndex.get(ev.id) : undefined;
+        const section = idx != null ? sections[idx] : sections[sections.length - 1];
+        if (section) {
+          section.body += '```json:出力\n' + JSON.stringify(ev.output, null, 2) + '\n```\n';
+          section.status = 'done';
+        }
+      } else if (ev.type === 'error') {
+        const idx = ev.id != null ? idToIndex.get(ev.id) : undefined;
+        const section = idx != null ? sections[idx] : sections[sections.length - 1];
+        if (section) {
+          section.body += '\n**エラー発生**: ' + String(ev.error) + '\n';
+          section.status = 'error';
+        }
+      }
+    } catch (e) {
+      // パース失敗行は無視
+    }
+  }
+
+  // ストリーミング中の最終状態調整: まだ result が来ていない loading セクションを更新
+  if (!loading) {
+    for (const section of sections) {
+      if (section.status === 'loading') {
+        section.status = stopReason === 'error' ? 'error' : 'done';
+      }
     }
   }
 
