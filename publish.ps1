@@ -1,3 +1,8 @@
+[CmdletBinding()]
+param (
+    [switch]$SkipInstaller
+)
+
 $ErrorActionPreference = 'Stop'
 $totalSteps = 9
 $step = 0
@@ -78,11 +83,21 @@ Write-Host "  容量: $size KiB" -ForegroundColor Green
 $script:nsisVersion = $version
 $script:nsisDate    = $date
 $script:nsisSize    = $size
-Invoke-Step "NSIS でインストーラーをビルド" {
-    & 'C:\Program Files (x86)\NSIS\makensis.exe' /INPUTCHARSET UTF8 "/DVERSION=$script:nsisVersion" "/DDATE=$script:nsisDate" "/DSIZE=$script:nsisSize" installer.nsi
+
+if (-not $SkipInstaller) {
+    Invoke-Step "NSIS でインストーラーをビルド" {
+        & 'C:\Program Files (x86)\NSIS\makensis.exe' /INPUTCHARSET UTF8 "/DVERSION=$script:nsisVersion" "/DDATE=$script:nsisDate" "/DSIZE=$script:nsisSize" installer.nsi
+    }
+} else {
+    Write-Step "インストーラーのビルド (スキップ)"
+    Write-Host "  -SkipInstaller が指定されたためスキップします" -ForegroundColor DarkGray
 }
 
 Write-Host ""
 Write-Host ("=" * 40) -ForegroundColor DarkGray
-Write-Host "完了しました！ 出力ファイル: publish\, Install.exe" -ForegroundColor Green
+if (-not $SkipInstaller) {
+    Write-Host "完了しました！ 出力ファイル: publish\, Install.exe" -ForegroundColor Green
+} else {
+    Write-Host "ビルドが完了しました！ 出力フォルダ: publish\" -ForegroundColor Green
+}
 Write-Host ""
