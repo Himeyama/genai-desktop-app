@@ -2,8 +2,10 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Anthropic.Core;
 using HtmlAgilityPack;
 using Microsoft.Extensions.AI;
+using OpenAI.Images;
 
 namespace WebHostDesktopApp;
 
@@ -71,7 +73,7 @@ public static class DataStore
     {
         string uuid = Guid.NewGuid().ToString();
         string now = DateTime.UtcNow.ToString("O");
-        StoredChat chat = new StoredChat
+        StoredChat chat = new()
         {
             Id = $"user#{LOCAL_USER_ID}#chat#{uuid}",
             CreatedDate = now,
@@ -129,7 +131,7 @@ public static class DataStore
     public static SystemContext CreateSystemContext(string title, string text)
     {
         string uuid = Guid.NewGuid().ToString();
-        SystemContext sc = new SystemContext
+        SystemContext sc = new()
         {
             Id = $"user#{LOCAL_USER_ID}#systemContext#{uuid}",
             CreatedDate = DateTime.UtcNow.ToString("O"),
@@ -175,15 +177,15 @@ public static class AITools
         try
         {
             Console.WriteLine($"[WebSearch] query: {query}");
-            using HttpClient client = new HttpClient();
+            using HttpClient client = new();
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
             string url = $"https://html.duckduckgo.com/html/?q={Uri.EscapeDataString(query)}";
             string html = await client.GetStringAsync(url);
 
-            HtmlDocument doc = new HtmlDocument();
+            HtmlDocument doc = new();
             doc.LoadHtml(html);
 
-            List<object> results = new List<object>();
+            List<object> results = new();
             IEnumerable<HtmlNode>? nodes = doc.DocumentNode.SelectNodes("//div[contains(@class, 'result__body')]")?.Take(5);
             if (nodes != null)
             {
@@ -213,11 +215,11 @@ public static class AITools
         try
         {
             Console.WriteLine($"[WebFetch] url: {url}");
-            using HttpClient client = new HttpClient();
+            using HttpClient client = new();
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
             string html = await client.GetStringAsync(url);
 
-            HtmlDocument doc = new HtmlDocument();
+            HtmlDocument doc = new();
             doc.LoadHtml(html);
 
             // Remove script, style, nav, header, footer, iframe, noscript
@@ -253,7 +255,7 @@ public static class LocalApiServer
         string modelName = sep != -1 ? modelId.Substring(sep + 1) : modelId;
 
         // Vercel AI SDK compatible stream format building requires ChatOptions with Tools
-        ChatOptions options = new ChatOptions
+        ChatOptions options = new()
         {
             Tools = new List<AITool>
             {
@@ -265,32 +267,32 @@ public static class LocalApiServer
         if (provider == "openai")
         {
             string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? "";
-            return new global::OpenAI.Chat.ChatClient(modelName, apiKey).AsIChatClient();
+            return new OpenAI.Chat.ChatClient(modelName, apiKey).AsIChatClient();
         }
         else if (provider == "anthropic")
         {
             string apiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY") ?? "";
-            var anthropicOptions = new global::Anthropic.Core.ClientOptions { ApiKey = apiKey };
-            return new global::Anthropic.AnthropicClient(anthropicOptions).AsIChatClient(modelName);
+            ClientOptions anthropicOptions = new() { ApiKey = apiKey };
+            return new Anthropic.AnthropicClient(anthropicOptions).AsIChatClient(modelName);
         }
         else if (provider == "xai")
         {
             string apiKey = Environment.GetEnvironmentVariable("XAI_API_KEY") ?? "";
-            var openaiOptions = new global::OpenAI.OpenAIClientOptions { Endpoint = new Uri("https://api.x.ai/v1") };
-            var chatClient = new global::OpenAI.Chat.ChatClient(modelName, new System.ClientModel.ApiKeyCredential(apiKey), openaiOptions);
+            OpenAI.OpenAIClientOptions openaiOptions = new() { Endpoint = new Uri("https://api.x.ai/v1") };
+            OpenAI.Chat.ChatClient chatClient = new(modelName, new System.ClientModel.ApiKeyCredential(apiKey), openaiOptions);
             return chatClient.AsIChatClient();
         }
         else if (provider == "openrouter")
         {
             string apiKey = Environment.GetEnvironmentVariable("OPENROUTER_API_KEY") ?? "";
-            var openaiOptions = new global::OpenAI.OpenAIClientOptions { Endpoint = new Uri("https://openrouter.ai/api/v1") };
-            var chatClient = new global::OpenAI.Chat.ChatClient(modelName, new System.ClientModel.ApiKeyCredential(apiKey), openaiOptions);
+            OpenAI.OpenAIClientOptions openaiOptions = new() { Endpoint = new Uri("https://openrouter.ai/api/v1") };
+            OpenAI.Chat.ChatClient chatClient = new(modelName, new System.ClientModel.ApiKeyCredential(apiKey), openaiOptions);
             return chatClient.AsIChatClient();
         }
         else if (provider == "ollama")
         {
             string baseUrl = Environment.GetEnvironmentVariable("OLLAMA_BASE_URL") ?? "http://localhost:11434";
-            return new Microsoft.Extensions.AI.OllamaChatClient(new Uri(baseUrl), modelName);
+            return new OllamaChatClient(new Uri(baseUrl), modelName);
         }
 
         throw new Exception($"Unknown provider: {provider}");
@@ -402,14 +404,14 @@ public static class LocalApiServer
                 modelId = idProp.GetString() ?? modelId;
             }
 
-            List<ChatMessage> messages = new List<Microsoft.Extensions.AI.ChatMessage>();
+            List<ChatMessage> messages = new();
             if (root.TryGetProperty("messages", out JsonElement msgsProp))
             {
                 foreach (JsonElement msg in msgsProp.EnumerateArray())
                 {
                     string? role = msg.GetProperty("role").GetString();
                     string content = msg.GetProperty("content").GetString() ?? "";
-                    messages.Add(new Microsoft.Extensions.AI.ChatMessage(role == "system" ? ChatRole.System : role == "user" ? ChatRole.User : ChatRole.Assistant, content));
+                    messages.Add(new ChatMessage(role == "system" ? ChatRole.System : role == "user" ? ChatRole.User : ChatRole.Assistant, content));
                 }
             }
 
@@ -420,7 +422,7 @@ public static class LocalApiServer
             {
                 IChatClient chatClient = CreateChatClient(modelId);
 
-                ChatOptions options = new ChatOptions
+                ChatOptions options = new()
                 {
                     Tools = new List<AITool>
                     {
@@ -445,7 +447,7 @@ public static class LocalApiServer
                     
                     if (update.Contents != null)
                     {
-                        var jOpts = new JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+                        JsonSerializerOptions jOpts = new() { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
                         foreach(AIContent content in update.Contents)
                         {
                             if (content is FunctionCallContent funcCall)
@@ -530,10 +532,10 @@ public static class LocalApiServer
                     string apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY") ?? "";
                     if (string.IsNullOrEmpty(apiKey)) return Results.BadRequest(new { message = "OPENAI_API_KEY is missing." });
 
-                    var imageClient = new global::OpenAI.Images.ImageClient(apiModelName, apiKey);
-                    global::OpenAI.Images.ImageGenerationOptions options = new global::OpenAI.Images.ImageGenerationOptions();
-                    
-                    global::OpenAI.Images.GeneratedImage image = await imageClient.GenerateImageAsync(prompt, options);
+                    ImageClient imageClient = new(apiModelName, apiKey);
+                    OpenAI.Images.ImageGenerationOptions options = new();
+
+                    GeneratedImage image = await imageClient.GenerateImageAsync(prompt, options);
                     
                     string base64 = "";
                     if (image.ImageBytes != null)
@@ -542,7 +544,7 @@ public static class LocalApiServer
                     }
                     else if (image.ImageUri != null)
                     {
-                        using HttpClient hc = new HttpClient();
+                        using HttpClient hc = new();
                         byte[] bytes = await hc.GetByteArrayAsync(image.ImageUri);
                         base64 = Convert.ToBase64String(bytes);
                     }
@@ -554,11 +556,11 @@ public static class LocalApiServer
                     string apiKey = Environment.GetEnvironmentVariable("XAI_API_KEY") ?? "";
                     if (string.IsNullOrEmpty(apiKey)) return Results.BadRequest(new { message = "XAI_API_KEY is missing." });
 
-                    var openaiOptions = new global::OpenAI.OpenAIClientOptions { Endpoint = new Uri("https://api.x.ai/v1") };
-                    var imageClient = new global::OpenAI.Images.ImageClient(apiModelName, new System.ClientModel.ApiKeyCredential(apiKey), openaiOptions);
-                    global::OpenAI.Images.ImageGenerationOptions options = new global::OpenAI.Images.ImageGenerationOptions();
-                    
-                    global::OpenAI.Images.GeneratedImage image = await imageClient.GenerateImageAsync(prompt, options);
+                    OpenAI.OpenAIClientOptions openaiOptions = new() { Endpoint = new Uri("https://api.x.ai/v1") };
+                    ImageClient imageClient = new(apiModelName, new System.ClientModel.ApiKeyCredential(apiKey), openaiOptions);
+                    OpenAI.Images.ImageGenerationOptions options = new();
+
+                    GeneratedImage image = await imageClient.GenerateImageAsync(prompt, options);
                     
                     string base64 = "";
                     if (image.ImageBytes != null)
@@ -567,7 +569,7 @@ public static class LocalApiServer
                     }
                     else if (image.ImageUri != null)
                     {
-                        using HttpClient hc = new HttpClient();
+                        using HttpClient hc = new();
                         byte[] bytes = await hc.GetByteArrayAsync(image.ImageUri);
                         base64 = Convert.ToBase64String(bytes);
                     }

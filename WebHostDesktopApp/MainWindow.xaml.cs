@@ -1,4 +1,7 @@
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.Web.WebView2.Core;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -19,11 +22,11 @@ public sealed partial class MainWindow : Window
 
         if (AppWindow != null)
         {
-            if (Microsoft.UI.Windowing.AppWindowTitleBar.IsCustomizationSupported())
+            if (AppWindowTitleBar.IsCustomizationSupported())
             {
                 var titleBar = AppWindow.TitleBar;
-                titleBar.ButtonBackgroundColor = Microsoft.UI.Colors.Transparent;
-                titleBar.ButtonInactiveBackgroundColor = Microsoft.UI.Colors.Transparent;
+                titleBar.ButtonBackgroundColor = Colors.Transparent;
+                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             }
 
             try
@@ -83,7 +86,7 @@ public sealed partial class MainWindow : Window
         MyWebView.CoreWebView2.SetVirtualHostNameToFolderMapping(
             "app.local",
             folderPath,
-            Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow
+            CoreWebView2HostResourceAccessKind.Allow
         );
 
         // SPAルーティングの安全な対応
