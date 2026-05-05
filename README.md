@@ -40,8 +40,7 @@
 
 | プロバイダー | 用途 | モデルID |
 | --- | --- | --- |
-| Ollama | テキスト生成 | `ollama/gemma4:e4b` |
-| Ollama | テキスト生成 | `ollama/qwen3.5:9b` |
+| Ollama | テキスト生成 | インストール済みモデル |
 | Anthropic | テキスト生成 | `anthropic/claude-opus-4-7` |
 | Anthropic | テキスト生成 | `anthropic/claude-sonnet-4-6` |
 | Anthropic | テキスト生成 | `anthropic/claude-haiku-4-5` |
@@ -55,6 +54,8 @@
 | xAI | 画像生成 | `xai/grok-imagine-image` |
 | OpenAI | 画像生成 | `openai/gpt-image-2` |
 | OpenAI | 画像生成 | `openai/gpt-4o-image` |
+
+Ollama はインストールされているモデルが選択可能になります。
 
 ## 環境変数の設定
 API キーを環境変数に設定することで、モデルが使用可能となります。
